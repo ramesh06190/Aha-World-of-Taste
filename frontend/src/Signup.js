@@ -8,7 +8,7 @@ function Signup() {
         email: '',
         password: ''
     })
-    const [errors, setErrors] = useState
+    const [errors, setErrors] = useState({})
     const handleInput =(event) => {
         setValues(prev => ({...prev, [event.target.name]: [event.target.value]}))
     }

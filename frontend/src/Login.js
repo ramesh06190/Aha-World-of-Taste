@@ -1,12 +1,12 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import validation from "./LoginValidation";
+import validation from "./LoginValidation"
 function Login() {
     const [values, setValues] = useState({
         email: '',
         password: ''
     })
-    const [errors, setErrors] = useState
+    const [errors, setErrors] = useState({})
     const handleInput =(event) => {
         setValues(prev => ({...prev, [event.target.name]: [event.target.value]}))
     }
