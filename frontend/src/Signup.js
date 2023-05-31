@@ -17,12 +17,15 @@ function Signup() {
         event.preventDefault();
         setErrors(validation(values));
         if(errors.name === "" && errors.email === "" && errors.password === "")
+
         {
           axios.post('http://localhost:8081/signup', values)
             .then(res => console.log(res))
             .catch(err => console.log(err));
         }
+
     }
+
 
     return(
         <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
