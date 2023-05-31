@@ -4,6 +4,7 @@
 
 
 #### Team
+These are the people who are currently working on this project.
 
 1.	Pydi Venkata Satya Ramesh Adapa - Project Manager
 2.	Jyothsna Pamarthi - Team Lead
