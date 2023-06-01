@@ -16,13 +16,17 @@ These are the people who are currently working on this project.
 
 #### Basic commands that we used to do the project using React js:
 
-1. To creates a new React application named "Aha-World-of-Taste" using Create React App.
+1. To creates a new React application named "Aha-World-of-Taste" using Create React App(for frontend).
    
    ``` npx create-react-app Aha-World-of-Taste ```
    
 2. To launch the react app we need to use following command, so that it automatically launches the application in the browser.
    
    ``` npm start``` 
+3. To create backend directory and initiate node application and install necessary packages
+
+   ```npm init -y```
+   ```npm i mysql express cors nodemon```
 
 #### Steps for database setup
 
