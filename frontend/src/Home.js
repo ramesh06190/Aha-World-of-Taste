@@ -1,8 +1,9 @@
 import React from "react";
+import './Login.css';
 
 function Home() {
     return (
-        <div>Home</div>
+        <div className="welcome-container">Home</div>
     )
 }
 

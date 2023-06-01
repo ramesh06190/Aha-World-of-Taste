@@ -66,7 +66,7 @@ function Signup() {
                 </div>
                 <button type='submit' className="btn btn-success w-100">Sign up</button>
                 <p>You are agree to our terms and policies</p>
-                <Link to="/login" className="btn btn-primary border w-100 ">Login</Link>
+                <Link to="/" className="btn btn-primary border w-100 ">Login</Link>
                 </form>
             </div>
         </div>
