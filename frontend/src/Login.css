@@ -1,0 +1,16 @@
+.login-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: #007bff;
+    /* Replace with your desired primary background color */
+    height: 100vh;
+    background-image: url("Login.JPG");
+    background-size: cover;
+    background-position: left;
+    /* Additional styles if needed */
+  }
+  .align-right {
+    margin-right: 300px;
+  }
+  
