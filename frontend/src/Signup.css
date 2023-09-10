@@ -10,6 +10,27 @@
     background-position: left;
     /* Additional styles if needed */
   }
+  .header-signup-login {
+    background-color: #333;
+    color: #fff;
+    padding: 0 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Style for the container */
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
   .align-right {
     margin-right: 300px;
   }

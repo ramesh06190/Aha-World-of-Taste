@@ -1,0 +1,87 @@
+/* Style for the header */
+.header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the container */
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Style for the logo */
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+.logo-image {
+  width: 30px; /* Adjust the width as needed to fit within the box */
+  margin-right: 10px; /* Add some spacing between the logo and text */
+}
+
+/* Style for the navigation links */
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.nav-links li {
+  margin-right: 20px;
+}
+
+/* Style for the navigation links (links inside li elements) */
+.nav-links li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #ff6600; /* Change the color on hover */
+}
+
+/* Style for the page links (buttons) */
+.page-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.page-links a {
+  display: inline-block;
+  text-decoration: none;
+  background-color: #ff6600;
+  color: #fff;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.page-links a:hover {
+  background-color: #333; /* Change the background color on hover */
+}
