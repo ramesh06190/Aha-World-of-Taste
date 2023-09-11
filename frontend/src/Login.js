@@ -36,7 +36,9 @@ function Login() {
              <header className="header-signup-login">
       <div className="container">
       <div className="logo">
+      <Link to="/">
             <img className="logo-image" src="./AhaLogo2.JPG" width = '30px' height = '30px' alt="Aha Restaurant Logo" /> {/* Use the image as the logo */}
+       </Link>
         </div>
         <nav className="navbar">
           <ul className="nav-links">
