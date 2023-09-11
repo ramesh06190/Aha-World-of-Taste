@@ -4,6 +4,7 @@ import validation from "./SignupValidation";
 import axios from 'axios';
 import './Signup.css';
 
+
 function Signup() {
     const [values, setValues] = useState({
         name: '',
@@ -33,7 +34,22 @@ function Signup() {
     }
 
     return(
+       
         <div className='signup-container'>
+           <header className="header-signup-login">
+      <div className="container">
+      <div className="logo">
+            <img className="logo-image" src="./AhaLogo2.JPG" width = '30px' height = '30px' alt="Aha Restaurant Logo" /> {/* Use the image as the logo */}
+        </div>
+        <nav className="navbar">
+          <ul className="nav-links">
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/signup">Signup</Link></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
             <div className='bg-white p-3 rounded w-45 align-right'>
                 <form action="" onSubmit={handleSubmit}>
                 <div className="mb-3">

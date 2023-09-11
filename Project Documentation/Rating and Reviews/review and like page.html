@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="Style.css">
+  <title>Rating and Review Page</title>
+</head>
+<body>
+  <div class="background-image"></div>
+  <div class="container">
+    <h1>Rating and Review</h1>
+    <div class="rating">
+      <span class="rating-text">Rate your experience:</span>
+      <div class="stars">
+        <span class="star" onclick="rate(1)">☆</span>
+        <span class="star" onclick="rate(2)">☆</span>
+        <span class="star" onclick="rate(3)">☆</span>
+        <span class="star" onclick="rate(4)">☆</span>
+        <span class="star" onclick="rate(5)">☆</span>
+      </div>
+    </div>
+    <div class="review">
+      <textarea id="reviewText" placeholder="Write your review here"></textarea>
+      <button onclick="submitReview()">Submit</button>
+    </div>
+    <div class="reviews-list" id="reviewsList">
+      <!-- Reviews will be displayed here -->
+    </div>
+  
+  <!-- Thank You Message Container (initially hidden) -->
+  <div class="thank-you-message" id="thankYouMessage" style="display: none;">
+    Thank you for your review!
+  </div>
+  </div>
+<div class="thank-you-message" id="thankYouMessage" style="display: none;">
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
