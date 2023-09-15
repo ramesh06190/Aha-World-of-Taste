@@ -31,12 +31,28 @@ function Login() {
             .catch(err => console.log(err));
         }
     }
+    const handleAdminLogin = () => {
+        const adminCredentials = {
+          email: 'admin@aha.com',
+          password: 'IamtheBoss@619' // Change this to your admin password
+        };
+      
+        // Check if the entered credentials match the admin credentials
+        if (values.email == adminCredentials.email && values.password == adminCredentials.password) {
+          // Redirect to the admin dashboard or admin pages
+          navigate('/admin-home'); // Update the route as needed
+        } else {
+          alert('Invalid admin credentials');
+        }
+      };      
     return (
         <div className= 'login-container'>
              <header className="header-signup-login">
       <div className="container">
       <div className="logo">
+      <Link to="/">
             <img className="logo-image" src="./AhaLogo2.JPG" width = '30px' height = '30px' alt="Aha Restaurant Logo" /> {/* Use the image as the logo */}
+       </Link>
         </div>
         <nav className="navbar">
           <ul className="nav-links">
@@ -64,6 +80,9 @@ function Login() {
                 <button type='submit' className="btn btn-success w-100">Log in</button>
                 <p>You are agree to our terms and policies</p>
                 <Link to="/signup" className="btn btn-primary border w-100 ">Create Account</Link>
+
+                {/* Add the Admin Login button */}
+                <button onClick={handleAdminLogin} className="btn btn-warning w-100 mt-3">Admin Login</button>
                 </form>
             </div>
         </div>

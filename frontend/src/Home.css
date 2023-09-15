@@ -1,0 +1,47 @@
+.welcome-container {
+    position: relative;
+  }
+  
+  .pickup-delivery-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    background-color: #007BFF; /* Adjust the background color as needed */
+    color: #fff; /* Text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .chat-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #28a745; /* Adjust the background color as needed */
+    color: #fff; /* Text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .welcome {
+    color: white; /* Set the text color to white */
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+     /* Adjust the background color as needed */
+    color: #fff; /* Text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .admin-button-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adjust the gap between buttons as needed */
+  }
