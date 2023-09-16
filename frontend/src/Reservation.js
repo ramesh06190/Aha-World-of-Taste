@@ -27,7 +27,7 @@ function Reservation() {
       <Header />
       <h1>Make a Reservation</h1>
       <form className="reservation-form" onSubmit={handleSubmit}>
-        <div className="horizontal-form">
+        <div className="vertical-form">
           <div className="form-group">
             <label htmlFor="party-size">Party Size:</label>
             <input
@@ -36,6 +36,7 @@ function Reservation() {
               value={partySize}
               onChange={(e) => setPartySize(e.target.value)}
               required
+              min={1}
             />
           </div>
           <div className="form-group">
