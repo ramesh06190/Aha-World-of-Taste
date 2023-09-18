@@ -1,12 +1,20 @@
 
+
+
+
+
+
+
+
+
 import React, { useState } from 'react';
 import './Menu.css';
 import Header from './Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
-// Sample menu items with prices
 const menuItems = [
+
   { title: "Veggie Burger", image: "veggie-burger.jpg", category: "vegetarian", description: "A delicious veggie burger with fresh veggies and a special sauce.", price: 9.99 },
   { title: "Chocolate Cake", image: "chocolate-cake.jpg", category: "desserts", description: "Rich and moist chocolate cake topped with chocolate ganache.", price:15 },
   { title: "Salad", image: "salad.jpg", category: "vegetarian", description: "A fresh and healthy salad with mixed greens and a vinaigrette dressing." , price:15},
@@ -27,7 +35,10 @@ const menuItems = [
   { title: "Fish Tacos", image: "fish-tacos.jpg", category: "non-vegetarian", description: "Fish tacos with crispy fish fillets and slaw in soft tortillas." , price:15},
   { title: "Eggplant Parmesan", image: "eggplant-parmesan.jpg", category: "vegetarian", description: "Eggplant Parmesan with layers of eggplant, marinara sauce, and cheese.", price:15 },
 
+ 
 ];
+
+const filterCategories = ['all', 'vegetarian', 'non-vegetarian', 'desserts'];
 
 function Menu() {
   const [filter, setFilter] = useState('all');
@@ -35,21 +46,18 @@ function Menu() {
   const [cart, setCart] = useState([]);
   const [cartVisible, setCartVisible] = useState(false);
 
-  // Create a quantity state for each menu item
   const [itemQuantities, setItemQuantities] = useState(
     menuItems.reduce((quantities, item) => {
-      quantities[item.title] = 1; // Initialize quantity with 1 for each item
+      quantities[item.title] = 1;
       return quantities;
     }, {})
   );
 
-  // Function to filter menu items based on category
   const filteredMenuItems = menuItems.filter((item) => {
     return (filter === 'all' || item.category === filter) &&
       (search === '' || item.title.toLowerCase().includes(search.toLowerCase()));
   });
 
-  // Function to add an item to the cart
   const addToCart = (item) => {
     const quantity = itemQuantities[item.title];
     const cartItem = { ...item, quantity };
@@ -57,26 +65,22 @@ function Menu() {
     alert(`Added ${quantity} ${item.title}(s) to the cart.`);
   };
 
-  // Function to remove an item from the cart
   const removeFromCart = (index) => {
     const updatedCart = [...cart];
     updatedCart.splice(index, 1);
     setCart(updatedCart);
   };
 
-  // Function to toggle cart visibility
   const toggleCartVisible = () => {
     setCartVisible(!cartVisible);
   };
 
-  // Calculate the total price of items in the cart
   const totalPrice = cart.reduce((total, cartItem) => total + cartItem.price * cartItem.quantity, 0);
 
   return (
     <div className="menu-container">
       <Header />
       <h1>Menu</h1>
-      {/* Search bar */}
       <input
         type="text"
         placeholder="Search for Food..."
@@ -84,50 +88,52 @@ function Menu() {
         onChange={(e) => setSearch(e.target.value)}
         style={{ width: '300px', height: '25px' }}
       />
-      {/* Filter buttons */}
       <div className="filter-buttons">
-        <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>All</button>
-        <button className={filter === 'vegetarian' ? 'active' : ''} onClick={() => setFilter('vegetarian')}>Vegetarian</button>
-        <button className={filter === 'non-vegetarian' ? 'active' : ''} onClick={() => setFilter('non-vegetarian')}>Non-Vegetarian</button>
-        <button className={filter === 'desserts' ? 'active' : ''} onClick={() => setFilter('desserts')}>Desserts</button>
+        {filterCategories.map((category) => (
+          <button
+            key={category}
+            className={filter === category ? 'active' : ''}
+            onClick={() => setFilter(category)}
+          >
+            {category}
+          </button>
+        ))}
       </div>
-      {/* Grid container for menu items */}
       <div className="grid-container">
-        {filteredMenuItems.map((item, index) => (
-          <div key={index} className="menu-item">
+        {filteredMenuItems.map((item) => (
+          <div key={item.title} className="menu-item">
             <img src={item.image} alt={item.title} />
             <h2>{item.title}</h2>
             <p>{item.description}</p>
             <p>Price: ${item.price.toFixed(2)}</p>
-            <p>Qty: 
-            <input
-              type="number"
-              value={itemQuantities[item.title]}
-              onChange={(e) => {
-                const newQuantities = { ...itemQuantities };
-                newQuantities[item.title] = parseInt(e.target.value);
-                setItemQuantities(newQuantities);
-              }}
-              min={1}
-              style={{ width: '40px', height: '20px' }}
-            />
-            <button onClick={() => addToCart(item)}>Add to Cart</button>
+            <p>
+              Qty:{' '}
+              <input
+                type="number"
+                value={itemQuantities[item.title]}
+                onChange={(e) => {
+                  const newQuantities = { ...itemQuantities };
+                  newQuantities[item.title] = parseInt(e.target.value);
+                  setItemQuantities(newQuantities);
+                }}
+                min={1}
+                style={{ width: '40px', height: '20px' }}
+              />
+              <button onClick={() => addToCart(item)}>Add to Cart</button>
             </p>
           </div>
         ))}
       </div>
-      {/* Cart icon */}
       <div className="cart-icon" onClick={toggleCartVisible}>
         <FontAwesomeIcon icon={faShoppingCart} />
         <span className="cart-count">{cart.length}</span>
       </div>
-      {/* Cart content */}
       {cartVisible && (
         <div className="cart">
           <h3>Cart</h3>
           <ul>
             {cart.map((cartItem, index) => (
-              <li key={index}>
+              <li key={cartItem.title}>
                 {cartItem.title} - ${cartItem.price.toFixed(2)} x {cartItem.quantity}{' '}
                 <button onClick={() => removeFromCart(index)}>Remove</button>
               </li>
@@ -141,4 +147,3 @@ function Menu() {
 }
 
 export default Menu;
-

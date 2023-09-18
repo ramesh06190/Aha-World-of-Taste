@@ -18,8 +18,7 @@ function Reservation() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission, e.g., send reservation details to the server
-    // You can access partySize, date, and selectedTimeSlot here
+   
   };
 
   return (
@@ -27,7 +26,7 @@ function Reservation() {
       <Header />
       <h1>Make a Reservation</h1>
       <form className="reservation-form" onSubmit={handleSubmit}>
-        <div className="vertical-form">
+        <div className="horizontal-form">
           <div className="form-group">
             <label htmlFor="party-size">Party Size:</label>
             <input
