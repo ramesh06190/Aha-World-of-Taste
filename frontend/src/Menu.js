@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 import React, { useState } from 'react';
 import './Menu.css';
 import Header from './Header';
@@ -14,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 const menuItems = [
-
   { title: "Veggie Burger", image: "veggie-burger.jpg", category: "vegetarian", description: "A delicious veggie burger with fresh veggies and a special sauce.", price: 9.99 },
   { title: "Chocolate Cake", image: "chocolate-cake.jpg", category: "desserts", description: "Rich and moist chocolate cake topped with chocolate ganache.", price:15 },
   { title: "Salad", image: "salad.jpg", category: "vegetarian", description: "A fresh and healthy salad with mixed greens and a vinaigrette dressing." , price:15},
@@ -34,8 +24,6 @@ const menuItems = [
   { title: "Cheesecake", image: "cheesecake.jpg", category: "desserts", description: "Creamy cheesecake with a graham cracker crust and fruit topping.", price:15 },
   { title: "Fish Tacos", image: "fish-tacos.jpg", category: "non-vegetarian", description: "Fish tacos with crispy fish fillets and slaw in soft tortillas." , price:15},
   { title: "Eggplant Parmesan", image: "eggplant-parmesan.jpg", category: "vegetarian", description: "Eggplant Parmesan with layers of eggplant, marinara sauce, and cheese.", price:15 },
-
- 
 ];
 
 const filterCategories = ['all', 'vegetarian', 'non-vegetarian', 'desserts'];

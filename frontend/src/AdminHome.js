@@ -1,34 +1,13 @@
 import React from 'react';
-import Header from './Header';
+import AdminHeader from './AdminHeader';
 import './Home.css';
 import { Link } from 'react-router-dom';
-import ManageOrdersIcon from './ManageOrdersIcon'; // Import icons or images for buttons as needed
-import ManageReservationsIcon from './ManageReservationsIcon';
-import ManageFoodItemsIcon from './ManageFoodItemsIcon';
+
 
 function AdminHome() {
   return (
     <div className="welcome-container">
-       <header className="admin-header">
-        <h1 className="admin-welcome">Welcome to Aha Restaurant (Admin)</h1>
-        <div className="admin-buttons">
-          <Link to="/manage-orders">
-            <button className="admin-button">
-              <ManageOrdersIcon /> Manage Orders
-            </button>
-          </Link>
-          <Link to="/manage-reservations">
-            <button className="admin-button">
-              <ManageReservationsIcon /> Manage Reservations
-            </button>
-          </Link>
-          <Link to="/manage-food-items">
-            <button className="admin-button">
-              <ManageFoodItemsIcon /> Manage Food Items
-            </button>
-          </Link>
-        </div>
-      </header>
+      <AdminHeader />        
       <div>
         <h1 className="welcome">Welcome to Aha Restaurant</h1>
       </div>
