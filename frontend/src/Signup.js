@@ -77,7 +77,7 @@ function Signup() {
                     <input type="text" placeholder='Enter Phone Number' name='phone' maxLength={10} minLength={10}
                     onChange={handleInput} className='form-control'/>
                 </div>
-                <div className="mb-3">
+                <div className="mb-4">
                     <label htmlFor="address"><strong>Address</strong></label>
                     <input type="text" placeholder='Address Line 1, City, State, Zipcode' name='address'
                     onChange={handleInput} className='form-control'/>

@@ -8,6 +8,9 @@ import AdminHome from './AdminHome';
 import Menu from './Menu';
 import Reservation from './Reservation';
 import AboutUs from './AboutUs';
+import ManageOrders from './ManageOrders';
+import ManageReservations from './ManageReservations';
+import ManageFoodItems from './ManageFoodItems';
 
 
 function App() {
@@ -23,6 +26,9 @@ function App() {
       <Route path='/signup' element={<Signup />}></Route>
       <Route path='/login' element={<Login />}></Route>
       <Route path='/admin-home' element={<AdminHome />}></Route>
+      <Route path='/manage-orders' element={<ManageOrders />}></Route>
+      <Route path='/manage-reservations' element={<ManageReservations />}></Route>
+      <Route path='/manage-food-items' element={<ManageFoodItems />}></Route>
    
 
     </Routes>
