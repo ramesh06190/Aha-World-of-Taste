@@ -1,0 +1,100 @@
+.login-container {
+    display: flex;
+
+}
+
+.img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.img-wrap {
+    width: 400px !important;
+    min-height: 60vh;
+}
+
+
+.css-1u2cvaz {
+    width: 53vw !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    left: 50% !important;
+
+    transform: translate(-50%,0%) !important;
+}
+
+.login-card {
+    width: 503px !important;
+    position: relative;
+}
+
+.admin-login {
+    position: absolute;
+    top: 400px;
+    right: 20px;
+}
+.signup-card{
+    width: 503px !important;
+}
+.signup-card,
+.login-card {
+    padding: 0px 20px;
+}
+
+.btn-wrap-pop button {
+    margin-top: 10px;
+
+}
+
+.btn-wrap-pop .signUpBtn {
+    margin-right: 50px !important;
+
+}
+
+.btn-wrap-pop {
+    display: flex;
+ 
+}
+
+.btn-wrap-pop-login {
+    margin-top: 10px;
+    display: flex;
+    margin-left: 200px;
+}
+
+.btn-wrap-pop-login .login-btn {
+    margin-right: 20px;
+}
+
+.Login_as_Admin {
+    margin-left: 120px;
+}
+
+.custom-flex {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 70vh !important;
+}
+
+.forgetPasstext {
+    text-align: end;
+    cursor: pointer;
+}
+
+.verifyEmail-warp {
+    margin-top: 10px;
+}
+
+.custom-error {
+    color: red;
+}
+.center-model{
+    min-height: 100vh !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background-color: yellow;
+    width: 100% !important;
+}

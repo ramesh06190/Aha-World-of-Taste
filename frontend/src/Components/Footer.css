@@ -1,0 +1,11 @@
+.footer-card-con{
+    display: flex;
+    justify-content: space-around;
+    background-color: #EFD36D;
+    color: black;
+    text-align: start;
+    padding-bottom: 35px;
+ }
+ .footer-card-con h4{ 
+text-align: start;
+ }

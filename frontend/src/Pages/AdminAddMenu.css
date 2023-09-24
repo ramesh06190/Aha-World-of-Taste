@@ -1,0 +1,6 @@
+.addmenu-con{
+    height: 100vh !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

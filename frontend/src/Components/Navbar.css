@@ -1,0 +1,66 @@
+.nav-container {
+    display: flex;
+    background-color: #EFD36D;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+}
+
+.landing-container {
+   min-height: 100vh !important;
+    position: relative;
+}
+
+.search input {
+    padding: 8px 20px;
+    border-radius: 40px;
+    outline: none;
+    min-width: 500px;
+    border: none;
+    width: 100%;
+}
+
+.search {
+    max-width: 500px;
+}
+
+.nav-list {
+    display: flex;
+    align-items: center;
+}
+
+.nav-list li {
+    list-style: none;
+    padding: 0px 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.chatbtn{
+    position: fixed;
+    right: 40px;
+    top: 85vh;
+}
+.chatbtn img{
+    width: 80px;
+    object-fit: cover;
+}
+
+.nav-container {
+    position: sticky !important;
+    top: 0 !important; /* Adjust this value as needed */
+    z-index: 100 !important; /* Ensure it's above other elements if needed */
+    /* Other styling properties */
+  }
+  .nav-list p{
+    position: absolute;
+    top: -6px;
+    left: 49px;
+    font-size: 11px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding-top: 4px;
+    width: 20px;
+    text-align: center;
+    height: 20px;
+  }

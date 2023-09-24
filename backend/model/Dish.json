@@ -1,0 +1,724 @@
+{
+  "Dish": [
+    {
+      "id": "Dish-45346735",
+      "foodName": "Margherita Pizza",
+      "category": "Best Seller",
+      "price": 12.99,
+      "description": "A classic pizza topped with tomato, fresh mozzarella cheese, and basil leaves.",
+      "likes": []
+    },
+    {
+      "id": "Dish-54871234",
+      "foodName": "Chicken Alfredo Pasta",
+      "category": "Best Seller",
+      "price": 15.99,
+      "description": "Creamy pasta with grilled chicken, parmesan cheese, and Alfredo sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-65198234",
+      "foodName": "Grilled Salmon",
+      "category": "Best Seller",
+      "price": 18.99,
+      "description": "Freshly grilled salmon fillet seasoned with herbs and served with steamed vegetables.",
+      "likes": []
+    },
+    {
+      "id": "Dish-78952456",
+      "foodName": "Caesar Salad",
+      "category": "Best Seller",
+      "price": 8.99,
+      "description": "Fresh romaine lettuce, croutons, parmesan cheese, and Caesar dressing.",
+      "likes": []
+    },
+    {
+      "id": "Dish-82451623",
+      "foodName": "Sushi Platter",
+      "category": "Best Seller",
+      "price": 22.99,
+      "description": "Assorted sushi rolls with fresh fish, rice, and vegetables.",
+      "likes": []
+    },
+    {
+      "id": "Dish-92451213",
+      "foodName": "Tiramisu",
+      "category": "Best Seller",
+      "price": 7.99,
+      "description": "Classic Italian dessert made of layers of coffee-soaked ladyfingers and mascarpone cheese.",
+      "likes": []
+    },
+    {
+      "id": "Dish-10347235",
+      "foodName": "Veggie Burger",
+      "category": "Best Seller",
+      "price": 9.99,
+      "description": "A delicious burger made with a vegetarian patty, lettuce, tomato, and special sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-11453123",
+      "foodName": "Chocolate Fondue",
+      "category": "Best Seller",
+      "price": 14.99,
+      "description": "Melted chocolate served with an assortment of fruits and marshmallows for dipping.",
+      "likes": []
+    },
+    {
+      "id": "Dish-12753246",
+      "foodName": "Chicken Biryani",
+      "category": "Best Seller",
+      "price": 16.99,
+      "description": "Fragrant rice cooked with succulent pieces of chicken and aromatic spices.",
+      "likes": []
+    },
+    {
+      "id": "Dish-13453123",
+      "foodName": "Beef Tacos",
+      "category": "Best Seller",
+      "price": 11.99,
+      "description": "Soft or crunchy tacos filled with seasoned beef, lettuce, cheese, and salsa.",
+      "likes": []
+    },
+    {
+      "id": "Dish-91451234",
+      "foodName": "Chicken Biryani",
+      "category": "Biriyani",
+      "price": 16.99,
+      "description": "Fragrant rice cooked with succulent pieces of chicken and aromatic spices.",
+      "likes": []
+    },
+    {
+      "id": "Dish-92451234",
+      "foodName": "Vegetable Biryani",
+      "category": "Biriyani",
+      "price": 14.99,
+      "description": "Aromatic basmati rice cooked with assorted vegetables and biryani spices.",
+      "likes": []
+    },
+    {
+      "id": "Dish-93451234",
+      "foodName": "Lamb Biryani",
+      "category": "Biriyani",
+      "price": 18.99,
+      "description": "Spiced basmati rice cooked with tender pieces of lamb and aromatic spices.",
+      "likes": []
+    },
+    {
+      "id": "Dish-94451234",
+      "foodName": "Shrimp Biryani",
+      "category": "Biriyani",
+      "price": 17.99,
+      "description": "Flavorful basmati rice cooked with succulent shrimp and a blend of biryani spices.",
+      "likes": []
+    },
+    {
+      "id": "Dish-95451234",
+      "foodName": "Egg Biryani",
+      "category": "Biriyani",
+      "price": 14.99,
+      "description": "Aromatic basmati rice cooked with hard-boiled eggs and biryani masala.",
+      "likes": []
+    },
+    {
+      "id": "Dish-96451234",
+      "foodName": "Beef Biryani",
+      "category": "Biriyani",
+      "price": 18.99,
+      "description": "Tender beef pieces cooked with spiced basmati rice, creating a flavorful biryani.",
+      "likes": []
+    },
+    {
+      "id": "Dish-97451234",
+      "foodName": "Mutton Biryani",
+      "category": "Biriyani",
+      "price": 19.99,
+      "description": "Aromatic basmati rice cooked with succulent mutton pieces and a blend of biryani spices.",
+      "likes": []
+    },
+    {
+      "id": "Dish-98451234",
+      "foodName": "Fish Biryani",
+      "category": "Biriyani",
+      "price": 18.99,
+      "description": "Delicious biryani made with marinated fish pieces and fragrant basmati rice.",
+      "likes": []
+    },
+    {
+      "id": "Dish-99451234",
+      "foodName": "Paneer Biryani",
+      "category": "Biriyani",
+      "price": 15.99,
+      "description": "Spiced basmati rice cooked with marinated paneer cubes and aromatic spices.",
+      "likes": []
+    },
+    {
+      "id": "Dish-100451234",
+      "foodName": "Hyderabadi Biryani",
+      "category": "Biriyani",
+      "price": 19.99,
+      "description": "Traditional Hyderabadi-style biryani with a rich blend of flavors and spices.",
+      "likes": []
+    },
+    {
+      "id": "Dish-21453123",
+      "foodName": "Lobster Bisque",
+      "category": "Chef's Special",
+      "price": 24.99,
+      "description": "A creamy soup made from lobster, vegetables, and herbs.",
+      "likes": []
+    },
+    {
+      "id": "Dish-22563412",
+      "foodName": "Filet Mignon",
+      "category": "Chef's Special",
+      "price": 29.99,
+      "description": "A tender and juicy filet mignon steak, cooked to perfection.",
+      "likes": []
+    },
+    {
+      "id": "Dish-23462143",
+      "foodName": "Shrimp Scampi",
+      "category": "Chef's Special",
+      "price": 20.99,
+      "description": "Shrimp sautéed with garlic, butter, and white wine, served over pasta.",
+      "likes": []
+    },
+    {
+      "id": "Dish-24561234",
+      "foodName": "Vegetable Stir-Fry",
+      "category": "Chef's Special",
+      "price": 18.99,
+      "description": "Fresh vegetables stir-fried in a savory sauce, served over steamed rice.",
+      "likes": []
+    },
+    {
+      "id": "Dish-25753421",
+      "foodName": "Rack of Lamb",
+      "category": "Chef's Special",
+      "price": 27.99,
+      "description": "Roasted rack of lamb seasoned with herbs and served with a mint sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-26546234",
+      "foodName": "Seafood Paella",
+      "category": "Chef's Special",
+      "price": 25.99,
+      "description": "A Spanish rice dish with a variety of seafood, flavored with saffron and paprika.",
+      "likes": []
+    },
+    {
+      "id": "Dish-27451234",
+      "foodName": "Eggplant Parmesan",
+      "category": "Chef's Special",
+      "price": 18.99,
+      "description": "Breaded and fried eggplant slices, baked with marinara sauce and mozzarella cheese.",
+      "likes": []
+    },
+    {
+      "id": "Dish-28346234",
+      "foodName": "Sushi Omakase",
+      "category": "Chef's Special",
+      "price": 32.99,
+      "description": "Chef's choice assortment of sushi and sashimi.",
+      "likes": []
+    },
+    {
+      "id": "Dish-29646234",
+      "foodName": "Beef Wellington",
+      "category": "Chef's Special",
+      "price": 28.99,
+      "description": "Tender beef filet topped with pâté and wrapped in puff pastry, then baked.",
+      "likes": []
+    },
+    {
+      "id": "Dish-30451234",
+      "foodName": "Duck à l'Orange",
+      "category": "Chef's Special",
+      "price": 26.99,
+      "description": "Roasted duck served with a sweet and tangy orange sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-31451234",
+      "foodName": "Caprese Salad",
+      "category": "Vegetarian",
+      "price": 9.99,
+      "description": "Fresh mozzarella, tomatoes, and basil drizzled with balsamic glaze.",
+      "likes": []
+    },
+    {
+      "id": "Dish-32451234",
+      "foodName": "Vegetable Curry",
+      "category": "Vegetarian",
+      "price": 12.99,
+      "description": "A medley of vegetables cooked in a flavorful curry sauce, served with rice.",
+      "likes": []
+    },
+    {
+      "id": "Dish-33451234",
+      "foodName": "Mushroom Risotto",
+      "category": "Vegetarian",
+      "price": 14.99,
+      "description": "Creamy risotto cooked with mushrooms and Parmesan cheese.",
+      "likes": []
+    },
+    {
+      "id": "Dish-34451234",
+      "foodName": "Stuffed Bell Peppers",
+      "category": "Vegetarian",
+      "price": 11.99,
+      "description": "Bell peppers stuffed with a mixture of rice, vegetables, and cheese, baked to perfection.",
+      "likes": []
+    },
+    {
+      "id": "Dish-35451234",
+      "foodName": "Falafel Wrap",
+      "category": "Vegetarian",
+      "price": 8.99,
+      "description": "Deep-fried chickpea patties with lettuce, tomatoes, and tahini sauce, wrapped in pita bread.",
+      "likes": []
+    },
+    {
+      "id": "Dish-36451234",
+      "foodName": "Spinach and Ricotta Stuffed Shells",
+      "category": "Vegetarian",
+      "price": 13.99,
+      "description": "Jumbo pasta shells stuffed with a mixture of spinach and ricotta cheese, baked in marinara sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-37451234",
+      "foodName": "Vegetable Pad Thai",
+      "category": "Vegetarian",
+      "price": 12.99,
+      "description": "Stir-fried rice noodles with mixed vegetables, tofu, and peanuts in a tangy sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-38451234",
+      "foodName": "Cauliflower Steak",
+      "category": "Vegetarian",
+      "price": 10.99,
+      "description": "Thick slices of cauliflower seasoned and roasted, served as a main course.",
+      "likes": []
+    },
+    {
+      "id": "Dish-39451234",
+      "foodName": "Quinoa Salad",
+      "category": "Vegetarian",
+      "price": 9.99,
+      "description": "A healthy salad made with quinoa, fresh vegetables, and a light dressing.",
+      "likes": []
+    },
+    {
+      "id": "Dish-40451234",
+      "foodName": "Zucchini Noodles with Pesto",
+      "category": "Vegetarian",
+      "price": 11.99,
+      "description": "Spiralized zucchini noodles tossed with basil pesto and cherry tomatoes.",
+      "likes": []
+    },
+    {
+      "id": "Dish-41451234",
+      "foodName": "Steak Frites",
+      "category": "Non-Vegetarian",
+      "price": 22.99,
+      "description": "Grilled steak served with crispy French fries and a side of herb butter.",
+      "likes": []
+    },
+    {
+      "id": "Dish-42451234",
+      "foodName": "BBQ Ribs",
+      "category": "Non-Vegetarian",
+      "price": 19.99,
+      "description": "Slow-cooked ribs basted in barbecue sauce, served with coleslaw and cornbread.",
+      "likes": []
+    },
+    {
+      "id": "Dish-43451234",
+      "foodName": "Lemon Herb Roasted Chicken",
+      "category": "Non-Vegetarian",
+      "price": 18.99,
+      "description": "Juicy roasted chicken seasoned with lemon, garlic, and herbs.",
+      "likes": []
+    },
+    {
+      "id": "Dish-44451234",
+      "foodName": "Shrimp and Grits",
+      "category": "Non-Vegetarian",
+      "price": 17.99,
+      "description": "Sautéed shrimp served over creamy grits with a spicy Creole sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-45451234",
+      "foodName": "Lamb Kebabs",
+      "category": "Non-Vegetarian",
+      "price": 21.99,
+      "description": "Tender lamb pieces marinated and grilled to perfection, served with pita bread and yogurt sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-46451234",
+      "foodName": "Beef Stroganoff",
+      "category": "Non-Vegetarian",
+      "price": 20.99,
+      "description": "Tender beef strips in a creamy mushroom sauce, served over egg noodles.",
+      "likes": []
+    },
+    {
+      "id": "Dish-47451234",
+      "foodName": "Spicy Chicken Wings",
+      "category": "Non-Vegetarian",
+      "price": 14.99,
+      "description": "Crispy chicken wings tossed in a spicy buffalo sauce, served with ranch dip.",
+      "likes": []
+    },
+    {
+      "id": "Dish-48451234",
+      "foodName": "Lobster Roll",
+      "category": "Non-Vegetarian",
+      "price": 24.99,
+      "description": "Chopped lobster meat mixed with mayonnaise and herbs, served in a toasted bun.",
+      "likes": []
+    },
+    {
+      "id": "Dish-49451234",
+      "foodName": "Beef and Broccoli Stir-Fry",
+      "category": "Non-Vegetarian",
+      "price": 16.99,
+      "description": "Sliced beef and broccoli stir-fried in a savory soy-based sauce, served over rice.",
+      "likes": []
+    },
+    {
+      "id": "Dish-50451234",
+      "foodName": "Crab Cakes",
+      "category": "Non-Vegetarian",
+      "price": 23.99,
+      "description": "Golden-brown crab cakes made with lump crabmeat and seasonings, served with remoulade sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-51451234",
+      "foodName": "Mojito",
+      "category": "Drinks",
+      "price": 7.99,
+      "description": "A refreshing cocktail made with rum, fresh mint, lime juice, sugar, and soda water.",
+      "likes": []
+    },
+    {
+      "id": "Dish-52451234",
+      "foodName": "Piña Colada",
+      "category": "Drinks",
+      "price": 8.99,
+      "description": "A tropical cocktail made with rum, coconut cream, and pineapple juice, blended with ice.",
+      "likes": []
+    },
+    {
+      "id": "Dish-53451234",
+      "foodName": "Espresso",
+      "category": "Drinks",
+      "price": 4.99,
+      "description": "A strong coffee brewed by forcing hot water through finely-ground coffee beans.",
+      "likes": []
+    },
+    {
+      "id": "Dish-54451234",
+      "foodName": "Green Smoothie",
+      "category": "Drinks",
+      "price": 6.99,
+      "description": "A healthy smoothie made with spinach, kale, banana, and apple juice.",
+      "likes": []
+    },
+    {
+      "id": "Dish-55451234",
+      "foodName": "Iced Chai Latte",
+      "category": "Drinks",
+      "price": 5.99,
+      "description": "A spiced tea latte served over ice with milk and sweetener.",
+      "likes": []
+    },
+    {
+      "id": "Dish-56451234",
+      "foodName": "Hot Chocolate",
+      "category": "Drinks",
+      "price": 5.99,
+      "description": "Rich and creamy hot chocolate topped with whipped cream and chocolate shavings.",
+      "likes": []
+    },
+    {
+      "id": "Dish-57451234",
+      "foodName": "Fresh Orange Juice",
+      "category": "Drinks",
+      "price": 4.99,
+      "description": "Freshly squeezed oranges to make a refreshing and natural orange juice.",
+      "likes": []
+    },
+    {
+      "id": "Dish-58451234",
+      "foodName": "Ginger Beer",
+      "category": "Drinks",
+      "price": 4.99,
+      "description": "Non-alcoholic ginger-flavored beverage with a spicy and tangy taste.",
+      "likes": []
+    },
+    {
+      "id": "Dish-59451234",
+      "foodName": "Matcha Latte",
+      "category": "Drinks",
+      "price": 6.99,
+      "description": "A frothy latte made with powdered green tea (matcha) and steamed milk.",
+      "likes": []
+    },
+    {
+      "id": "Dish-60451234",
+      "foodName": "Cappuccino",
+      "category": "Drinks",
+      "price": 4.99,
+      "description": "A coffee-based drink made with espresso and steamed milk foam.",
+      "likes": []
+    },
+    {
+      "id": "Dish-61451234",
+      "foodName": "Potato Chips",
+      "category": "Snacks",
+      "price": 3.99,
+      "description": "Crispy and salty potato chips, a classic snack favorite.",
+      "likes": []
+    },
+    {
+      "id": "Dish-62451234",
+      "foodName": "Popcorn",
+      "category": "Snacks",
+      "price": 2.99,
+      "description": "Light and fluffy popcorn, a great movie-time snack.",
+      "likes": []
+    },
+    {
+      "id": "Dish-63451234",
+      "foodName": "Pretzels",
+      "category": "Snacks",
+      "price": 3.49,
+      "description": "Crunchy pretzels, perfect for snacking.",
+      "likes": []
+    },
+    {
+      "id": "Dish-64451234",
+      "foodName": "Mixed Nuts",
+      "category": "Snacks",
+      "price": 4.99,
+      "description": "A mix of roasted nuts, a healthy and satisfying snack.",
+      "likes": []
+    },
+    {
+      "id": "Dish-65451234",
+      "foodName": "Cheese and Crackers",
+      "category": "Snacks",
+      "price": 5.49,
+      "description": "Assorted cheese with crackers, a tasty and convenient snack.",
+      "likes": []
+    },
+    {
+      "id": "Dish-66451234",
+      "foodName": "Spring Rolls",
+      "category": "Snacks",
+      "price": 6.99,
+      "description": "Vegetable-filled spring rolls, a light and flavorful snack.",
+      "likes": []
+    },
+    {
+      "id": "Dish-67451234",
+      "foodName": "Stuffed Mushrooms",
+      "category": "Snacks",
+      "price": 5.99,
+      "description": "Mushroom caps stuffed with a savory filling, a delicious appetizer.",
+      "likes": []
+    },
+    {
+      "id": "Dish-68451234",
+      "foodName": "Bruschetta",
+      "category": "Snacks",
+      "price": 6.99,
+      "description": "Toasted bread topped with fresh tomatoes, garlic, and basil.",
+      "likes": []
+    },
+    {
+      "id": "Dish-69451234",
+      "foodName": "Fruit Skewers",
+      "category": "Snacks",
+      "price": 4.99,
+      "description": "Assorted fruits skewered and served, a colorful and refreshing snack.",
+      "likes": []
+    },
+    {
+      "id": "Dish-70451234",
+      "foodName": "Buffalo Wings",
+      "category": "Snacks",
+      "price": 7.99,
+      "description": "Crispy chicken wings tossed in spicy buffalo sauce, served with blue cheese dressing.",
+      "likes": []
+    },
+    {
+      "id": "Dish-71451234",
+      "foodName": "Pepperoni Pizza",
+      "category": "Pizza",
+      "price": 14.99,
+      "description": "Classic pizza topped with pepperoni slices and melted cheese.",
+      "likes": []
+    },
+    {
+      "id": "Dish-72451234",
+      "foodName": "Vegetarian Pizza",
+      "category": "Pizza",
+      "price": 13.99,
+      "description": "Pizza loaded with various fresh vegetables and melted cheese.",
+      "likes": []
+    },
+    {
+      "id": "Dish-73451234",
+      "foodName": "BBQ Chicken Pizza",
+      "category": "Pizza",
+      "price": 15.99,
+      "description": "Pizza topped with tender pieces of BBQ chicken and a tangy barbecue sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-74451234",
+      "foodName": "Margherita Pizza",
+      "category": "Pizza",
+      "price": 12.99,
+      "description": "A classic pizza topped with tomato, fresh mozzarella cheese, and basil leaves.",
+      "likes": []
+    },
+    {
+      "id": "Dish-75451234",
+      "foodName": "Hawaiian Pizza",
+      "category": "Pizza",
+      "price": 14.99,
+      "description": "Pizza topped with ham, pineapple, and melted cheese.",
+      "likes": []
+    },
+    {
+      "id": "Dish-76451234",
+      "foodName": "Meat Lover's Pizza",
+      "category": "Pizza",
+      "price": 16.99,
+      "description": "Pizza loaded with a variety of meats, such as pepperoni, sausage, and bacon.",
+      "likes": []
+    },
+    {
+      "id": "Dish-77451234",
+      "foodName": "Four Cheese Pizza",
+      "category": "Pizza",
+      "price": 13.99,
+      "description": "Pizza topped with a blend of four cheeses for a rich and creamy flavor.",
+      "likes": []
+    },
+    {
+      "id": "Dish-78451234",
+      "foodName": "Mushroom and Olive Pizza",
+      "category": "Pizza",
+      "price": 14.99,
+      "description": "Pizza topped with mushrooms, black olives, and melted cheese.",
+      "likes": []
+    },
+    {
+      "id": "Dish-79451234",
+      "foodName": "Supreme Pizza",
+      "category": "Pizza",
+      "price": 15.99,
+      "description": "Pizza loaded with a variety of toppings including pepperoni, sausage, vegetables, and more.",
+      "likes": []
+    },
+    {
+      "id": "Dish-80451234",
+      "foodName": "Buffalo Chicken Pizza",
+      "category": "Pizza",
+      "price": 16.99,
+      "description": "Pizza topped with spicy buffalo chicken, blue cheese, and celery.",
+      "likes": []
+    },
+    {
+      "id": "Dish-81451234",
+      "foodName": "Chocolate Cake",
+      "category": "Dessert",
+      "price": 8.99,
+      "description": "Decadent chocolate cake topped with chocolate ganache and sprinkles.",
+      "likes": []
+    },
+    {
+      "id": "Dish-82451234",
+      "foodName": "Apple Pie",
+      "category": "Dessert",
+      "price": 7.99,
+      "description": "Classic apple pie with a flaky crust, perfect for dessert.",
+      "likes": []
+    },
+    {
+      "id": "Dish-83451234",
+      "foodName": "Tiramisu",
+      "category": "Dessert",
+      "price": 7.99,
+      "description": "Classic Italian dessert made of layers of coffee-soaked ladyfingers and mascarpone cheese.",
+      "likes": []
+    },
+    {
+      "id": "Dish-84451234",
+      "foodName": "Ice Cream Sundae",
+      "category": "Dessert",
+      "price": 6.99,
+      "description": "Vanilla ice cream topped with chocolate syrup, whipped cream, and a cherry.",
+      "likes": []
+    },
+    {
+      "id": "Dish-85451234",
+      "foodName": "Fruit Parfait",
+      "category": "Dessert",
+      "price": 6.99,
+      "description": "Layers of yogurt, granola, and fresh fruit, served in a glass.",
+      "likes": []
+    },
+    {
+      "id": "Dish-86451234",
+      "foodName": "Creme Brulee",
+      "category": "Dessert",
+      "price": 9.99,
+      "description": "Creamy custard topped with a caramelized sugar crust.",
+      "likes": []
+    },
+    {
+      "id": "Dish-87451234",
+      "foodName": "Panna Cotta",
+      "category": "Dessert",
+      "price": 7.99,
+      "description": "Smooth and creamy Italian dessert, often served with fruit or chocolate sauce.",
+      "likes": []
+    },
+    {
+      "id": "Dish-88451234",
+      "foodName": "Lemon Bars",
+      "category": "Dessert",
+      "price": 5.99,
+      "description": "Sweet and tangy lemon bars with a buttery crust.",
+      "likes": []
+    },
+    {
+      "id": "Dish-89451234",
+      "foodName": "Red Velvet Cupcake",
+      "category": "Dessert",
+      "price": 4.99,
+      "description": "Moist red velvet cupcake topped with cream cheese frosting.",
+      "likes": []
+    },
+    {
+      "id": "Dish-90451234",
+      "foodName": "Banana Split",
+      "category": "Dessert",
+      "price": 8.99,
+      "description": "A classic banana split with ice cream, banana, chocolate syrup, and nuts.",
+      "likes": []
+    }
+  ]
+}

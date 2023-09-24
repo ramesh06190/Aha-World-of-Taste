@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Josefin Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Urbanist', sans-serif;
+}
+/* @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&family=Montserrat:wght@100;200;300&family=Urbanist:wght@300;400;500;600&display=swap'); */
+
+.admin-parent_conatiner{
+  display: flex;
+}
+.css-4sd9dj{
+  padding: 0 !important;
+}
+.admin-sidebar{
+  width: 250px;
+  position: sticky;
+  height: 100vh;
+  top: 0;
+}
+.admin-content{
+  width: calc(100vw - 250px);
+}
+.rate-wrap{
+  display: flex;
+  justify-content: space-between;
+}
+.chakra-stack.css-12sxl0c{
+  height: 93vh !important;
+  position: sticky !important;
+  top: 64px !important;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+

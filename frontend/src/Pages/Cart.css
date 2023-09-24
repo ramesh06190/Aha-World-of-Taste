@@ -1,0 +1,12 @@
+.cart-container{
+    background-image: url("../assets/./chinese-food-chinese-traditional-cuisine-dishes-light-concrete-background-top-view-copy-space_233226-908.avif");
+    background-repeat: no-repeat !important;
+    position: relative;
+    min-height: calc(100vh);
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+.cart-con-card{
+    width: 50%;
+}

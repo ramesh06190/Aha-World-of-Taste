@@ -1,0 +1,228 @@
+.landing-img {
+    background-image: url("../assets/./istockphoto-503016934-612x612.jpg");
+    background-repeat: no-repeat !important;
+    position: relative;
+    height: calc(100vh - 62.22px);
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+
+.landing-img-con {
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    height: calc(100vh - 62.22px);
+    background-color: rgba(0, 0, 0, 0.488);
+    top: 0;
+    width: 100%;
+}
+
+.content-card {
+    position: absolute;
+    top: 36%;
+    left: 60px;
+    font-size: 30px;
+    color: white;
+}
+
+.btn-wrap .contact {
+    padding: 11px 51px;
+    border-radius: 77px;
+    border: none;
+    font-size: 17px;
+    border: 1px solid transparent;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #EFD36D;
+    margin-right: 40px;
+}
+
+.btn-wrap .contact:hover {
+    padding: 11px 51px;
+    border-radius: 77px;
+    border: none;
+    border: 1px solid #EFD36D;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+}
+
+.btn-wrap .call {
+    padding: 11px 51px;
+    border-radius: 77px;
+    border: none;
+    border: 1px solid #EFD36D;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+}
+
+.btn-wrap .call:hover {
+    padding: 11px 51px;
+    border-radius: 77px;
+    border: none;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
+    background-color: #EFD36D;
+
+}
+
+.btn-wrap {
+    padding: 10px 0px 10px 0px;
+}
+
+.reservation-section {
+    background-color: #EFD36D;
+    height: 60vh;
+}
+
+.reserve-input-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.label-wrap {
+    width: 400px;
+}
+
+.reservation-section h1,
+h4 {
+    text-align: center;
+    padding: 30px 0px;
+}
+
+.reservation-section h1 {
+    font-size: 35px;
+    margin-bottom: 20px;
+    padding-top: 50px;
+}
+
+.reservation-section h4 {
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.label-wrap-btn button {
+    margin-top: 24px;
+}
+
+.label-wrap {
+    margin: 0px 20px;
+}
+
+.menu-section {
+    background-image: url("../assets/./LoginBackground.jpg");
+    background-repeat: no-repeat !important;
+    position: relative;
+    height: calc(100vh);
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+
+}
+
+.menu-section-wrap {
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 100px;
+}
+
+.menu-content {
+
+    background-color: #b5b0b096;
+    width: 390px;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.menu-content h1 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+
+}
+
+.item-wrap {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0px;
+}
+
+.item-rate {
+    color: red;
+}
+
+.item-name {
+    font-weight: bold;
+
+}
+
+.discription {
+    color: #524f4f;
+}
+
+.menu-sec-con {
+    position: relative;
+}
+
+.menu-con-abs-wrap {
+    position: absolute;
+    top: 0;
+
+}
+.view-full-btn{
+    text-align: center;
+}
+.view-full-btn button{
+    padding: 11px 51px;
+    border-radius: 77px;
+    border: none;
+    font-size: 17px;
+    border: 1px solid transparent;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #EFD36D;
+    margin-right: 40px;
+    margin-top: 60px;
+}
+.abt-us-img{
+    background-image: url("../assets/./Rectangle\ 7.png");
+    background-repeat: no-repeat !important;
+    position: relative;
+    height: calc(100vh);
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+.abt-us-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.abt-text{
+    max-width: 894px;
+    background-color: #e1ded5bf;
+    font-size: 30px;
+    height: 59vh;
+    text-align: center;
+    border-radius: 10px;
+}
+.abt-text h1{
+padding-top: 30px;
+    font-size: 45px;
+    text-align: center;
+    margin-bottom: 100px;
+ }
