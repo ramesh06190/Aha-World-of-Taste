@@ -80,7 +80,6 @@ function AddItemForm() {
 
     return (
         <div className="addmenu-con">
-
             <Flex direction="column" w="100%" maxW="md" p={4} borderWidth={1} borderRadius="md">
                 <VStack spacing={4} align="stretch">
                     <FormControl isRequired isInvalid={formErrors.Item_Name}>
