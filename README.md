@@ -16,24 +16,14 @@ These are the people who are currently working on this project.
 
 #### Basic commands that we used to do the project using React js:
 
-1. To creates a new React application named "Aha-World-of-Taste" using Create React App(for frontend).
+1.To run backend first we need to install necessary packages using first command below and then run second command
+
+   ```npm install```
+   ```npm start```
+2. To run frontend we have to install packages using below command.
    
-   ``` npx create-react-app Aha-World-of-Taste ```
+   ``` npm install ```
    
-2. To launch the react app we need to use following command, so that it automatically launches the application in the browser.
+3. To launch the react app we need to use following command, so that it automatically launches the application in the browser.
    
    ``` npm start``` 
-3. To create backend directory and initiate node application and install necessary packages
-
-   ```npm init -y```
-   ```npm i mysql express cors nodemon```
-
-#### Steps for database setup
-
-1. Start Apache and MySQL services in XAMPP control Panel
-2. Once the MySQL service is started go to [phpMyAdmin](http://localhost/phpmyadmin/)
-3. Now create database by clicking New button
-4. give the database name as "aha" 
-5. Now create table "customer" with attributes "Id", "name", "email", "password", "phone", "address" select Id attribute as primary key and select option to auto_generate nubers, for all other attributes data type is varchar.
-6. Now make sure "npm start" is run in both the directories frontend and backend.
-7. Then application will be live at [localhost](http://localhost:3000/)  
