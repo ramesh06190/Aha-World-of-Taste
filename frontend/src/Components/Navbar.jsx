@@ -26,9 +26,24 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [childData, setChildData] = useState(false);
 const [isUserToken , setUserToken] = useState("")
+const [dish, setDish] = useState([]);
 const navigate = useNavigate();
 const { cart } = useCart(); // Use the cart state and functions
 const totalItemsInCart = cart.reduce((total, item) => total + item.count, 0);
+const [searchQuery, setSearchQuery] = useState("");
+const [filteredData, setFilteredData] = useState([]);
+const filterMenuItems = () => {
+  if (searchQuery === "") {
+    // If the search query is empty, show all menu items
+    setFilteredData(dish);
+  } else {
+    // Filter menu items based on the search query
+    const filteredItems = dish.filter((item) =>
+      item.foodName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredData(filteredItems);
+  }
+};
 console.log(totalItemsInCart , "totalItemsInCart")
 // const  cart  = useContext(CartContext);
 // console.log(cart , "navbarcart")
@@ -36,10 +51,13 @@ console.log(totalItemsInCart , "totalItemsInCart")
     setIsOpen(true);
   };
 
-  useEffect (()=>{
-    const userToken = localStorage.getItem("userToken")
-    setUserToken(userToken)
-  } , [childData])
+  useEffect(() => {
+    const userToken = localStorage.getItem("userToken");
+    setUserToken(userToken);
+
+    // Call the filterMenuItems function when searchQuery or dish changes
+    filterMenuItems();
+  }, [childData, searchQuery, dish]);
 
   const handleCloseModal = () => {
     setIsOpen(false);
@@ -68,12 +86,12 @@ console.log(totalItemsInCart , "totalItemsInCart")
           <h1>Logo</h1>
         </div>
         <div className="search">
-          <input type="text" name='search' placeholder='search for foods' />
+        <input type="text" name="search" placeholder="Search for foods" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
         </div>
         <div className="nav-list">
           <li><Link to="/">Home</Link></li>
           <li>Reservation</li>
-          <li>Menu</li>
+          <li><Link to="/menuList">Menu</Link></li>
           <li>About Us</li>
           <Button onClick={(()=>{navigate("/cart")})}>Cart {totalItemsInCart === 0 ? "" : <p>{totalItemsInCart }</p>} </Button>
           {isUserToken !== null ? (
