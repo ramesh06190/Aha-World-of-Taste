@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
+import { get , post } from "../api/ApiService";
 import {
 
   Modal,
@@ -10,170 +11,20 @@ import {
   Button,
   IconButton,
   useDisclosure,
+  useToast
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import './AdminViewMenu.css';
 
-const dummyData = [
-    {
-        name: 'Pizza',
-        description: 'Delicious pizza with various toppings.',
-        rate: '$12.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Pizza',
-        description: 'Delicious pizza with various toppings.',
-        rate: '$12.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Pizza',
-        description: 'Delicious pizza with various toppings.',
-        rate: '$12.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Pizza',
-        description: 'Delicious pizza with various toppings.',
-        rate: '$12.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Pizza',
-        description: 'Delicious pizza with various toppings.',
-        rate: '$12.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-    {
-        name: 'Sushi',
-        description: 'Fresh sushi rolls with soy sauce.',
-        rate: '$15.99',
-    },
-];
 
 
-const FoodCard = ({ name, description, rate, onDelete }) => {
+const FoodCard = ({foodName, description, price, onDelete , updateRenderData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDeleteClick = () => {
     onOpen();
   };
+
 
   const handleConfirmDelete = () => {
     onDelete();
@@ -182,10 +33,10 @@ const FoodCard = ({ name, description, rate, onDelete }) => {
 
   return (
     <div className="food-card">
-      <h2 className="food-name">{name}</h2>
+      <h2 className="food-name">{foodName}</h2>
       <p className="food-description">{description}</p>
       <div className="rate-wrap">
-      <p className="food-rate">{rate}</p>
+      <p className="food-rate">{price}</p>
       <IconButton
         icon={<DeleteIcon />}
         aria-label="Delete"
@@ -214,23 +65,66 @@ const FoodCard = ({ name, description, rate, onDelete }) => {
   );
 };
 
-const FoodList = ({ searchData }) => {
-  const [data, setData] = useState(dummyData);
+const FoodList = ({ searchData , updateRenderData}) => {
+  const toast = useToast();
+  const [AdminDish, setAdminDish] = useState([]);
+  const [AdminToken , setAdminToken] = useState("")
+  useEffect(() => { 
+    getAllDish();
+  
+  }, [updateRenderData]);
+  const defaultToastConfig = {
+    duration: 2000,
+    isClosable: true,
+    position: 'top',
+  };
+  const headers = {
+    token: AdminToken,
+  };
+  useEffect(()=>{
+    const Token = localStorage.getItem("adminToken")
+    setAdminToken(Token)
+} , [])
+  const getAllDish = async () => {
+    const result = await get("api/all/dish");
+    setAdminDish(result.data);
+  };
+  const handleDelete = async (index) => {
+    try {
+      const result = await post('api/delete/dish', {
+        id : index
+      } , headers);
+      console.log(result , "oihoihi")
+      if (result.status) {
+          toast({
+              title: 'Dish deleted Successfully',
+              description: 'You have successfully deleted.',
+              status: 'success',
+              ...defaultToastConfig,
+          });
+          updateRenderData()
+          
+      }
+    
 
-  const handleDelete = (index) => {
-    const newData = [...data];
-    newData.splice(index, 1);
-    setData(newData);
+  } catch (error) {
+      toast({
+          title: 'Dish not deleted Successfully',
+          description: error?.response?.data?.message,
+          status: 'error',
+          ...defaultToastConfig,
+      });
+  }
   };
 
-  const filteredData = data.filter((item) =>
-    item.name.toLowerCase().includes(searchData.toLowerCase())
+  const filteredData = AdminDish.filter((item) =>
+    item.foodName.toLowerCase().includes(searchData.toLowerCase())
   );
 
   return (
     <div className="food-grid">
       {filteredData.map((food, index) => (
-        <FoodCard key={index} {...food} onDelete={() => handleDelete(index)} />
+        <FoodCard key={index} {...food} onDelete={() => handleDelete(food.id)} updateRenderData={updateRenderData} />
       ))}
     </div>
   );
@@ -238,11 +132,13 @@ const FoodList = ({ searchData }) => {
 
 const AdminViewMenu = () => {
   const [searchTerm, setSearchTerm] = useState('');
-
+  const [renderdata , setRenderdata] = useState(false)
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
+  const updateRenderData = () => {
+    setRenderdata((prevRenderData) => !prevRenderData);
+  };
   return (
     <div className="admin-viewcontainer">
       <div className="search-wrap">
@@ -257,7 +153,7 @@ const AdminViewMenu = () => {
           />
         </>
       </div>
-      <FoodList searchData={searchTerm} />
+      <FoodList searchData={searchTerm} updateRenderData={updateRenderData} />
     </div>
   );
 };

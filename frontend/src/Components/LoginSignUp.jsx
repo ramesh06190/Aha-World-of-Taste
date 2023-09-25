@@ -41,7 +41,9 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
 
     const [SignUp, setSignUp] = useState({ ...SignUpDetails });
     const [LogIn, setLogIn] = useState({ ...LoginDetails });
+    const [AdminLogIn, setAdminLogIn] = useState({ ...LoginDetails });
     const [response, setResponse] = useState(null);
+    console.log(response, "uggoi")
     const [isModalOpen, setIsModalOpen] = useState(IsOpen);
     const [adminLogin, setAdminLogin] = useState(false)
     const [loginPop, setSloginPop] = useState(false)
@@ -55,7 +57,7 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
     const [passwordError, setPasswordError] = useState("");
     const [phoneNumberError, setPhoneNumberError] = useState("");
     const [addressError, setaddressError] = useState("");
-const navigate = useNavigate()
+    const navigate = useNavigate()
     const toast = useToast();
     const defaultToastConfig = {
         duration: 2000,
@@ -70,7 +72,7 @@ const navigate = useNavigate()
         setfullNameError('')
     };
 
-    const loginErrors = ()=>{
+    const loginErrors = () => {
         setEmailError('');
         setPasswordError('');
     }
@@ -115,7 +117,7 @@ const navigate = useNavigate()
         return !hasErrors;
     };
 
-    const LoginFormvalidation = ()=>{
+    const LoginFormvalidation = () => {
         loginErrors()
         let hasLoginErrors = false;
 
@@ -155,7 +157,7 @@ const navigate = useNavigate()
     const handleLogInChange = (e) => {
         const { name, value } = e.target;
         setLogIn((prevData) => ({ ...prevData, [name]: value }));
-
+        setAdminLogIn((prevData) => ({ ...prevData, [name]: value }));
         if (value.trim() !== '') {
             clearErrors();
         }
@@ -208,12 +210,12 @@ const navigate = useNavigate()
 
 
 
-        if(LoginFormvalidation()){
+        if (LoginFormvalidation()) {
             try {
                 const result = await post('user/login', LogIn);
                 localStorage.setItem("userToken", result.token);
                 localStorage.setItem("userId", result.id);
-    
+
                 setResponse(result);
                 if (result.success) {
                     toast({
@@ -227,7 +229,7 @@ const navigate = useNavigate()
                     setIsModalOpen(false);
                 }
             } catch (error) {
-    
+                console.log(error, "oihihih")
                 toast({
                     title: 'Login Error',
                     description: error?.response?.data?.message,
@@ -236,17 +238,46 @@ const navigate = useNavigate()
                 });
             }
         }
-      
+
     };
 
-    const handleAdminLOginSubmit = ()=>{
-        navigate("/admin")
+    const handleAdminLOginSubmit = async (e) => {
+
+        e.preventDefault();
+        if (LoginFormvalidation()) {
+            try {
+                const result = await post('admin/login', AdminLogIn);
+                localStorage.setItem("adminToken", result.token);
+                setResponse(result);
+                if (result.status) {
+                    toast({
+                        title: 'Admin Login Successful',
+                        description: 'You have successfully logged in.',
+                        status: 'success',
+                        ...defaultToastConfig,
+                    })
+                    setIsModalOpen(false);
+                    navigate("/admin")
+                }
+                else{
+                    toast({
+                        title: 'Admin Login Error',
+                        description: result.message,
+                        status: 'error',
+                        ...defaultToastConfig,
+                    });
+                }
+            } catch (error) {
+                console.log(error, "ojjpoj")
+              
+            }
+        }
     }
     return (
         <div>
 
-    
-<Modal isOpen={isModalOpen} onClose={onClick} size="x1">
+
+            <Modal isOpen={isModalOpen} onClose={onClick} size="x1">
 
                 <ModalOverlay />
                 <ModalContent>
@@ -321,7 +352,7 @@ const navigate = useNavigate()
                                     <Input placeholder='Full Name' size='md' name="fullName" onChange={(e) => {
                                         handleSignUpChange(e);
                                     }} />
-                                       <p className='custom-error'>{fullNameError}</p>
+                                    <p className='custom-error'>{fullNameError}</p>
                                     <label htmlFor="">Email</label>
                                     <Input placeholder='Email' size='md' name="email" onChange={(e) => {
                                         handleSignUpChange(e);
@@ -361,7 +392,7 @@ const navigate = useNavigate()
                                     <Input placeholder='Address' size='md' name="address" onChange={(e) => {
                                         handleSignUpChange(e);
                                     }} />
-                                     <p className='custom-error'>{addressError}</p>
+                                    <p className='custom-error'>{addressError}</p>
 
                                     {showPinInput && (
 
@@ -395,7 +426,7 @@ const navigate = useNavigate()
 
 
                 </ModalContent>
-      
+
             </Modal>
 
             {resetPasswordModalOpen && (

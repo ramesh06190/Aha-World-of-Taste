@@ -39,6 +39,16 @@ export function CartProvider({ children }) {
     );
   };
 
+//   const decrementCartItem = (itemId) => {
+//     setCart((prevCart) =>
+//       prevCart.map((item) =>
+//         item.id === itemId && item.count > 1
+//           ? { ...item, count: item.count - 1 }
+//           : item
+//       )
+//     );
+//   };
+
 const decrementCartItem = (itemId) => {
     setCart((prevCart) =>
       prevCart.map((item) =>

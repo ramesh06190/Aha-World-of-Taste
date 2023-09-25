@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { WholeContext } from '../Components/Navbar';
+import { WholeContext } from "../Components/Navbar";
 import { FaHeart } from "react-icons/fa";
 import {
   Box,
@@ -9,7 +9,7 @@ import {
   IconButton,
   Flex,
   SimpleGrid,
-  Button
+  Button,
 } from "@chakra-ui/react";
 import "./MenuList.css";
 import { get, post } from "../api/ApiService";
@@ -20,24 +20,54 @@ function MenuList() {
   const getuserid = localStorage.getItem("userId");
   const getuserToken = localStorage.getItem("userToken");
   const [category, setCategory] = useState([]);
+  const updatedCatogery = [...category, ...["fav"]];
+
   const [dish, setDish] = useState([]);
+  console.log(dish, "uohoioi");
   const { isOpen, setIsOpen } = useContext(WholeContext);
-  const { cart, addToCart, removeFromCart, incrementCartItem, decrementCartItem } = useCart(); // Use the cart state and functions
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    incrementCartItem,
+    decrementCartItem,
+  } = useCart(); // Use the cart state and functions
   const totalItemsInCart = cart.reduce((total, item) => total + item.count, 0);
   const handleTabClick = (index) => {
     setSelectedTab(index);
   };
 
+  const favDish = (dish, userId) => {
+    let arr = [];
+    dish.forEach((item) => {
+      if (item.likes.includes(userId)) {
+        arr.push(item);
+      }
+    });
+    return arr;
+  };
+
   const filteredData =
     selectedTab === "All"
       ? dish
+      : selectedTab === "fav"
+      ? favDish(dish, getuserid)
       : dish?.filter((item) => item.category === selectedTab);
+
+  // if(selectedTab === "fav"){
+  //  dish?.map((val)=>val)
+  // }
 
   const headers = {
     token: getuserToken,
   };
 
+  console.log(filteredData, "oihhi");
+
   const handleLikeClick = async (id) => {
+    if(!getuserToken){
+      setIsOpen(true);
+    }
     // Optimistically update the local state
     setDish((prevDish) =>
       prevDish.map((item) =>
@@ -56,6 +86,7 @@ function MenuList() {
     if (getuserToken) {
       post("api/like", { dishId: id }, headers)
         .then((result) => {
+          console.log(result, "oihohoip");
           if (!result.success) {
             // Revert the local state if the API request fails
             setDish((prevDish) =>
@@ -63,7 +94,9 @@ function MenuList() {
                 item.id === id
                   ? {
                       ...item,
-                      likes: item.likes.filter((userId) => userId !== getuserid),
+                      likes: item.likes.filter(
+                        (userId) => userId !== getuserid
+                      ),
                     }
                   : item
               )
@@ -98,12 +131,19 @@ function MenuList() {
   return (
     <Box display="flex">
       <VStack w="20%" p={4} spacing={4} align="stretch">
-        {category?.map((tab, index) => (
-          <div style={{ textAlign: 'start' }} key={index}>
+        {updatedCatogery?.map((tab, index) => (
+          <div style={{ textAlign: "start" }} key={index}>
             <div
               className="menu-custom-tab"
               borderRadius="0"
-              style={tab === selectedTab ? { backgroundColor: '#EFD36D', boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)" } : { backgroundColor: '' }}
+              style={
+                tab === selectedTab
+                  ? {
+                      backgroundColor: "#EFD36D",
+                      boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)",
+                    }
+                  : { backgroundColor: "" }
+              }
               colorScheme="gray"
               onClick={() => handleTabClick(tab)}
             >
@@ -126,13 +166,12 @@ function MenuList() {
                       <h2>{tab.foodName}</h2>
                       <Text>{tab.description}</Text>
                     </Box>
-                  
                   </Flex>
                   <Box>
-                <Flex justify="space-between">
-                  <IconButton
+                    <Flex justify="space-between">
+                      <IconButton
                         icon={<FaHeart />}
-                        color={tab.likes.includes(getuserid) ? "red.500" : "gray.300"}
+                        color={(getuserToken && tab.likes.includes(getuserid)) ? "red.500" : "gray.300"}
                         aria-label="Like"
                         onClick={() => handleLikeClick(tab.id)}
                       />
@@ -141,31 +180,31 @@ function MenuList() {
                         // If the item is in the cart and count is greater than 0, show the increment and decrement buttons
                         cart.find((item) => item.id === tab.id).count > 0 ? (
                           <>
-                        <div>
-                        <Button
-                            size="sm" // Make the button smaller
-                            backgroundColor="#EFD36D"
-                              onClick={() => decrementCartItem(tab.id)}
-                            >
-                              -
-                            </Button>
-                            {cart.find((item) => item.id === tab.id).count}
-                            <Button
-                            size="sm" // Make the button smaller
-                            backgroundColor="#EFD36D"
-                              onClick={() => {
-                                incrementCartItem(tab.id);
-                              }}
-                            >
-                              +
-                            </Button>
-                        </div>
+                            <div>
+                              <Button
+                                size="sm" // Make the button smaller
+                                backgroundColor="#EFD36D"
+                                onClick={() => decrementCartItem(tab.id)}
+                              >
+                                -
+                              </Button>
+                              {cart.find((item) => item.id === tab.id).count}
+                              <Button
+                                size="sm" // Make the button smaller
+                                backgroundColor="#EFD36D"
+                                onClick={() => {
+                                  incrementCartItem(tab.id);
+                                }}
+                              >
+                                +
+                              </Button>
+                            </div>
                           </>
                         ) : (
                           // If the count is 0, show the "Add to Cart" button
                           <Button
-                          size="sm" // Make the button smaller
-                        backgroundColor="#EFD36D"
+                            size="sm" // Make the button smaller
+                            backgroundColor="#EFD36D"
                             onClick={() => addToCart(tab)}
                           >
                             Add to Cart
@@ -176,14 +215,21 @@ function MenuList() {
                         <Button
                         size="sm"
                         backgroundColor="#EFD36D"
-                          onClick={() => addToCart(tab)}
+                        onClick={() => {
+                          if (!getuserToken) {
+                            // User is not authenticated, show a message or take action
+                            setIsOpen(true); // Open a modal or perform some other action
+                          } else {
+                            // User is authenticated, add the item to the cart
+                            addToCart(tab); // Add the item to the cart as usual
+                          }
+                        }}
                         >
                           Add to Cart
                         </Button>
                       )}
-
-</Flex>
-                    </Box>
+                    </Flex>
+                  </Box>
                 </Box>
               ))}
             </SimpleGrid>
@@ -195,14 +241,3 @@ function MenuList() {
 }
 
 export default MenuList;
-
-
-
-
-
-
-
-
-
-
-

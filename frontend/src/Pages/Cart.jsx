@@ -55,7 +55,7 @@ function CartPage() {
             </Text>
             <Flex align="stretch">
               <Button
-                colorScheme={deliveryOption === "pickup" ? "blue" : "gray"}
+                colorScheme={deliveryOption === "pickup" ? "#EFD36D" : "gray"}
                 variant="outline"
                 width="50%"
                 onClick={() => handleDeliveryOptionChange("pickup")}
@@ -65,7 +65,7 @@ function CartPage() {
               <Button
                 width="50%"
                 ml={4}
-                colorScheme={deliveryOption === "delivery" ? "blue" : "gray"}
+                colorScheme={deliveryOption === "delivery" ? "#EFD36D" : "gray"}
                 variant="outline"
                 onClick={() => handleDeliveryOptionChange("delivery")}
               >
@@ -150,7 +150,19 @@ function CartPage() {
               value={address}
               onChange={handleAddressChange}
             />
-            <Button colorScheme="blue" onClick={handleCheckout}>
+                <Input
+              borderColor="black"
+              placeholder="House No / Street"
+              value={address}
+              onChange={handleAddressChange}
+            />
+                <Input
+              borderColor="black"
+              placeholder="Pincode"
+              value={address}
+              onChange={handleAddressChange}
+            />
+            <Button backgroundColor='#EFD36D' onClick={handleCheckout}>
               Submit Order
             </Button>
           </VStack>

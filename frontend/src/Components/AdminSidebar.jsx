@@ -2,7 +2,7 @@
 import React from 'react';
 import { Box, List, ListItem } from '@chakra-ui/react';
 import AdminMenuList from './AdminMenuList';
-import { Outlet } from 'react-router-dom';
+import AdminNavbar from './AdminNavbar';
 const AdminSidebar = ({ items }) => {
   return (
 <>
@@ -19,7 +19,8 @@ const AdminSidebar = ({ items }) => {
     </Box>
 </div>
     <div className='admin-content'>
-<Outlet/>
+<AdminNavbar/>
+
     </div>
     </div>
 

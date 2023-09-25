@@ -7,6 +7,10 @@ const userSchema = new mongose.Schema(
     password: { type: String },
     address: { type: String },
     mobile: { type: String },
+    resetToken: { type: String },
+    cart: {
+      type: [],
+    },
   },
   {
     timestamps: true,

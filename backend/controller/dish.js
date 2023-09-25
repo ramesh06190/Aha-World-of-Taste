@@ -8,7 +8,7 @@ const postDishes = async (req, res) => {
     if (!Array.isArray(dishes) || dishes.length === 0) {
       return res.status(400).json({
         success: false,
-        error: "Request body is empty or not in the array of dishes",
+        error: "Request body is empty or not an array of dishes",
       });
     }
     // const insertedDishes = await Dish.insertMany(dishes);
@@ -142,6 +142,29 @@ const editDish = async (req, res) => {
   }
 };
 
+const deleteDish = async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!id) {
+      return res.status(400).json({
+        message: "Dish ID is mandatory for deletion.",
+        status: false,
+      });
+    }
+    const deletedDish = await Dish.findOneAndDelete({ id: id });
+    if (!deletedDish) {
+      return res.status(404).json({ error: "Dish not found" });
+    }
+    res.json({
+      message: "Dish deleted successfully",
+      data: deletedDish,
+      status: true,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message, status: false });
+  }
+};
+
 module.exports = {
   postDishes,
   getAllCategory,
@@ -150,4 +173,5 @@ module.exports = {
   addLikeToFood,
   addDish,
   editDish,
+  deleteDish,
 };

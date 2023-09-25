@@ -6,6 +6,7 @@ const app = express();
 const config = require("./config");
 const dish = require("./router/dish");
 const user = require("./router/user");
+const admin = require("./router/admin");
 
 const fileupload = require("express-fileupload");
 
@@ -30,5 +31,6 @@ mongoose
 app.get("/", (req, res) => res.send("success"));
 app.use("/api", dish);
 app.use("/user", user);
+app.use("/admin", admin);
 
 module.exports = app;

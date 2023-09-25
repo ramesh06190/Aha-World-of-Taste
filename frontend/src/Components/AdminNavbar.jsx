@@ -2,11 +2,11 @@ import React, { useEffect, useState , createContext } from 'react'
 import "./Navbar.css"
 import { Outlet } from 'react-router-dom'
 import Footer from './Footer'
-import LoginSignUp from './LoginSignUp'
-import { NavLink , Link , useNavigate} from 'react-router-dom'
-// import { CartContext } from '../Pages/MenuList'
+
+import { NavLink  , useNavigate} from 'react-router-dom'
+
 import { useCart } from "../Pages/CartContext"; // Import the useCart hook
-// import Chat from "../assets/chat2_116191.png"
+
 import Chat from "../Components/Chat"
 import {
   Button,
@@ -22,7 +22,7 @@ import {
 } from "@chakra-ui/react"; // Import Chakra UI components
 export const WholeContext = createContext();
 
-function Navbar() {
+function AdminNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [childData, setChildData] = useState(false);
 const [isUserToken , setUserToken] = useState("")
@@ -30,25 +30,14 @@ const navigate = useNavigate();
 const { cart } = useCart(); // Use the cart state and functions
 const totalItemsInCart = cart.reduce((total, item) => total + item.count, 0);
 console.log(totalItemsInCart , "totalItemsInCart")
-// const  cart  = useContext(CartContext);
-// console.log(cart , "navbarcart")
-  const handleOpenModal = () => {
-    setIsOpen(true);
-  };
+
 
   useEffect (()=>{
     const userToken = localStorage.getItem("userToken")
     setUserToken(userToken)
   } , [childData])
 
-  const handleCloseModal = () => {
-    setIsOpen(false);
  
-  };
-
-  const receiveDataFromChild = (data) => {
-    setChildData(data);
-  };
 
   const handleLogOutModal = () => {
     setChildData(false);
@@ -65,21 +54,12 @@ console.log(totalItemsInCart , "totalItemsInCart")
     <div className='landing-container'>
       <div className="nav-container">
         <div className="logo">
-          <h1>Logo</h1>
+          <h1>Admin Dashboard</h1>
         </div>
-        <div className="search">
-          <input type="text" name='search' placeholder='search for foods' />
-        </div>
+    
         <div className="nav-list">
-          <li><Link to="/">Home</Link></li>
-          <li>Reservation</li>
-          <li>Menu</li>
-          <li>About Us</li>
-          <Button onClick={(()=>{navigate("/cart")})}>Cart {totalItemsInCart === 0 ? "" : <p>{totalItemsInCart }</p>} </Button>
-          {isUserToken !== null ? (
-            <li>
-              {/* Use Popover to display the logout options */}
-              <Popover placement="bottom-start">
+        <li>
+                  <Popover placement="bottom-start">
                 <PopoverTrigger>
                   <Button>Logout</Button>
                 </PopoverTrigger>
@@ -105,27 +85,20 @@ console.log(totalItemsInCart , "totalItemsInCart")
                   </PopoverFooter>
                 </PopoverContent>
               </Popover>
+      
             </li>
-          ) : (
-            <li onClick={handleOpenModal}>Login</li>
-          )}
+       
+    
         </div>
       </div>
       <Outlet />
       <Footer />
-      <div className='chatbtn'>
-    <Chat/>
-      </div>
-      {isOpen ? (
-        <div>
-          <LoginSignUp onClick={handleCloseModal} IsOpen={isOpen} sendDataToParent={receiveDataFromChild} />
-        </div>
-      ) : (
-        ""
-      )}
+
+ 
+  
     </div>
     </WholeContext.Provider>
   )
 }
 
-export default Navbar;
+export default AdminNavbar;

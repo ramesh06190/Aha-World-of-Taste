@@ -1,9 +1,6 @@
 // src/data.js
 const menuItems = [
-    {
-      name: 'Home',
-      to: '/admin',
-    },
+
     {
         name: 'Manage Orders',
         to: '/AdminManageOrders',
@@ -44,10 +41,13 @@ const menuItems = [
         //   ],
         },
       
-    
       ],
     },
 
+    {
+      name: 'Chats',
+      to: '/admin',
+    },
   ];
   
   export default menuItems;
