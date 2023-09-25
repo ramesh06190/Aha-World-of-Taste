@@ -8,7 +8,7 @@ const postDishes = async (req, res) => {
     if (!Array.isArray(dishes) || dishes.length === 0) {
       return res.status(400).json({
         success: false,
-        error: "Request body is empty or not an array of dishes",
+        error: "Request body is empty or not in the array of dishes",
       });
     }
     // const insertedDishes = await Dish.insertMany(dishes);
