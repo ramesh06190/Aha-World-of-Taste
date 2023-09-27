@@ -29,6 +29,7 @@ const SignUpDetails = {
     password: "",
     mobile: "",
     address: "",
+    otp:""
 };
 
 const LoginDetails = {
@@ -38,12 +39,13 @@ const LoginDetails = {
 
 };
 function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
-
-    const [SignUp, setSignUp] = useState({ ...SignUpDetails });
+    const [pinValues, setPinValues] = useState(['', '', '', '', '', '']);
+    const [SignUp, setSignUp] = useState({ ...SignUpDetails});
+    console.log(SignUp, "uggoi")
     const [LogIn, setLogIn] = useState({ ...LoginDetails });
     const [AdminLogIn, setAdminLogIn] = useState({ ...LoginDetails });
     const [response, setResponse] = useState(null);
-    console.log(response, "uggoi")
+
     const [isModalOpen, setIsModalOpen] = useState(IsOpen);
     const [adminLogin, setAdminLogin] = useState(false)
     const [loginPop, setSloginPop] = useState(false)
@@ -57,6 +59,20 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
     const [passwordError, setPasswordError] = useState("");
     const [phoneNumberError, setPhoneNumberError] = useState("");
     const [addressError, setaddressError] = useState("");
+    const [ConfrimSignUpBtn, setConfrimSignUpBtn] = useState("")
+  
+
+    const handleInputChange = (index, value) => {
+        const newPinValues = [...pinValues];
+        newPinValues[index] = value;
+        setPinValues(newPinValues);
+        const otpValue = newPinValues.join('');
+       setSignUp((prevData) => ({
+        ...prevData,
+        otp: otpValue // Update the otp property in SignUp state
+    }));
+
+    };
     const navigate = useNavigate()
     const toast = useToast();
     const defaultToastConfig = {
@@ -167,42 +183,59 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
     const handleSignUpSubmit = async (e) => {
         e.preventDefault();
         if (SignUpvalidateForm()) {
-            setShowPinInput(true);
-            toast({
-                title: 'Email Verification OTP went to email',
-                description: 'Please verify Email to complete Sign up',
-                status: 'success',
-                ...defaultToastConfig,
-            });
-
-            if (true) {
-                try {
-                    const result = await post('user/signup', SignUp);
-                    if (result.success) {
-                        toast({
-                            title: 'Sign Up Successful',
-                            description: 'You have successfully signed up.',
-                            status: 'success',
-                            ...defaultToastConfig,
-                        });
-
-                        // Close the modal on successful sign-up
-                        // setIsModalOpen(false);
-                    }
-                    setResponse(result);
-
-                } catch (error) {
+            try {
+                const result = await post('user/send-top', { email: SignUp.email });
+                if (result.status) {
                     toast({
-                        title: 'Sign Up Error',
-                        description: error?.response?.data?.message,
-                        status: 'error',
+                        title: 'Email Verification OTP went to email',
+                        description: 'Please verify Email to complete Sign up',
+                        status: 'success',
                         ...defaultToastConfig,
-                    });
+                    })
+
                 }
+                setResponse(result);
+                setConfrimSignUpBtn(true)
+                setShowPinInput(true);
+            } catch (error) {
+                toast({
+                    title: 'Error in sending Email Verification OTP',
+                    description: error?.response?.data?.message,
+                    status: 'error',
+                    ...defaultToastConfig,
+                });
             }
+
         }
 
     };
+
+    const confrimSignup = async (e) => {
+        e.preventDefault()
+        if (SignUpvalidateForm()) {
+            try {
+                const result = await post('user/signup', SignUp);
+                if (result.success) {
+                    toast({
+                        title: 'Sign Up Successful',
+                        description: 'You have successfully signed up.',
+                        status: 'success',
+                        ...defaultToastConfig,
+                    });
+
+                }
+                setResponse(result);
+
+            } catch (error) {
+                toast({
+                    title: 'Sign Up Error',
+                    description: error?.response?.data?.message,
+                    status: 'error',
+                    ...defaultToastConfig,
+                });
+            }
+        }
+    }
 
     const handleLOginSubmit = async (e) => {
 
@@ -259,7 +292,7 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                     setIsModalOpen(false);
                     navigate("/admin")
                 }
-                else{
+                else {
                     toast({
                         title: 'Admin Login Error',
                         description: result.message,
@@ -269,7 +302,7 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                 }
             } catch (error) {
                 console.log(error, "ojjpoj")
-              
+
             }
         }
     }
@@ -394,24 +427,27 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                                     }} />
                                     <p className='custom-error'>{addressError}</p>
 
-                                    {showPinInput && (
+                                    {showPinInput ?
 
                                         <div className='verifyEmail-warp'>
-
-                                            <PinInput>
-                                                <PinInputField />
-                                                <PinInputField />
-                                                <PinInputField />
-                                                <PinInputField />
-                                                <PinInputField />
-                                                <PinInputField />
+                                            <PinInput size="lg" onComplete={(value) => console.log('Completed:', value)}>
+                                                {pinValues.map((value, index) => (
+                                                    <PinInputField
+                                                        key={index}
+                                                        value={value}
+                                                        onChange={(e) => handleInputChange(index, e.target.value)}
+                                                        isInvalid={index >= 6}
+                                                    />
+                                                ))}
                                             </PinInput>
-                                        </div>
+                                        </div> : ""
 
-                                    )}
+                                    }
 
                                     <div className="btn-wrap-pop">
-                                        <Button className='signUpBtn' onClick={handleSignUpSubmit}>Sign Up</Button>
+                                        {
+                                            ConfrimSignUpBtn ? <Button className='signUpBtn' onClick={confrimSignup}>Confrim Sign Up</Button> : <Button className='signUpBtn' onClick={handleSignUpSubmit}>Sign Up</Button>
+                                        }
                                         <Button className='Backtologin' onClick={setSloginPopFun}>Back to Login</Button>
                                     </div>
                                 </div>

@@ -11,7 +11,13 @@ const signUp = async (req, res) => {
       .json({ success: false, message: "All fields are mandatory." });
   }
   try {
-    // Verify the OTP
+    const userPresent = await User.findOne({ email });
+    if (userPresent.fullName) {
+      return res.json({
+        message: "User already exist",
+        status: false,
+      });
+    }
     const existingUser = await User.findOneAndUpdate(
       {
         email,
@@ -75,7 +81,8 @@ const login = async (req, res) => {
   }
 };
 const updateCart = async (req, res) => {
-  const { userId, cart } = req.body;
+  const { cart } = req.body;
+  const userId = req.data.id;
   try {
     if (!userId) {
       return res
@@ -97,7 +104,6 @@ const updateCart = async (req, res) => {
     }
     return res.json({
       message: "Cart updated successfully",
-      data: updatedUser,
       status: true,
     });
   } catch (error) {
@@ -178,10 +184,100 @@ const sendOtp = async (req, res) => {
     });
   }
 };
+const getUserDetails = async (req, res) => {
+  const userId = req.data.id;
+  try {
+    const user = await User.findOne({ id: userId }).select("-password");
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      res.json({ message: "Please provide your email", status: false });
+      return;
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.json({ message: "User not found", status: false });
+      return;
+    }
+    const resetToken = Math.floor(Math.random() * 900000) + 100000;
+    const updatedUser = await User.findOneAndUpdate(
+      { email: email },
+      { resetToken },
+      { new: true }
+    );
+    if (updatedUser) {
+      res.json({
+        message: "Password reset token sent to your email",
+        status: true,
+        resetToken: resetToken,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "An error occurred while processing your request",
+      status: false,
+    });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email, resetToken, newPassword } = req.body;
+    if (!email || !resetToken || !newPassword) {
+      res.json({ message: "Please provide all required data", status: false });
+      return;
+    }
+    const user = await User.findOne({ email, resetToken });
+    if (!user) {
+      res.json({ message: "Invalid reset token", status: false });
+      return;
+    }
+    if (user.resetTokenExpiration < new Date()) {
+      res.json({ message: "Expired reset token", status: false });
+      return;
+    }
+    const updatedUser = await User.findOneAndUpdate(
+      { email, resetToken },
+      { password: newPassword, resetToken: null },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      res.json({ message: "Unable to update password", status: false });
+      return;
+    }
+
+    res.json({ message: "Password reset successful", status: true });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        message: "An error occurred while processing your request",
+        status: false,
+      });
+  }
+};
 
 module.exports = {
   signUp,
   login,
   updateCart,
   sendOtp,
+  getUserDetails,
+  forgotPassword,
+  resetPassword,
 };
