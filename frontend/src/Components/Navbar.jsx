@@ -72,8 +72,8 @@ console.log(totalItemsInCart , "totalItemsInCart")
         </div>
         <div className="nav-list">
           <li><Link to="/">Home</Link></li>
+          <li><Link to="/menuList">Menu</Link></li>
           <li>Reservation</li>
-          <li>Menu</li>
           <li>About Us</li>
           <Button onClick={(()=>{navigate("/cart")})}>Cart {totalItemsInCart === 0 ? "" : <p>{totalItemsInCart }</p>} </Button>
           {isUserToken !== null ? (
