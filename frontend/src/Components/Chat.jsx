@@ -28,11 +28,12 @@ function Chat() {
     // Function to generate a random reply from another user
     const getRandomReply = () => {
         const replies = [
-            'That sounds great!',
-            'I completely agree.',
-            'Tell me more!',
-            'Interesting!',
-            'I didn\'t know that.',
+            "Hello, foodie! Ready to explore our delicious menu?",
+            "Hello! How can I assist you today?",
+            "I'm here to help with any questions you have.",
+            "I appreciate your patience while I look up that information.",
+            "I appreciate your input. It's valuable to me.",
+            "Thank you for chatting with us! We look forward to serving you soon."
         ];
         const randomIndex = Math.floor(Math.random() * replies.length);
         return replies[randomIndex];

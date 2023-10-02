@@ -7,7 +7,7 @@
 
 /* Chat styles */
 .chat {
-    width: 400px;
+    width: 550px;
     display: none;
     flex-direction: column;
     background-color: #fff;
@@ -29,7 +29,7 @@
 .chat-header {
     background-color: #007bff;
     color: #fff;
-    padding: 10px;
+    padding: 20px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     cursor: pointer;
@@ -39,6 +39,7 @@
 .chat-messages {
     min-height: 300px; /* Fixed height for the message container */
     overflow-y: auto; /* Enable vertical scrolling */
+    size: 15px;
     padding: 10px;
 }
 
@@ -54,20 +55,26 @@
 }
 
 .message.user {
-    margin-left: 67px;
+    margin-left: 95px;
     text-align: end;
-    background-color: #4caf50;
+    background-color: #524e49;
+    color:#fffcfc;
 }
 
 .message.other {
     align-self: flex-start;
-    background-color: #4caf50;
+    background-color: #5acce0;
+    color:rgb(0, 0, 0);
 }
 
 .toggle-chat {
     position: fixed;
+    color: #007bff;
     bottom: 20px;
     right: 20px;
+}
+.toggle-chat:hover{
+    color: #78d937;
 }
 
 .chat-input {
@@ -96,7 +103,7 @@
 }
 
 .chat-input button:hover {
-    background-color: #0056b3;
+    background-color: #78d937;
 }
 
 .chat-message-parent {
