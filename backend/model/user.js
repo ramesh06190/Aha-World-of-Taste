@@ -1,4 +1,18 @@
 const mongose = require("mongoose");
+const chatMessageSchema = new mongose.Schema({
+  sender: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
+});
 const userSchema = new mongose.Schema(
   {
     id: { type: String },
@@ -8,9 +22,11 @@ const userSchema = new mongose.Schema(
     address: { type: String },
     mobile: { type: String },
     resetToken: { type: String },
+    image: { type: String },
     cart: {
       type: [],
     },
+    chatMessages: [chatMessageSchema],
   },
   {
     timestamps: true,

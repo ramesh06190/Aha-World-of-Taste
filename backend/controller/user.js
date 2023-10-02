@@ -263,12 +263,78 @@ const resetPassword = async (req, res) => {
     res.json({ message: "Password reset successful", status: true });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "An error occurred while processing your request",
+    res.status(500).json({
+      message: "An error occurred while processing your request",
+      status: false,
+    });
+  }
+};
+
+async function saveMessage(userId, sender, content) {
+  console.log(userId, sender, content);
+  try {
+    const newChatMessage = {
+      sender,
+      content,
+    };
+    const updatedUser = await User.findOneAndUpdate(
+      { id: userId },
+      { $push: { chatMessages: newChatMessage } },
+      { new: true } // To return the updated user
+    );
+    if (!updatedUser) {
+      console.error("User not found");
+      return;
+    }
+    console.log("Chat message saved for the user");
+  } catch (error) {
+    console.error("Error sending chat message:", error);
+  }
+}
+
+const getChatMessage = async (req, res) => {
+  const { userId } = req.body;
+  if (!userId) {
+    return res.status(400).json({
+      message: "User ID is required in the request body",
+      status: false,
+    });
+  }
+  try {
+    const user = await User.findOne({ id: userId });
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found with the provided ID",
         status: false,
       });
+    }
+    res.json({
+      data: user.chatMessages || [],
+      message: "chat message found",
+      status: true,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+const getAllUser = async (req, res) => {
+  try {
+    const users = await User.find({
+      fullName: { $exists: true, $ne: "" },
+    }).select("fullName id");
+    if (!users) {
+      return res.status(404).json({
+        message: "User not found",
+        status: false,
+      });
+    }
+    res.json({
+      data: users,
+      message: "chat message found",
+      status: true,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, status: false });
   }
 };
 
@@ -280,4 +346,7 @@ module.exports = {
   getUserDetails,
   forgotPassword,
   resetPassword,
+  saveMessage,
+  getChatMessage,
+  getAllUser,
 };

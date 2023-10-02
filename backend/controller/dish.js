@@ -84,8 +84,8 @@ const addLikeToFood = async (req, res) => {
 };
 const addDish = async (req, res) => {
   try {
-    const { foodName, category, price, description } = req.body;
-    if (!foodName || !category || !price || !description) {
+    const { foodName, category, price, description, image } = req.body;
+    if (!foodName || !category || !price || !description || !image) {
       return res.json({
         message:
           "All fields (foodName, category, price, description) are mandatory.",
@@ -98,6 +98,7 @@ const addDish = async (req, res) => {
       category,
       price,
       description,
+      image,
     });
 
     const savedDish = await newDish.save();
@@ -109,11 +110,12 @@ const addDish = async (req, res) => {
 
 const editDish = async (req, res) => {
   try {
-    const { id, foodName, category, price, description } = req.body;
-    if (!id || !foodName || !category || !price || !description) {
+    const { id, foodName, category, price, description, image } = req.body;
+    console.log(req.body);
+    if (!id || !foodName || !category || !price || !description || !image) {
       return res.status(400).json({
         message:
-          "All fields (id, foodName, category, price, description) are mandatory.",
+          "All fields (id, foodName, category, price, description, image) are mandatory.",
         status: false,
       });
     }
@@ -124,6 +126,7 @@ const editDish = async (req, res) => {
         category,
         price,
         description,
+        image,
       },
       {
         new: true,

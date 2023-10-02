@@ -10,5 +10,7 @@ router.post("/send-top", user.sendOtp);
 router.post("/user-detail", auth, user.getUserDetails);
 router.post("/forgot-password", user.forgotPassword);
 router.post("/reset-password", user.resetPassword);
+router.post("/chat", user.getChatMessage);
+router.get("/all-user", user.getAllUser);
 
 module.exports = router;
