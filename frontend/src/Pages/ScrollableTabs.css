@@ -1,0 +1,39 @@
+/* ScrollableTabs.css */
+
+/* Style for the chat container */
+.chat-container {
+    max-height: 300px; /* Adjust the maximum height as needed */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the container height */
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  /* Style for chat messages */
+  .chat-message {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    word-wrap: break-word;
+  }
+  
+  /* Style for admin messages (on the right) */
+  .chat-message.admin {
+    background-color: #007bff;
+    color: #fff;
+    align-self: flex-end;
+    text-align: right;
+  }
+  
+  /* Style for user messages (on the left) */
+  .chat-message.user {
+    background-color: #f0f0f0;
+    color: #000;
+    align-self: flex-start;
+    text-align: left;
+  }
+  
+  /* Style for the chat title */
+  .chat-title {
+    margin-bottom: 10px;
+  }
+  
