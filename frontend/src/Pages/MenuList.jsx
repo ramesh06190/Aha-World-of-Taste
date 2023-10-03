@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { WholeContext } from "../Components/Navbar";
 import { FaHeart } from "react-icons/fa";
+import DumyCardImg from "../assets/LandingImg.png";
 import {
   Box,
   VStack,
@@ -10,6 +11,7 @@ import {
   Flex,
   SimpleGrid,
   Button,
+  Image,
 } from "@chakra-ui/react";
 import "./MenuList.css";
 import { get, post } from "../api/ApiService";
@@ -20,19 +22,13 @@ function MenuList() {
   const getuserid = localStorage.getItem("userId");
   const getuserToken = localStorage.getItem("userToken");
   const [category, setCategory] = useState([]);
-  const updatedCatogery = [...category, ...["fav"]];
+  const updatedCatogery = [...["All"], ...category, ...["fav"]];
 
   const [dish, setDish] = useState([]);
-  console.log(dish, "uohoioi");
+  // console.log(dish, "uohoioi");
   const { isOpen, setIsOpen } = useContext(WholeContext);
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    incrementCartItem,
-    decrementCartItem,
-  } = useCart(); // Use the cart state and functions
-  const totalItemsInCart = cart.reduce((total, item) => total + item.count, 0);
+  const { cart, addToCart, incrementCartItem, decrementCartItem } = useCart(); // Use the cart state and functions
+  console.log(cart, "uohoioi");
   const handleTabClick = (index) => {
     setSelectedTab(index);
   };
@@ -65,7 +61,7 @@ function MenuList() {
   console.log(filteredData, "oihhi");
 
   const handleLikeClick = async (id) => {
-    if(!getuserToken){
+    if (!getuserToken) {
       setIsOpen(true);
     }
     // Optimistically update the local state
@@ -153,66 +149,79 @@ function MenuList() {
         ))}
       </VStack>
 
-      <div className="menuList-img">
-        <Box flex="1" p={4}>
-          <Tabs isFitted variant="enclosed" index={selectedTab}>
-            <h1>{selectedTab}</h1>
+      <Box flex="1" p={4}>
+        <Tabs isFitted variant="enclosed" index={selectedTab}>
+          <h1 className="menuList-img">{selectedTab}</h1>
 
-            <SimpleGrid columns={2} spacing={4}>
-              {filteredData?.map((tab, index) => (
-                <Box key={index} p={4} borderWidth="1px" borderRadius="lg">
-                  <Flex justify="space-between">
-                    <Box>
-                      <h2>{tab.foodName}</h2>
-                      <Text>{tab.description}</Text>
-                    </Box>
-                  </Flex>
-                  <Box>
-                    <Flex justify="space-between">
-                      <IconButton
-                        icon={<FaHeart />}
-                        color={(getuserToken && tab.likes.includes(getuserid)) ? "red.500" : "gray.300"}
-                        aria-label="Like"
-                        onClick={() => handleLikeClick(tab.id)}
-                      />
-
-                      {cart.some((item) => item.id === tab.id) ? (
-                        // If the item is in the cart and count is greater than 0, show the increment and decrement buttons
-                        cart.find((item) => item.id === tab.id).count > 0 ? (
-                          <>
-                            <div>
-                              <Button
-                                size="sm" // Make the button smaller
-                                backgroundColor="#EFD36D"
-                                onClick={() => decrementCartItem(tab.id)}
-                              >
-                                -
-                              </Button>
-                              {cart.find((item) => item.id === tab.id).count}
-                              <Button
-                                size="sm" // Make the button smaller
-                                backgroundColor="#EFD36D"
-                                onClick={() => {
-                                  incrementCartItem(tab.id);
-                                }}
-                              >
-                                +
-                              </Button>
-                            </div>
-                          </>
-                        ) : (
-                          // If the count is 0, show the "Add to Cart" button
-                          <Button
-                            size="sm" // Make the button smaller
-                            backgroundColor="#EFD36D"
-                            onClick={() => addToCart(tab)}
-                          >
-                            Add to Cart
-                          </Button>
-                        )
+          <SimpleGrid columns={2} spacing={4}>
+            {filteredData?.map((tab, index) => (
+              <Box
+                key={index}
+                borderWidth="1px"
+                borderRadius="lg"
+                p={4}
+                boxShadow="lg"
+              >
+                <Flex justify="space-between" align="center">
+                  <Image
+                    src={DumyCardImg}
+                    alt="Item Image"
+                    boxSize="100%"
+                    objectFit="cover"
+                    height="200px"
+                    borderRadius="8px"
+                  />
+                </Flex>
+                <div className="name-rate-wrap">
+                  <div className="card-title">
+                    <h2>{tab.foodName}</h2>
+                  </div>
+                  <div className="card-price">
+                    <h5>{tab.price}</h5>
+                  </div>
+                </div>
+                <Box mt={4}>
+                  <Text>{tab.description}</Text>
+                </Box>
+                <div className="heart-wrap">
+                  <Flex justify="space-between" mt={4} alignItems="center">
+                    {cart.some((item) => item.id === tab.id) ? (
+                      // If the item is in the cart and count is greater than 0, show the increment and decrement buttons
+                      cart.find((item) => item.id === tab.id).count > 0 ? (
+                        <>
+                          <div>
+                            <Button
+                              size="sm" // Make the button smaller
+                              backgroundColor="#EFD36D"
+                              onClick={() => decrementCartItem(tab.id)}
+                            >
+                              -
+                            </Button>
+                            {cart.find((item) => item.id === tab.id).count}
+                            <Button
+                              size="sm" // Make the button smaller
+                              backgroundColor="#EFD36D"
+                              onClick={() => {
+                                incrementCartItem(tab.id);
+                              }}
+                            >
+                              +
+                            </Button>
+                          </div>
+                        </>
                       ) : (
-                        // Otherwise, show the "Add to Cart" button
+                        // If the count is 0, show the "Add to Cart" button
                         <Button
+                          size="sm" // Make the button smaller
+                          backgroundColor="#EFD36D"
+                          onClick={() => addToCart(tab)}
+                        >
+                          Add to Cart
+                        </Button>
+                      )
+                    ) : (
+                      // Otherwise, show the "Add to Cart" button
+                      <Button
                         size="sm"
                         backgroundColor="#EFD36D"
                         onClick={() => {
@@ -224,18 +233,28 @@ function MenuList() {
                             addToCart(tab); // Add the item to the cart as usual
                           }
                         }}
-                        >
-                          Add to Cart
-                        </Button>
-                      )}
-                    </Flex>
-                  </Box>
-                </Box>
-              ))}
-            </SimpleGrid>
-          </Tabs>
-        </Box>
-      </div>
+                      >
+                        Add to Cart
+                      </Button>
+                    )}
+                  </Flex>
+                  <IconButton
+                    icon={<FaHeart />}
+                    color={
+                      getuserToken && tab.likes.includes(getuserid)
+                        ? "red.500"
+                        : "gray.300"
+                    }
+                    aria-label="Like"
+                    marginTop="8px"
+                    onClick={() => handleLikeClick(tab.id)}
+                  />
+                </div>
+              </Box>
+            ))}
+          </SimpleGrid>
+        </Tabs>
+      </Box>
     </Box>
   );
 }

@@ -8,7 +8,7 @@ const AdminSidebar = ({ items }) => {
 <>
 <div className='admin-parent_conatiner'>
 <div className="admin-sidebar">
-<Box w="250px" h="100vh" bg="gray.200" p="4">
+<Box w="250px" h="100vh" bg="black" p="4">
       <List spacing={1}>
         {items.map((item, index) => (
           <ListItem key={index}>

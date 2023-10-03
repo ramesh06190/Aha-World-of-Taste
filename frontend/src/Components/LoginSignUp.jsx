@@ -29,7 +29,7 @@ const SignUpDetails = {
     password: "",
     mobile: "",
     address: "",
-    otp:""
+    otp: ""
 };
 
 const LoginDetails = {
@@ -40,7 +40,7 @@ const LoginDetails = {
 };
 function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
     const [pinValues, setPinValues] = useState(['', '', '', '', '', '']);
-    const [SignUp, setSignUp] = useState({ ...SignUpDetails});
+    const [SignUp, setSignUp] = useState({ ...SignUpDetails });
     console.log(SignUp, "uggoi")
     const [LogIn, setLogIn] = useState({ ...LoginDetails });
     const [AdminLogIn, setAdminLogIn] = useState({ ...LoginDetails });
@@ -60,17 +60,17 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
     const [phoneNumberError, setPhoneNumberError] = useState("");
     const [addressError, setaddressError] = useState("");
     const [ConfrimSignUpBtn, setConfrimSignUpBtn] = useState("")
-  
+
 
     const handleInputChange = (index, value) => {
         const newPinValues = [...pinValues];
         newPinValues[index] = value;
         setPinValues(newPinValues);
         const otpValue = newPinValues.join('');
-       setSignUp((prevData) => ({
-        ...prevData,
-        otp: otpValue // Update the otp property in SignUp state
-    }));
+        setSignUp((prevData) => ({
+            ...prevData,
+            otp: otpValue // Update the otp property in SignUp state
+        }));
 
     };
     const navigate = useNavigate()

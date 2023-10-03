@@ -7,8 +7,15 @@
 }
 
 .landing-container {
-   min-height: 100vh !important;
+    min-height: 100vh !important;
     position: relative;
+    background-image: url("../assets/LandingImg.png");
+    background-repeat: no-repeat !important;
+    position: relative;
+    min-height: calc(100vh);
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
 }
 
 .search input {
@@ -35,23 +42,28 @@
     font-weight: bold;
     cursor: pointer;
 }
-.chatbtn{
+
+.chatbtn {
     position: fixed;
     right: 40px;
     top: 85vh;
 }
-.chatbtn img{
-    width: 80px;
+
+.chatbtn img {
+    width: 50px;
     object-fit: cover;
 }
 
 .nav-container {
     position: sticky !important;
-    top: 0 !important; /* Adjust this value as needed */
-    z-index: 100 !important; /* Ensure it's above other elements if needed */
+    top: 0 !important;
+    /* Adjust this value as needed */
+    z-index: 100 !important;
+    /* Ensure it's above other elements if needed */
     /* Other styling properties */
-  }
-  .nav-list p{
+}
+
+.nav-list p {
     position: absolute;
     top: -6px;
     left: 49px;
@@ -63,4 +75,78 @@
     width: 20px;
     text-align: center;
     height: 20px;
+}
+
+.search-conn {
+    min-height: 100vh;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+}
+.search-wrap-con{
+    background-color: white;
+}
+/* .card-containerr {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+} */
+
+.card-containerr {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    padding: 10px;
+  }
+
+/* .card {
+  
+    width: 280px;
+    height: 250px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} */
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    height: 235px;
+    border-radius: 8px;
+  }
+  .search-header{
+    font-size: 35px;
+    margin-left: 111px;
+    padding: 37px 0px 12px 0px;
+    color: #EFD36D;
+}
+  .card-containerr img{
+    /* width: 180px; */
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+  }
+  .rate-con{
+    display: flex;
+    justify-content: space-between;
+  }
+  .card h3{
+    padding: 10px 0px;
+    font-weight: 600;
+  }
+  .dish-rate{
+    color: red;
+  }
+  .toggle-chat{
+    background-color: black;
+    color: #EFD36D;
+    padding: 10px;
+    border-radius: 10px;
   }

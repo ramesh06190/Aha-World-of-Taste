@@ -2,6 +2,11 @@ const config = require("../config");
 const User = require("../model/user");
 const bookidgen = require("bookidgen");
 const jwt = require("jsonwebtoken");
+const { MailtrapClient } = require("mailtrap");
+const TOKEN = "debba16c341017ee9ac193dd282c1b19";
+const ENDPOINT = "https://send.api.mailtrap.io/";
+
+const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN });
 
 const signUp = async (req, res) => {
   const { fullName, email, password, address, mobile, otp } = req.body;
@@ -110,31 +115,30 @@ const updateCart = async (req, res) => {
     return res.status(400).json({ error: error.message, status: false });
   }
 };
-// async function sendInitialOtp(email, token) {
-//   const body = {
-//     from: "dgpadmin@naveenrio.me",
-//     to: email,
-//     subject: `OTP verification`,
-//     html: `<div>OTP verification for your email ${token}. This will expire in an hour</div>`,
-//   };
+async function sendInitialOtp(email, token) {
+  const sender = {
+    email: "mailtrap@ahaworldoftaste.com",
+    name: "AhaWorld",
+  };
+  const recipients = [
+    {
+      email: email,
+    },
+  ];
 
-//   const transport = nodemailer.createTransport({
-//     host: "live.smtp.mailtrap.io", //sandbox.smtp.mailtrap.io",
-//     port: 587,
-//     auth: {
-//       user: "api", //86207576053cfe",
-//       pass: "82bc5abcc46929231dcc93949027783b", //df87b6e5a6cb1d"
-//     },
-//   });
+  try {
+    const result = await client.send({
+      from: sender,
+      to: recipients,
+      subject: "OTP verification",
+      html: `<div>OTP verification for your email ${token}. This will expire in an hour</div>`,
+    });
 
-//   await transport.sendMail(body, (err) => {
-//     if (err) {
-//       return console.log("error occurs", err);
-//     } else {
-//       return console.log("email sent");
-//     }
-//   });
-// }
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 const sendOtp = async (req, res) => {
   try {
@@ -153,7 +157,7 @@ const sendOtp = async (req, res) => {
         resetTokenExpiration: new Date(Date.now() + 3600000), // 1 hour from now
       });
       await newUser.save();
-      // sendInitialOtp(email, resetToken);
+      sendInitialOtp(email, resetToken);
       res.json({
         message: "OTP sent to your email",
         status: true,
@@ -164,7 +168,7 @@ const sendOtp = async (req, res) => {
       existingUser.resetToken = resetToken;
       existingUser.resetTokenExpiration = new Date(Date.now() + 3600000); // 1 hour from now
       await existingUser.save();
-      // sendInitialOtp(email, resetToken);
+      sendInitialOtp(email, resetToken);
       res.json({
         message: "OTP sent to your email and record updated",
         status: true,

@@ -13,6 +13,8 @@ import AdminAddMenu from "./Pages/AdminAddMenu";
 import AdminEditMenu from "./Pages/AdminEditMenu";
 import AdminDeleteMenu from "./Pages/AdminDeleteMenu";
 import Cart from "./Pages/Cart";
+import Reservation from "./Pages/Reservation";
+import AboutUs from "./Pages/AboutUs";
 function App() {
   return (
     <div className="App">
@@ -21,6 +23,8 @@ function App() {
           <Route path='/' element={<Landing />} />
           <Route path='/menuList' element={<MenuList />} />
           <Route path='/cart' element={<Cart />} />
+          <Route path='/reservation' element={<Reservation />} />
+          <Route path='/aboutUs' element={<AboutUs />} />
         </Route>
       </Routes>
       <Routes>

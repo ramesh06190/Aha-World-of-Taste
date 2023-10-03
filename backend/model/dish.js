@@ -10,6 +10,7 @@ const dish = new mongose.Schema(
     },
     price: { type: Number },
     description: { type: String },
+    image: { type: String },
   },
   {
     timestamps: true,

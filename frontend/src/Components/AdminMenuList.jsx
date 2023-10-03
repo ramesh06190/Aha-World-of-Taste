@@ -28,10 +28,10 @@ const AdminMenuList = ({ item }) => {
         cursor="pointer"
         display="flex"
         alignItems="center"
-        color={isActive ? 'black' : 'gray.700'}
+        color={isActive ? 'black' : 'white'}
         padding="0.5rem 1rem"
         borderRadius="0.25rem"
-        _hover={{ bg: 'blue.50', color: 'blue.500' }}
+        _hover={{ bg: '#EFD36D', color: 'black' }}
         bg={isActive ? '#EFD36D' : ''}
       >
         <Text>{item.name}</Text>

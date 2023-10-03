@@ -19,6 +19,7 @@
   position: sticky;
   height: 100vh;
   top: 0;
+
 }
 .admin-content{
   width: calc(100vw - 250px);
@@ -36,3 +37,30 @@
   display: none;
 }
 
+.admin-chat-con{
+  min-height: 93vh;
+  background-color: rgb(255 255 255 / 0.3);
+  backdrop-filter: blur(30px);
+}
+.css-hip9hq-MuiPaper-root-MuiAppBar-root{
+  background-color: white !important;
+}
+.css-ptiqhd-MuiSvgIcon-root{
+  color: black !important;
+}
+.chat-admin-area{
+  height: 70vh;
+  overflow-y: scroll;
+}
+.chat-admin-area{
+margin-top: 12px !important;
+}
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected{
+  color: black !important;
+}
+.css-1aquho2-MuiTabs-indicator{
+  background-color: black !important;
+}
+.admin-input-area{
+  margin: 0px 10px;
+}

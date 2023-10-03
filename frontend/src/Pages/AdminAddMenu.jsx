@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {post} from "../api/ApiService"
+import { post, get } from "../api/ApiService";
+
 import {
   FormControl,
   FormLabel,
@@ -9,32 +10,56 @@ import {
   Spacer,
   VStack,
   Text,
-  useToast
+  useToast,
+  Select,
+  Box// Import the Select component
 } from "@chakra-ui/react";
 import "./AdminAddMenu.css";
-
+import axios from "axios";
 function AddItemForm() {
+  const [ImageFile, setImageFile] = useState("");
   const [item, setItem] = useState({
     foodName: "",
-    category: "",
+    category: "", // Initialize category with an empty string
     price: "",
-    description: ""
+    description: "",
+    image: ""
   });
-const [AdminToken , setAdminToken] = useState("")
-const [AdminDish, setAdminDish] = useState([]);
-console.log(AdminDish , "oigoig")
+  const [AdminToken, setAdminToken] = useState("");
+  const [AdminDish, setAdminDish] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [loading, setLoading] = useState(false);
+  console.log(category, "oigoig");
 
   const toast = useToast();
 
   const headers = {
     token: AdminToken,
   };
+  const uploadImage = async (e) => {
+    setLoading(true);
+    let formData = new FormData();
+    formData.append("image", e.target.files[0]);
+    let u = await axios.post(
+      `http://localhost:8090/api/upload/image`,
+      formData
+    );
+
+    if (u.data.status) {
+      setImageFile(u.data.secureUrl);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
 
   const [formErrors, setFormErrors] = useState({
     foodName: false,
     description: false,
     price: false,
     category: false,
+
   });
 
   const defaultToastConfig = {
@@ -66,24 +91,38 @@ console.log(AdminDish , "oigoig")
       newFormErrors.price = true;
     }
     if (!item.category) {
-        newFormErrors.category = true;
-      }
+      newFormErrors.category = true;
+    }
+
     setFormErrors(newFormErrors);
 
     return Object.values(newFormErrors).every((error) => !error);
   };
 
-useEffect(()=>{
-    const Token = localStorage.getItem("adminToken")
-    setAdminToken(Token)
-} , [])
+  useEffect(() => {
+    const Token = localStorage.getItem("adminToken");
+    setAdminToken(Token);
+  }, []);
+
+  useEffect(() => {
+    const getCategory = async () => {
+      const result = await get("api/all/category");
+      setCategory(result.data);
+    };
+    getCategory();
+
+
+  }, []);
 
   const handleAddItem = async () => {
     if (validateForm()) {
+      let payload = { ...item };
+      payload.image = ImageFile;
+
       // Display form validation errors in the UI
       try {
         // Make a POST request to your API with the item data
-        const result = await post('api/add/dish', item , headers);
+        const result = await post('api/add/dish', { ...payload }, headers);
         if (result.status) {
           // Clear the form fields
           setItem({
@@ -92,27 +131,28 @@ useEffect(()=>{
             price: "",
             description: ""
           });
-  
+
           // Display a success message
           toast({
             title: "Item Added Successfully",
             status: "success",
             ...defaultToastConfig
           });
-        } 
+        }
       } catch (error) {
-        console.log(error, "oihihih")
+        console.log(error, "oihihih");
         toast({
-            title: 'Login Error',
-            description: error?.response?.data?.message,
-            status: 'error',
-            ...defaultToastConfig,
+          title: 'Login Error',
+          description: error?.response?.data?.message,
+          status: 'error',
+          ...defaultToastConfig,
         });
+      }
     }
-    }
-
- 
   };
+
+  // Dummy category values
+  // const dummyCategories = ["Category 1", "Biriyani", "Category 3"];
 
   return (
     <div className="addmenu-con">
@@ -155,20 +195,60 @@ useEffect(()=>{
             <Text color="red.500">Item Price is required</Text>
           )}
 
-<FormControl isRequired isInvalid={formErrors.category}>
+          <FormControl isRequired isInvalid={formErrors.category}>
             <FormLabel>Item category</FormLabel>
-            <Input
-              type="text"
+            {/* Use a Select element for category with options from dummyCategories */}
+            <Select
               name="category"
               value={item.category}
               onChange={handleInputChange}
-            />
+            >
+              <option value="" disabled>Select a category</option>
+              {category.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </Select>
           </FormControl>
           {formErrors.category && (
             <Text color="red.500">Item category is required</Text>
           )}
         </VStack>
         <Spacer />
+        <FormControl isRequired isInvalid={formErrors.image}>
+          <FormLabel>Item Image</FormLabel>
+          {/* Add an input element of type "file" for image upload */}
+          <Box
+            as="label" // Use a label element to style the file input
+            backgroundColor="#EFD36D" // Set the background color
+            color="white" // Set the text color
+            borderRadius="md"
+            padding={2}
+            cursor="pointer"
+            _hover={{
+              backgroundColor: "#FFC107", // Change the background color on hover
+            }}
+          >
+            {
+              loading ? <span className='loadingg'>loading</span> : "Choose File"
+            }
+        
+            <Input
+              type="file"
+              accept="image/*"
+              name="image"
+              onChange={uploadImage}
+              display="none" // Hide the actual file input
+            />
+          </Box>
+          {item.image && (
+            <Text mt={2} fontSize="sm">
+              Selected File: {item.image.name}
+            </Text>
+          )}
+        </FormControl>
+
         <Button mt={4} onClick={handleAddItem} backgroundColor="#EFD36D">
           Add Item
         </Button>

@@ -1,69 +1,110 @@
 /* .mytabs{
     display: flex;
 } */
-.css-1mv1dg3{
-    padding: 29.5px 0px !important;
-    border-top: none !important;
-    border-bottom: none !important;
+.css-1mv1dg3 {
+  padding: 29.5px 0px !important;
+  border-top: none !important;
+  border-bottom: none !important;
 }
-.css-o3mcyj{
-    padding: 29.5px 0px !important;
-    border-top: none !important;
-    border-bottom: none !important;
-}
-.css-12sxl0c{
-    margin: 0 !important;
-    padding: 0 !important;
-    gap: unset !important;
-    width: 13% !important;
-}
-.menuList-img{
-    width: 100%;
-    margin: 5px 35px 50px 0px;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    border-radius: 7px;
-}
-.css-1hc7cni{
-    border: 1px solid black;
-}
-.menuList-img h1{
-    margin-bottom: 10px;
-    font-size: 28px;
-    font-weight: 500;
-    color: red;
-}
-.menu-custom-tab {
-    padding: 10px; /* Adjust the padding as needed */
-    margin: 5px; /* Adjust the margin as needed */
-    border-radius: 0;
-    color: black;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  
-    /* Add more styles here as needed */
-  
-    /* Text alignment (start/left) */
-    text-align: start;
-  }
-  
 
-  .css-kbwyea{
-    padding-top: 2px !important;
-  }
-  .css-k008qs{
-    background-image: url("../assets/./9739.jpg_wh1200.jpg") !important;
-    background-repeat: no-repeat !important;
-    position: relative !important;
-    min-height: calc(100vh - 62.22px) !important;
-    background-size: cover !important;
-    background-position: bottom !important;
-    background-repeat: no-repeat !important;
-  }
-  .css-14i3gmy h2{
-    font-size: 17px;
-    font-weight: 900;
-  }
-  .css-1hc7cni{
-    padding-bottom: 3px !important;
-  }
+.css-o3mcyj {
+  padding: 29.5px 0px !important;
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+.css-12sxl0c {
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: unset !important;
+  width: 13% !important;
+}
+
+.menuList-img {
+  width: 100%;
+  margin: 5px 35px 50px 0px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  border-radius: 7px;
+}
+
+.css-1hc7cni {
+  border: 1px solid black;
+}
+
+.menuList-img h1 {
+  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 500;
+  color: red;
+}
+.menuList-img {
+  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 500;
+  color: red;
+  padding-left: 17px;
+}
+
+
+.menu-custom-tab {
+  padding: 10px;
+  /* Adjust the padding as needed */
+  margin: 5px;
+  /* Adjust the margin as needed */
+  border-radius: 0;
+  color: black;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  /* Add more styles here as needed */
+
+  /* Text alignment (start/left) */
+  text-align: start;
+}
+
+
+.css-kbwyea {
+  padding-top: 2px !important;
+}
+
+.css-k008qs {
+  background-image: url("../assets/./9739.jpg_wh1200.jpg") !important;
+  background-repeat: no-repeat !important;
+  position: relative !important;
+  min-height: calc(100vh - 62.22px) !important;
+  background-size: cover !important;
+  background-position: bottom !important;
+  background-repeat: no-repeat !important;
+}
+
+.css-14i3gmy h2 {
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.css-1hc7cni {
+  padding-bottom: 3px !important;
+}
+
+.heart-wrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name-rate-wrap {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.card-title {
+  margin-top: 4px;
+}
+
+.card-price {
+  margin-top: 4px;
+  font-size: 16px;
+  color: #333;
+  /* Customize the color as needed */
+}
