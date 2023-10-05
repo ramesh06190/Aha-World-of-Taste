@@ -21,7 +21,7 @@ import {
   PopoverBody,
   PopoverFooter,
   Flex,
-  IconButton
+  Box
 } from "@chakra-ui/react"; // Import Chakra UI components
 export const WholeContext = createContext();
 
@@ -29,12 +29,12 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [childData, setChildData] = useState(false);
   const [navDish, setNavDish] = useState("")
-  console.log(navDish, "ouigougui")
   const [isUserToken, setUserToken] = useState("")
   const getuserToken = localStorage.getItem("userToken");
   const navigate = useNavigate();
   const {
     cart,
+    userr,
     addToCart,
     incrementCartItem,
     decrementCartItem,
@@ -42,7 +42,7 @@ function Navbar() {
   const totalItemsInCart = cart.reduce((total, item) => total + item.count, 0);
   const [searchValue, setSearchValue] = useState('');
   const [filteredNavDish, setFilteredNavDish] = useState([]);
-  console.log(filteredNavDish, "piopjpojpoj")
+
   console.log(searchValue, "totalItemsInCart")
   // const  cart  = useContext(CartContext);
   // console.log(cart , "navbarcart")
@@ -120,23 +120,21 @@ function Navbar() {
             <li><Link to="/reservation">Reservation</Link></li>
             <li><Link to="/menuList">Menu</Link></li>
             <li><Link to="/aboutUs">About Us</Link></li>
-            <Button onClick={(() => { navigate("/cart") })}>Cart {totalItemsInCart === 0 ? "" : <p>{totalItemsInCart}</p>} </Button>
+      
             {isUserToken !== null ? (
               <li>
                 {/* Use Popover to display the logout options */}
                 <Popover placement="bottom-start">
                   <PopoverTrigger>
-                    <Button>Logout</Button>
+                  <Box borderRadius="50%" backgroundColor="gray" width="40px" height="40px" display='flex' justifyContent="center" alignItems="center">{userr?.fullName?.slice(-1)?.toUpperCase()}</Box>
                   </PopoverTrigger>
                   <PopoverContent color='white' bg='blue.800' borderColor='blue.800'>
                     <PopoverHeader pt={4} fontWeight='bold' border='0'>
-                      Logout Options
+                      Profile
                     </PopoverHeader>
                     <PopoverArrow bg='blue.800' />
                     <PopoverCloseButton />
-                    <PopoverBody>
-                      Are you sure you want to logout?
-                    </PopoverBody>
+                
                     <PopoverFooter
                       border='0'
                       display='flex'
@@ -144,8 +142,11 @@ function Navbar() {
                       justifyContent='space-between'
                       pb={4}
                     >
-                      <NavLink to={"/"}> <Button colorScheme='red' onClick={handleLogOutModal}>
-                        Logout button
+                            <NavLink to={"/"}> <Button backgroundColor='#EFD36D' width="140px" onClick={handleLogOutModal}>
+                        Recent Orders 
+                      </Button> </NavLink>
+                      <NavLink to={"/"}> <Button colorScheme='red' width="140px"  onClick={handleLogOutModal}>
+                        Logout 
                       </Button> </NavLink>
                     </PopoverFooter>
                   </PopoverContent>
@@ -154,6 +155,7 @@ function Navbar() {
             ) : (
               <li onClick={handleOpenModal}>Login</li>
             )}
+                  <Button onClick={(() => { navigate("/cart") })}>Cart {totalItemsInCart === 0 ? "" : <p>{totalItemsInCart}</p>} </Button>
           </div>
         </div>
         {
@@ -165,7 +167,7 @@ function Navbar() {
                 <div className='card-containerr'>
                   {filteredNavDish.map((dish) => (
                     <div key={dish.id} className='card'>
-                      <img src={DumyCardImg} alt=''></img>
+                      <img src={dish.image} alt=''></img>
                       <h3>{dish.foodName}</h3>
 
                       <div className='rate-con'>

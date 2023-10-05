@@ -61,7 +61,7 @@ console.log(totalItemsInCart , "totalItemsInCart")
         <li>
                   <Popover placement="bottom-start">
                 <PopoverTrigger>
-                  <Button>Logout</Button>
+                  <Button >Logout</Button>
                 </PopoverTrigger>
                 <PopoverContent color='white' bg='blue.800' borderColor='blue.800'>
                   <PopoverHeader pt={4} fontWeight='bold' border='0'>
@@ -80,7 +80,7 @@ console.log(totalItemsInCart , "totalItemsInCart")
                     pb={4}
                   >
                    <NavLink to={"/"}> <Button colorScheme='red' onClick={handleLogOutModal}>
-                      Logout button
+                      Logout 
                     </Button> </NavLink>
                   </PopoverFooter>
                 </PopoverContent>

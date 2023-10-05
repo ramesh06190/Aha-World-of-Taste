@@ -5,6 +5,7 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
+  const [userr , setUser] = useState("")
   const [adminToken, setAdminToken] = useState("");
   const userId = localStorage.getItem("userId");
 
@@ -22,7 +23,8 @@ export function CartProvider({ children }) {
       const fetchUserDetails = async () => {
         const result = await post('user/user-detail', {}, headers);
         if (result && result.user && result.user.cart) {
-          setCart(result.user.cart); // Update user data state
+          setCart(result.user.cart); 
+          setUser(result.user); 
         } else {
           setCart([]); // Set an empty cart if the response doesn't have one
         }
@@ -97,7 +99,7 @@ export function CartProvider({ children }) {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, incrementCartItem, decrementCartItem }}>
+    <CartContext.Provider value={{ cart, userr , addToCart, removeFromCart, incrementCartItem, decrementCartItem }}>
       {children}
     </CartContext.Provider>
   );

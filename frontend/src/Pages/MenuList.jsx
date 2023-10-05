@@ -164,7 +164,7 @@ function MenuList() {
               >
                 <Flex justify="space-between" align="center">
                   <Image
-                    src={DumyCardImg}
+                    src={tab.image}
                     alt="Item Image"
                     boxSize="100%"
                     objectFit="cover"
