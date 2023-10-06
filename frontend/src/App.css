@@ -64,3 +64,7 @@ margin-top: 12px !important;
 .admin-input-area{
   margin: 0px 10px;
 }
+.myaccountpage{
+  min-height: 100vh;
+  background-color: gray;
+}

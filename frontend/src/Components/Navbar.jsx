@@ -124,32 +124,11 @@ function Navbar() {
             {isUserToken !== null ? (
               <li>
                 {/* Use Popover to display the logout options */}
-                <Popover placement="bottom-start">
+                <Popover placement="bottom-start" >
                   <PopoverTrigger>
-                  <Box borderRadius="50%" backgroundColor="gray" width="40px" height="40px" display='flex' justifyContent="center" alignItems="center">{userr?.fullName?.slice(-1)?.toUpperCase()}</Box>
+                  <Box onClick={(() => { navigate("/MyAccountPage") })} borderRadius="50%" backgroundColor="gray" width="40px" height="40px" display='flex' justifyContent="center" alignItems="center">{userr?.fullName?.slice(-1)?.toUpperCase()}</Box>
                   </PopoverTrigger>
-                  <PopoverContent color='white' bg='blue.800' borderColor='blue.800'>
-                    <PopoverHeader pt={4} fontWeight='bold' border='0'>
-                      Profile
-                    </PopoverHeader>
-                    <PopoverArrow bg='blue.800' />
-                    <PopoverCloseButton />
-                
-                    <PopoverFooter
-                      border='0'
-                      display='flex'
-                      alignItems='center'
-                      justifyContent='space-between'
-                      pb={4}
-                    >
-                            <NavLink to={"/"}> <Button backgroundColor='#EFD36D' width="140px" onClick={handleLogOutModal}>
-                        Recent Orders 
-                      </Button> </NavLink>
-                      <NavLink to={"/"}> <Button colorScheme='red' width="140px"  onClick={handleLogOutModal}>
-                        Logout 
-                      </Button> </NavLink>
-                    </PopoverFooter>
-                  </PopoverContent>
+          
                 </Popover>
               </li>
             ) : (

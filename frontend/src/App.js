@@ -15,6 +15,7 @@ import AdminDeleteMenu from "./Pages/AdminDeleteMenu";
 import Cart from "./Pages/Cart";
 import Reservation from "./Pages/Reservation";
 import AboutUs from "./Pages/AboutUs";
+import MyAccountPage from "./Pages/MyAccountPage";
 function App() {
   return (
     <div className="App">
@@ -25,6 +26,7 @@ function App() {
           <Route path='/cart' element={<Cart />} />
           <Route path='/reservation' element={<Reservation />} />
           <Route path='/aboutUs' element={<AboutUs />} />
+          <Route path="/MyAccountPage" element={<MyAccountPage />} />
         </Route>
       </Routes>
       <Routes>
@@ -36,6 +38,7 @@ function App() {
               <Route path="/AdminAddMenu" element={<AdminAddMenu />} />
               <Route path="/AdminEditMenu" element={<AdminEditMenu />} />
               <Route path="/AdminDeleteMenu" element={<AdminDeleteMenu />} />
+
             </Route>
 
           </Routes>
