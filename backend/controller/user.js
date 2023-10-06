@@ -4,6 +4,7 @@ const bookidgen = require("bookidgen");
 const jwt = require("jsonwebtoken");
 const { MailtrapClient } = require("mailtrap");
 const TOKEN = "debba16c341017ee9ac193dd282c1b19";
+const nodemailer = require("nodemailer");
 const ENDPOINT = "https://send.api.mailtrap.io/";
 
 const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN });
@@ -116,29 +117,32 @@ const updateCart = async (req, res) => {
     return res.status(400).json({ error: error.message, status: false });
   }
 };
+const GRIEVANCE_EMAIL = "naveen@naveenrio.me";
+const GRIEVANCE_EMAIL_PASSWORD = "N@veen4752";
 async function sendInitialOtp(email, token) {
-  const sender = {
-    email: "mailtrap@ahaworldoftaste.com",
-    name: "AhaWorld",
+  const passwordMsg = {
+    from: "naveen@naveenrio.me",
+    to: email,
+    subject: "OTP verification",
+    html: `<div>OTP verification for your email ${token}. This will expire in an hour</div>`,
   };
-  const recipients = [
-    {
-      email: email,
-    },
-  ];
-
-  try {
-    const result = await client.send({
-      from: sender,
-      to: recipients,
-      subject: "OTP verification",
-      html: `<div>OTP verification for your email ${token}. This will expire in an hour</div>`,
+  nodemailer
+    .createTransport({
+      auth: {
+        user: GRIEVANCE_EMAIL,
+        pass: GRIEVANCE_EMAIL_PASSWORD,
+      },
+      port: 465,
+      secure: true,
+      host: "smtp.hostinger.com",
+    })
+    .sendMail(passwordMsg, (err) => {
+      if (err) {
+        return console.log("error while sending mail", err);
+      } else {
+        return console.log("email sent");
+      }
     });
-
-    console.log(result);
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 const sendOtp = async (req, res) => {
@@ -223,6 +227,7 @@ const forgotPassword = async (req, res) => {
       { new: true }
     );
     if (updatedUser) {
+      sendInitialOtp(email, resetToken);
       res.json({
         message: "Password reset token sent to your email",
         status: true,
