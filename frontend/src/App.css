@@ -42,6 +42,16 @@
   background-color: rgb(255 255 255 / 0.3);
   backdrop-filter: blur(30px);
 }
+.manage-order-container{
+  min-height: 93vh;
+  background-color: rgb(255 255 255 / 0.3);
+  backdrop-filter: blur(30px);
+}
+.view-status-container{
+  min-height: 93vh;
+  background-color: rgb(255 255 255 / 0.3);
+  backdrop-filter: blur(30px);
+}
 .css-hip9hq-MuiPaper-root-MuiAppBar-root{
   background-color: white !important;
 }
@@ -67,4 +77,25 @@ margin-top: 12px !important;
 .myaccountpage{
   min-height: 100vh;
   background-color: gray;
+}
+/* CSS for the Custom Progress Bar */
+.progress-bar {
+  width: 100%;
+  background-color: #ccc; /* Background color for the progress bar */
+  height: 20px; /* Height of the progress bar */
+  border-radius: 5px;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 5px;
+  background-color: teal; /* Default progress bar color */
+  width: 0; /* Initial width, will be adjusted dynamically */
+  transition: width 0.3s; /* Smooth transition effect for width changes */
+}
+
+/* Customize the color for the rejected status */
+.progress-bar.rejected .progress-fill {
+  background-color: red;
 }

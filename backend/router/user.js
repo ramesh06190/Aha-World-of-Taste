@@ -12,5 +12,7 @@ router.post("/forgot-password", user.forgotPassword);
 router.post("/reset-password", user.resetPassword);
 router.post("/chat", user.getChatMessage);
 router.get("/all-user", user.getAllUser);
+router.post("/add/order", auth, user.order);
+router.get("/my/order", auth, user.myOrder);
 
 module.exports = router;

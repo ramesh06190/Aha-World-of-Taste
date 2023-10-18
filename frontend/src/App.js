@@ -16,6 +16,7 @@ import Cart from "./Pages/Cart";
 import Reservation from "./Pages/Reservation";
 import AboutUs from "./Pages/AboutUs";
 import MyAccountPage from "./Pages/MyAccountPage";
+import OrderStatusPage from "./Pages/ViewStatusPage"
 function App() {
   return (
     <div className="App">
@@ -38,7 +39,7 @@ function App() {
               <Route path="/AdminAddMenu" element={<AdminAddMenu />} />
               <Route path="/AdminEditMenu" element={<AdminEditMenu />} />
               <Route path="/AdminDeleteMenu" element={<AdminDeleteMenu />} />
-
+              <Route path="/status" element={<OrderStatusPage />} />
             </Route>
 
           </Routes>

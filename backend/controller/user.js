@@ -6,6 +6,7 @@ const { MailtrapClient } = require("mailtrap");
 const TOKEN = "debba16c341017ee9ac193dd282c1b19";
 const nodemailer = require("nodemailer");
 const ENDPOINT = "https://send.api.mailtrap.io/";
+const Order = require("../model/order");
 
 const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN });
 
@@ -85,6 +86,56 @@ const login = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
+  }
+};
+const order = async (req, res) => {
+  const { order, address } = req.body;
+  const userId = req.data.id;
+  try {
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ error: "User ID is required", status: false });
+    }
+    if (!Array.isArray(order) || order.length === 0 || !order || !address) {
+      return res.status(400).json({
+        error: "Enter all data & order should not be empty",
+        status: false,
+      });
+    }
+    const newOrder = new Order({
+      id: bookidgen("ORDER-", 14522, 199585),
+      userId,
+      order,
+      address,
+    });
+    let data = await newOrder.save();
+    console.log(data);
+    await User.findOneAndUpdate(
+      { id: userId },
+      { $set: { cart: [] } },
+      { new: true }
+    );
+    if (!data) {
+      return res.status(404).json({ error: "User not found", status: false });
+    }
+    return res.json({
+      message: "Order Placed successfully",
+      status: true,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message, status: false });
+  }
+};
+const myOrder = async (req, res) => {
+  try {
+    const userId = req.data.id;
+    console.log(userId);
+    const orders = await Order.find({ userId: userId });
+    console.log(orders);
+    res.json({ data: orders, message: "order details", status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message, status: false });
   }
 };
 const updateCart = async (req, res) => {
@@ -359,4 +410,6 @@ module.exports = {
   saveMessage,
   getChatMessage,
   getAllUser,
+  order,
+  myOrder,
 };
