@@ -35,7 +35,7 @@ const signUp = async (req, res) => {
         $set: {
           fullName,
           password,
-          address,
+          addres: address,
           mobile,
         },
       },
@@ -74,6 +74,7 @@ const login = async (req, res) => {
     let token = await jwt.sign(
       {
         id: user.id,
+        fullName: user.fullName,
       },
       config.JWT_TOKEN_KEY
     );
@@ -91,6 +92,7 @@ const login = async (req, res) => {
 const order = async (req, res) => {
   const { order, address } = req.body;
   const userId = req.data.id;
+  const fullName = req.data.fullName;
   try {
     if (!userId) {
       return res
@@ -108,6 +110,7 @@ const order = async (req, res) => {
       userId,
       order,
       address,
+      fullName,
     });
     let data = await newOrder.save();
     console.log(data);
@@ -132,8 +135,13 @@ const myOrder = async (req, res) => {
     const userId = req.data.id;
     console.log(userId);
     const orders = await Order.find({ userId: userId });
+    const user = await User.findOne({ id: userId });
     console.log(orders);
-    res.json({ data: orders, message: "order details", status: true });
+    res.json({
+      data: { orders, user },
+      message: "order details",
+      status: true,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message, status: false });
   }
@@ -398,6 +406,121 @@ const getAllUser = async (req, res) => {
     res.status(500).json({ message: error.message, status: false });
   }
 };
+const addAddress = async (req, res) => {
+  const addressPayload = req.body;
+  const requiredFields = [
+    "addressType",
+    "buildingBlock",
+    "houseFloor",
+    "landmarkArea",
+  ];
+  const missingFields = requiredFields.filter(
+    (field) => !(field in addressPayload)
+  );
+  if (missingFields.length > 0) {
+    return res
+      .status(400)
+      .json({ error: `Missing required fields: ${missingFields.join(", ")}` });
+  }
+  const userId = req.data.id;
+  const addressId = bookidgen("ADDRESS-", 14522, 199585); // Generate address ID
+
+  try {
+    const user = await User.findOne({ id: userId });
+
+    if (user) {
+      const newAddress = {
+        id: addressId,
+        ...addressPayload,
+      };
+      // Add the generated ID to the address and push it to the addresses array
+      user.addresses.push(newAddress);
+      await user.save();
+
+      return res
+        .status(200)
+        .json({ status: true, message: "Address added successfully" });
+    } else {
+      return res.status(404).json({ status: false, message: "User not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ status: false, message: error.message });
+  }
+};
+
+const deleteAddress = async (req, res) => {
+  const userId = req.data.id;
+  const addressIdToDelete = req.body.id;
+  console.log(addressIdToDelete);
+  if (!addressIdToDelete) {
+    return res
+      .status(400)
+      .json({ status: false, message: "AddressId is mandatory" });
+  }
+  try {
+    const user = await User.findOne({ id: userId });
+    if (user) {
+      console.log(user.addresses);
+      const addressIndex = user.addresses.findIndex(
+        (address) => address.id === addressIdToDelete
+      );
+
+      if (addressIndex !== -1) {
+        user.addresses.splice(addressIndex, 1);
+        await user.save();
+        return res.status(200).json({
+          status: true,
+          message: "Address deleted successfully",
+        });
+      } else {
+        return res
+          .status(404)
+          .json({ status: false, message: "Address not found" });
+      }
+    } else {
+      return res.status(404).json({ status: false, message: "User not found" });
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: false, message: "Failed to delete address", error });
+  }
+};
+const updateFirstName = async (req, res) => {
+  const { fullName } = req.body;
+  const userId = req.data.id;
+
+  try {
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ error: "User ID is required", status: false });
+    }
+    if (typeof fullName !== "string" || fullName.trim() === "") {
+      return res.status(400).json({
+        error: "First name should be a non-empty string",
+        status: false,
+      });
+    }
+
+    const updatedUser = await User.findOneAndUpdate(
+      { id: userId },
+      { $set: { fullName: fullName } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found", status: false });
+    }
+
+    return res.json({
+      message: "First name updated successfully",
+      status: true,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message, status: false });
+  }
+};
 
 module.exports = {
   signUp,
@@ -412,4 +535,7 @@ module.exports = {
   getAllUser,
   order,
   myOrder,
+  addAddress,
+  deleteAddress,
+  updateFirstName,
 };

@@ -14,5 +14,8 @@ router.post("/chat", user.getChatMessage);
 router.get("/all-user", user.getAllUser);
 router.post("/add/order", auth, user.order);
 router.get("/my/order", auth, user.myOrder);
+router.post("/add/address", auth, user.addAddress);
+router.post("/delete/address", auth, user.deleteAddress);
+router.post("/update/details", auth, user.updateFirstName);
 
 module.exports = router;
