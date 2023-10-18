@@ -25,10 +25,8 @@ function MenuList() {
   const updatedCatogery = [...["All"], ...category, ...["fav"]];
 
   const [dish, setDish] = useState([]);
-  // console.log(dish, "uohoioi");
   const { isOpen, setIsOpen } = useContext(WholeContext);
   const { cart, addToCart, incrementCartItem, decrementCartItem } = useCart(); // Use the cart state and functions
-  console.log(cart, "uohoioi");
   const handleTabClick = (index) => {
     setSelectedTab(index);
   };
@@ -58,8 +56,6 @@ function MenuList() {
     token: getuserToken,
   };
 
-  console.log(filteredData, "oihhi");
-
   const handleLikeClick = async (id) => {
     if (!getuserToken) {
       setIsOpen(true);
@@ -82,7 +78,6 @@ function MenuList() {
     if (getuserToken) {
       post("api/like", { dishId: id }, headers)
         .then((result) => {
-          console.log(result, "oihohoip");
           if (!result.success) {
             // Revert the local state if the API request fails
             setDish((prevDish) =>

@@ -1,7 +1,6 @@
-import React, { useState , useEffect} from 'react';
-import { get , post } from "../api/ApiService";
+import React, { useState, useEffect } from "react";
+import { get, post } from "../api/ApiService";
 import {
-
   Modal,
   ModalOverlay,
   ModalContent,
@@ -11,20 +10,23 @@ import {
   Button,
   IconButton,
   useDisclosure,
-  useToast
-} from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
-import './AdminViewMenu.css';
+  useToast,
+} from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import "./AdminViewMenu.css";
 
-
-
-const FoodCard = ({foodName, description, price, onDelete , updateRenderData }) => {
+const FoodCard = ({
+  foodName,
+  description,
+  price,
+  onDelete,
+  updateRenderData,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDeleteClick = () => {
     onOpen();
   };
-
 
   const handleConfirmDelete = () => {
     onDelete();
@@ -36,16 +38,16 @@ const FoodCard = ({foodName, description, price, onDelete , updateRenderData }) 
       <h2 className="food-name">{foodName}</h2>
       <p className="food-description">{description}</p>
       <div className="rate-wrap">
-      <p className="food-rate">{price}</p>
-      <IconButton
-        icon={<DeleteIcon />}
-        aria-label="Delete"
-        variant="outline"
-        colorScheme="red"
-        onClick={handleDeleteClick}
-      />
+        <p className="food-rate">{price}</p>
+        <IconButton
+          icon={<DeleteIcon />}
+          aria-label="Delete"
+          variant="outline"
+          colorScheme="red"
+          onClick={handleDeleteClick}
+        />
       </div>
-  
+
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
@@ -65,56 +67,55 @@ const FoodCard = ({foodName, description, price, onDelete , updateRenderData }) 
   );
 };
 
-const FoodList = ({ searchData , updateRenderData}) => {
+const FoodList = ({ searchData, updateRenderData }) => {
   const toast = useToast();
   const [AdminDish, setAdminDish] = useState([]);
-  const [AdminToken , setAdminToken] = useState("")
-  useEffect(() => { 
+  const [AdminToken, setAdminToken] = useState("");
+  useEffect(() => {
     getAllDish();
-  
   }, [updateRenderData]);
   const defaultToastConfig = {
     duration: 2000,
     isClosable: true,
-    position: 'top',
+    position: "top",
   };
   const headers = {
     token: AdminToken,
   };
-  useEffect(()=>{
-    const Token = localStorage.getItem("adminToken")
-    setAdminToken(Token)
-} , [])
+  useEffect(() => {
+    const Token = localStorage.getItem("adminToken");
+    setAdminToken(Token);
+  }, []);
   const getAllDish = async () => {
     const result = await get("api/all/dish");
     setAdminDish(result.data);
   };
   const handleDelete = async (index) => {
     try {
-      const result = await post('api/delete/dish', {
-        id : index
-      } , headers);
-      console.log(result , "oihoihi")
+      const result = await post(
+        "api/delete/dish",
+        {
+          id: index,
+        },
+        headers
+      );
       if (result.status) {
-          toast({
-              title: 'Dish deleted Successfully',
-              description: 'You have successfully deleted.',
-              status: 'success',
-              ...defaultToastConfig,
-          });
-          updateRenderData()
-          
-      }
-    
-
-  } catch (error) {
-      toast({
-          title: 'Dish not deleted Successfully',
-          description: error?.response?.data?.message,
-          status: 'error',
+        toast({
+          title: "Dish deleted Successfully",
+          description: "You have successfully deleted.",
+          status: "success",
           ...defaultToastConfig,
+        });
+        updateRenderData();
+      }
+    } catch (error) {
+      toast({
+        title: "Dish not deleted Successfully",
+        description: error?.response?.data?.message,
+        status: "error",
+        ...defaultToastConfig,
       });
-  }
+    }
   };
 
   const filteredData = AdminDish.filter((item) =>
@@ -124,15 +125,20 @@ const FoodList = ({ searchData , updateRenderData}) => {
   return (
     <div className="food-grid">
       {filteredData.map((food, index) => (
-        <FoodCard key={index} {...food} onDelete={() => handleDelete(food.id)} updateRenderData={updateRenderData} />
+        <FoodCard
+          key={index}
+          {...food}
+          onDelete={() => handleDelete(food.id)}
+          updateRenderData={updateRenderData}
+        />
       ))}
     </div>
   );
 };
 
 const AdminViewMenu = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [renderdata , setRenderdata] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [renderdata, setRenderdata] = useState(false);
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };

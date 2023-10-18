@@ -8,9 +8,12 @@ const instance = axios.create({
   },
 });
 
-export const get = async (url, params = {}) => {
+export const get = async (url, params = {}, headers = {}) => {
   try {
-    const response = await instance.get(url, { params });
+    const response = await instance.get(url, {
+      params: params,
+      headers: headers,
+    });
     return response.data;
   } catch (error) {
     console.log(error.message);

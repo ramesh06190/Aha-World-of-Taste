@@ -5,32 +5,29 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
-  const [userr , setUser] = useState("")
+  const [userr, setUser] = useState("");
   const [adminToken, setAdminToken] = useState("");
   const userId = localStorage.getItem("userId");
-
+  // const [removecheckoutState, setremovecheckoutState] = useState(false)
   useEffect(() => {
     const Token = localStorage.getItem("userToken");
     setAdminToken(Token);
   }, []);
-
+  const headers = {
+    token: adminToken,
+  };
+  const fetchUserDetails = async () => {
+    const result = await post("user/user-detail", {}, headers);
+    if (result && result.user && result.user.cart) {
+      setCart(result.user.cart);
+      setUser(result.user);
+    } else {
+      setCart([]); 
+    }
+  };
   useEffect(() => {
-    const headers = {
-      token: adminToken,
-    };
-
     try {
-      const fetchUserDetails = async () => {
-        const result = await post('user/user-detail', {}, headers);
-        if (result && result.user && result.user.cart) {
-          setCart(result.user.cart); 
-          setUser(result.user); 
-        } else {
-          setCart([]); // Set an empty cart if the response doesn't have one
-        }
-      };
-
-      fetchUserDetails(); // Call the async function
+      fetchUserDetails(); 
     } catch (error) {
       console.error(error, "Error fetching user details");
     }
@@ -42,20 +39,22 @@ export function CartProvider({ children }) {
     };
     if (cart.length > 0) {
       try {
-        const result = post('user/update-cart', {
-          userId: userId,
-          cart: cart,
-        }, headers);
+        const result = post(
+          "user/update-cart",
+          {
+            userId: userId,
+            cart: cart,
+          },
+          headers
+        );
 
         if (result.status) {
-          console.log(result, "Cart updated successfully");
         }
       } catch (error) {
         console.error(error, "Error updating cart");
       }
     }
   }, [cart, adminToken, userId]);
-
 
   const addToCart = (item) => {
     // Check if the item is already in the cart
@@ -80,6 +79,7 @@ export function CartProvider({ children }) {
         setCart(cart.filter((item) => item.id !== itemId));
       }
     }
+    // setremovecheckoutState(true)
   };
 
   const incrementCartItem = (itemId) => {
@@ -93,13 +93,25 @@ export function CartProvider({ children }) {
   const decrementCartItem = (itemId) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === itemId ? { ...item, count: Math.max(item.count - 1, 0) } : item
+        item.id === itemId
+          ? { ...item, count: Math.max(item.count - 1, 0) }
+          : item
       )
     );
   };
 
   return (
-    <CartContext.Provider value={{ cart, userr , addToCart, removeFromCart, incrementCartItem, decrementCartItem }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        userr,
+        addToCart,
+        removeFromCart,
+        incrementCartItem,
+        decrementCartItem,
+        fetchUserDetails
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

@@ -12,7 +12,7 @@ import {
   Text,
   useToast,
   Select,
-  Box// Import the Select component
+  Box, // Import the Select component
 } from "@chakra-ui/react";
 import "./AdminAddMenu.css";
 import axios from "axios";
@@ -23,13 +23,12 @@ function AddItemForm() {
     category: "", // Initialize category with an empty string
     price: "",
     description: "",
-    image: ""
+    image: "",
   });
   const [AdminToken, setAdminToken] = useState("");
   const [AdminDish, setAdminDish] = useState([]);
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log(category, "oigoig");
 
   const toast = useToast();
 
@@ -53,19 +52,17 @@ function AddItemForm() {
     }
   };
 
-
   const [formErrors, setFormErrors] = useState({
     foodName: false,
     description: false,
     price: false,
     category: false,
-
   });
 
   const defaultToastConfig = {
     duration: 2000,
     isClosable: true,
-    position: 'top',
+    position: "top",
   };
 
   const handleInputChange = (e) => {
@@ -110,8 +107,6 @@ function AddItemForm() {
       setCategory(result.data);
     };
     getCategory();
-
-
   }, []);
 
   const handleAddItem = async () => {
@@ -122,29 +117,28 @@ function AddItemForm() {
       // Display form validation errors in the UI
       try {
         // Make a POST request to your API with the item data
-        const result = await post('api/add/dish', { ...payload }, headers);
+        const result = await post("api/add/dish", { ...payload }, headers);
         if (result.status) {
           // Clear the form fields
           setItem({
             foodName: "",
             category: "",
             price: "",
-            description: ""
+            description: "",
           });
 
           // Display a success message
           toast({
             title: "Item Added Successfully",
             status: "success",
-            ...defaultToastConfig
+            ...defaultToastConfig,
           });
         }
       } catch (error) {
-        console.log(error, "oihihih");
         toast({
-          title: 'Login Error',
+          title: "Login Error",
           description: error?.response?.data?.message,
-          status: 'error',
+          status: "error",
           ...defaultToastConfig,
         });
       }
@@ -156,7 +150,14 @@ function AddItemForm() {
 
   return (
     <div className="addmenu-con">
-      <Flex direction="column" w="100%" maxW="md" p={4} borderWidth={1} borderRadius="md">
+      <Flex
+        direction="column"
+        w="100%"
+        maxW="md"
+        p={4}
+        borderWidth={1}
+        borderRadius="md"
+      >
         <VStack spacing={4} align="stretch">
           <FormControl isRequired isInvalid={formErrors.foodName}>
             <FormLabel>Item Name</FormLabel>
@@ -203,7 +204,9 @@ function AddItemForm() {
               value={item.category}
               onChange={handleInputChange}
             >
-              <option value="" disabled>Select a category</option>
+              <option value="" disabled>
+                Select a category
+              </option>
               {category.map((category) => (
                 <option key={category} value={category}>
                   {category}
@@ -230,10 +233,12 @@ function AddItemForm() {
               backgroundColor: "#FFC107", // Change the background color on hover
             }}
           >
-            {
-              loading ? <span className='loadingg'>loading</span> : "Choose File"
-            }
-        
+            {loading ? (
+              <span className="loadingg">loading</span>
+            ) : (
+              "Choose File"
+            )}
+
             <Input
               type="file"
               accept="image/*"
