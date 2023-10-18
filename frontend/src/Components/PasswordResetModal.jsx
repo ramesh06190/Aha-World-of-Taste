@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { post } from '../api/ApiService';
+import React, { useState } from "react";
+import { post } from "../api/ApiService";
 import {
   Modal,
   ModalOverlay,
@@ -14,31 +14,29 @@ import {
   FormHelperText,
   InputGroup,
   InputRightElement,
-  useToast
-} from '@chakra-ui/react';
-import { PinInput, PinInputField } from '@chakra-ui/react';
-import "./passwordStyle.css"
+  useToast,
+} from "@chakra-ui/react";
+import { PinInput, PinInputField } from "@chakra-ui/react";
+import "./passwordStyle.css";
 
 const ResetDetails = {
-
   email: "",
   password: "",
-  otp: ""
+  otp: "",
 };
 
-
 const PasswordResetModal = ({ isOpen, onClose }) => {
-  const [email, setEmail] = useState('');;
+  const [email, setEmail] = useState("");
   const [Reset, setReset] = useState("");
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isEmailValid, setEmailValid] = useState(false);
   const [hideEmail, SetHideEmail] = useState(true);
   const [show, setShow] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const toast = useToast();
-  const [pinValues, setPinValues] = useState(['', '', '', '', '', '']);
+  const [pinValues, setPinValues] = useState(["", "", "", "", "", ""]);
   const handleClick = () => setShow(!show);
 
   const validateEmail = (email) => {
@@ -48,17 +46,15 @@ const PasswordResetModal = ({ isOpen, onClose }) => {
   const defaultToastConfig = {
     duration: 2000,
     isClosable: true,
-    position: 'top',
+    position: "top",
   };
   const handleInputChange = (index, value) => {
     const newPinValues = [...pinValues];
     newPinValues[index] = value;
     setPinValues(newPinValues);
-    const otpValue = newPinValues.join('');
-    setReset(otpValue)
-
+    const otpValue = newPinValues.join("");
+    setReset(otpValue);
   };
-
 
   const validatePassword = () => {
     // Implement your password validation logic here
@@ -76,23 +72,20 @@ const PasswordResetModal = ({ isOpen, onClose }) => {
       SetHideEmail(false);
       try {
         // Make a POST request to your API with the item data
-        const result = await post('user/forgot-password', { email: email },);
+        const result = await post("user/forgot-password", { email: email });
         if (result.status) {
-
-
           // Display a success message
           toast({
             title: "Reset Token was send to mail Successfully",
             status: "success",
-            ...defaultToastConfig
+            ...defaultToastConfig,
           });
         }
       } catch (error) {
-        console.log(error, "oihihih")
         toast({
-          title: ' Error in sending reset token to mail',
+          title: " Error in sending reset token to mail",
           description: error?.response?.data?.message,
-          status: 'error',
+          status: "error",
           ...defaultToastConfig,
         });
       }
@@ -105,7 +98,6 @@ const PasswordResetModal = ({ isOpen, onClose }) => {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-
   };
 
   const handleConfirmPasswordChange = (e) => {
@@ -127,27 +119,25 @@ const PasswordResetModal = ({ isOpen, onClose }) => {
     if (!passwordError) {
       try {
         // Make a POST request to your API with the item data
-        const result = await post('user/reset-password', {
+        const result = await post("user/reset-password", {
           email: email,
           resetToken: Reset,
-          newPassword: password
-        },);
+          newPassword: password,
+        });
         if (result.status) {
-
-
           // Display a success message
           toast({
             title: "Password Reset Successfully",
             status: "success",
-            ...defaultToastConfig
+            ...defaultToastConfig,
           });
           onClose();
         }
       } catch (error) {
         toast({
-          title: ' Error in changing Password',
+          title: " Error in changing Password",
           description: error?.response?.data?.message,
-          status: 'error',
+          status: "error",
           ...defaultToastConfig,
         });
       }
@@ -187,7 +177,10 @@ const PasswordResetModal = ({ isOpen, onClose }) => {
             <>
               <FormControl fullWidth>
                 <FormLabel>Enter the PIN received in your email.</FormLabel>
-                <PinInput size="lg" onComplete={(value) => console.log('Completed:', value)}>
+                <PinInput
+                  size="lg"
+                  onComplete={(value) => console.log("Completed:", value)}
+                >
                   {pinValues.map((value, index) => (
                     <PinInputField
                       key={index}
@@ -200,23 +193,21 @@ const PasswordResetModal = ({ isOpen, onClose }) => {
               </FormControl>
               <FormControl fullWidth>
                 <FormLabel>New Password</FormLabel>
-                <InputGroup size='md'>
+                <InputGroup size="md">
                   <Input
                     value={password}
                     onChange={handlePasswordChange}
                     name="password"
-                    pr='4.5rem'
-                    type={show ? 'text' : 'password'}
-                    placeholder='Enter password'
-
+                    pr="4.5rem"
+                    type={show ? "text" : "password"}
+                    placeholder="Enter password"
                   />
-                  <InputRightElement width='4.5rem'>
-                    <Button h='1.75rem' size='sm' onClick={handleClick}>
-                      {show ? 'Hide' : 'Show'}
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={handleClick}>
+                      {show ? "Hide" : "Show"}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-
               </FormControl>
               <FormControl>
                 <FormLabel>Confirm Password</FormLabel>

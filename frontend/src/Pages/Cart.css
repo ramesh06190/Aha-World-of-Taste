@@ -1,4 +1,4 @@
-.cart-container{
+.cart-container {
     background-image: url("../assets/./chinese-food-chinese-traditional-cuisine-dishes-light-concrete-background-top-view-copy-space_233226-908.avif");
     background-repeat: no-repeat !important;
     position: relative;
@@ -7,6 +7,50 @@
     background-position: bottom;
     background-repeat: no-repeat;
 }
-.cart-con-card{
+
+.cart-con-card {
     width: 50%;
 }
+
+.orderSucess {
+    width: 100%;
+    min-height: 100vh;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.orderSucess img {
+    width: 150px;
+    height: 150px;
+    
+}
+.sucesscard{
+    display: flex;
+    justify-content: center;
+    margin-top: -150px;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+.sucesscard p {
+    font-size: 18px;
+    margin: 10px 0;
+}  
+
+.changeAddressbtn {
+    color: black; /* White text color */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor style on hover */
+    font-size: 16px; /* Font size */
+    margin: 0 !important;
+  }
+  
+  .changeaddresscon{
+    text-align: end;
+    margin: 0 !important;
+  }

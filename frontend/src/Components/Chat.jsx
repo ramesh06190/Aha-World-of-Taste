@@ -3,13 +3,12 @@ import "./Chat.css"; // Import your CSS file
 import io from "socket.io-client";
 import { baseURL } from "../api/ApiService";
 import { get, post } from "../api/ApiService";
-import Chatimg from "../assets/chat2_116191.png"
+import Chatimg from "../assets/chat2_116191.png";
 function Chat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [value, setValue] = useState("");
   const [messages, setMessages] = useState([]);
   const roomId = localStorage.getItem("userId");
-  console.log(roomId);
   const chatMessageParentRef = useRef(null);
   const admin = false;
   const socket = io(baseURL);
@@ -29,7 +28,6 @@ function Chat() {
   };
 
   socket.on("new message", (message) => {
-    console.log(message, messages, "reciecee");
     if (messages) {
       // Update messages by creating a new array with the previous messages and the new message
       setMessages((prevMessages) => [...prevMessages, message]);
@@ -53,7 +51,6 @@ function Chat() {
     setValue("");
   };
   const GetChat = async (id) => {
-    console.log("iddddd");
     const postData = {
       userId: id,
     };
@@ -72,7 +69,6 @@ function Chat() {
         chatMessageParentRef.current.scrollHeight;
     }
   }, [messages]);
-  console.log(messages, "list");
   function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
     return `${date.toLocaleTimeString([], {
@@ -111,13 +107,19 @@ function Chat() {
               onChange={(e) => setValue(e.target.value)}
               placeholder="Type a message..."
             />
-            <button onClick={sendMessage} className="chat-sendbtn">Send</button>
+            <button onClick={sendMessage} className="chat-sendbtn">
+              Send
+            </button>
           </div>
         )}
       </div>
       {roomId && (
         <button className="toggle-chat" onClick={toggleChat}>
-          {isChatOpen ? <div className="toogle-close-chat">Close Chat</div> : <img  src={Chatimg} alt=""></img>}
+          {isChatOpen ? (
+            <div className="toogle-close-chat">Close Chat</div>
+          ) : (
+            <img src={Chatimg} alt=""></img>
+          )}
         </button>
       )}
     </div>

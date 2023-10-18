@@ -1,25 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import './AdminViewMenu.css'; // Import your CSS file for styling
-import { RiEdit2Line } from 'react-icons/ri'; // Import the edit icon
-import "./AdminEditMenu.css"
+import React, { useState, useEffect } from "react";
+import "./AdminViewMenu.css"; // Import your CSS file for styling
+import { RiEdit2Line } from "react-icons/ri"; // Import the edit icon
+import "./AdminEditMenu.css";
 import { Input } from "@chakra-ui/react";
 import { post, get } from "../api/ApiService"; // Import the put function from your API service
 import axios from "axios";
-import {
-  useToast, Box
-} from "@chakra-ui/react";
+import { useToast, Box } from "@chakra-ui/react";
 
-const FoodCard = ({ id, foodName, description, price, category, updateRenderData }) => {
+const FoodCard = ({
+  id,
+  foodName,
+  description,
+  price,
+  category,
+  updateRenderData,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(foodName);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedRate, setEditedRate] = useState(price);
   const [editedcategory, setEditedcategory] = useState(category);
-  const [AdminToken, setAdminToken] = useState("")
+  const [AdminToken, setAdminToken] = useState("");
   const [AdminDish, setAdminDish] = useState([]);
   const [ImageFile, setImageFile] = useState("");
   const [loading, setLoading] = useState(false);
-
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -31,7 +35,7 @@ const FoodCard = ({ id, foodName, description, price, category, updateRenderData
   const defaultToastConfig = {
     duration: 2000,
     isClosable: true,
-    position: 'top',
+    position: "top",
   };
 
   const uploadImage = async (e) => {
@@ -51,11 +55,10 @@ const FoodCard = ({ id, foodName, description, price, category, updateRenderData
     }
   };
 
-
   useEffect(() => {
-    const Token = localStorage.getItem("adminToken")
-    setAdminToken(Token)
-  }, [])
+    const Token = localStorage.getItem("adminToken");
+    setAdminToken(Token);
+  }, []);
   const toast = useToast();
   const handleSaveClick = async (myid) => {
     setIsEditing(false);
@@ -71,37 +74,34 @@ const FoodCard = ({ id, foodName, description, price, category, updateRenderData
       return;
     }
 
-
     const updatedFoodData = {
       id: myid,
       foodName: editedName,
       category: editedcategory,
       description: editedDescription,
       price: editedRate,
-      image: ""
+      image: "",
     };
 
     try {
       // Make a PUT request to update the food item
       let payload = { ...updatedFoodData };
       payload.image = ImageFile;
-      const result = await post('api/edit/dish', { ...payload }, headers);
+      const result = await post("api/edit/dish", { ...payload }, headers);
 
       if (result.status) {
-
         toast({
           title: "Item Updated Successfully",
           status: "success",
-          ...defaultToastConfig
+          ...defaultToastConfig,
         });
-        updateRenderData()
+        updateRenderData();
       }
     } catch (error) {
-      console.log(error, "oihihih")
       toast({
-        title: 'Error in Updateing Item',
+        title: "Error in Updateing Item",
         description: error?.response?.data?.message,
-        status: 'error',
+        status: "error",
         ...defaultToastConfig,
       });
     }
@@ -133,8 +133,6 @@ const FoodCard = ({ id, foodName, description, price, category, updateRenderData
       </p>
       <p className="food-description">
         {isEditing ? (
-
-
           <Input
             type="text"
             value={editedcategory}
@@ -157,7 +155,7 @@ const FoodCard = ({ id, foodName, description, price, category, updateRenderData
             price
           )}
         </p>
-        <div className='custom-slect'>
+        <div className="custom-slect">
           {isEditing ? (
             <Box
               as="label" // Use a label element to style the file input
@@ -170,9 +168,11 @@ const FoodCard = ({ id, foodName, description, price, category, updateRenderData
                 backgroundColor: "#FFC107", // Change the background color on hover
               }}
             >
-                {
-              loading ? <span className='loadingg'>loading</span> : "Choose File"
-            }
+              {loading ? (
+                <span className="loadingg">loading</span>
+              ) : (
+                "Choose File"
+              )}
               <Input
                 type="file"
                 accept="image/*"
@@ -186,17 +186,13 @@ const FoodCard = ({ id, foodName, description, price, category, updateRenderData
           )}
         </div>
         {isEditing ? (
-          <button onClick={(() => handleSaveClick(id))}>Save</button>
+          <button onClick={() => handleSaveClick(id)}>Save</button>
         ) : (
           <button onClick={handleEditClick}>
             <RiEdit2Line /> Edit
           </button>
         )}
-
       </div>
-
-
-
     </div>
   );
 };
@@ -205,7 +201,6 @@ const FoodList = ({ searchData, updateRenderData }) => {
   const [AdminDish, setAdminDish] = useState([]);
   useEffect(() => {
     getAllDish();
-
   }, [updateRenderData]);
   const getAllDish = async () => {
     const result = await get("api/all/dish");
@@ -226,8 +221,8 @@ const FoodList = ({ searchData, updateRenderData }) => {
 };
 
 const AdminEditMenu = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [renderdata, setRenderdata] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [renderdata, setRenderdata] = useState(false);
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };

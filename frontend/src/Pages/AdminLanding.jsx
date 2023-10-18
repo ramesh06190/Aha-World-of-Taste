@@ -25,14 +25,10 @@ function AdminLanding() {
   };
 
   const handleSendMessage = (message) => {
-    console.log(message, "send");
     socket.emit("send message", roomId, message, admin ? "admin" : "user");
   };
 
   socket.on("new message", (message) => {
-    console.log(message, "recieve");
-    console.log(userMessages.length);
-
     if (message) {
       setUserMessages((prev) => [...prev, message]);
     }
@@ -40,13 +36,11 @@ function AdminLanding() {
   useEffect(() => {
     socket.on("disconnect", () => {});
   }, []);
-  console.log(userMessages);
   useEffect(() => {
     socket.on("reconnect", (attemptNumber) => {});
   }, []);
 
   const handleChange = (event, newValue) => {
-    console.log("called time");
     const selectedUserId = user[newValue].id;
     setRoomId(selectedUserId);
     handleJoinRoom(selectedUserId);
