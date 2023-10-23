@@ -155,7 +155,7 @@ const updateCart = async (req, res) => {
         .status(400)
         .json({ error: "User ID is required", status: false });
     }
-    if (!Array.isArray(cart) || cart.length === 0) {
+    if (!Array.isArray(cart)) {
       return res
         .status(400)
         .json({ error: "Cart should be a non-empty array", status: false });
