@@ -7,6 +7,7 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [userr, setUser] = useState("");
   const [adminToken, setAdminToken] = useState("");
+  const [status, setStatus] = useState(false);
   const userId = localStorage.getItem("userId");
   // const [removecheckoutState, setremovecheckoutState] = useState(false)
   useEffect(() => {
@@ -21,13 +22,14 @@ export function CartProvider({ children }) {
     if (result && result.user && result.user.cart) {
       setCart(result.user.cart);
       setUser(result.user);
+      setStatus(true);
     } else {
-      setCart([]); 
+      setCart([]);
     }
   };
   useEffect(() => {
     try {
-      fetchUserDetails(); 
+      fetchUserDetails();
     } catch (error) {
       console.error(error, "Error fetching user details");
     }
@@ -37,7 +39,7 @@ export function CartProvider({ children }) {
     const headers = {
       token: adminToken,
     };
-    if (cart.length > 0) {
+    if (status) {
       try {
         const result = post(
           "user/update-cart",
@@ -109,7 +111,7 @@ export function CartProvider({ children }) {
         removeFromCart,
         incrementCartItem,
         decrementCartItem,
-        fetchUserDetails
+        fetchUserDetails,
       }}
     >
       {children}

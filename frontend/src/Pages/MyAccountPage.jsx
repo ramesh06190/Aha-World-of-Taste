@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { get, post } from "../api/ApiService";
+import DeleteImg from "../assets/deleteimg.png";
 import {
   Box,
   Tabs,
@@ -24,15 +25,20 @@ import {
   ListItem,
   IconButton,
   ListIcon,
+  Spinner,
+  Center,
+  useToast,
 } from "@chakra-ui/react";
 
 const MyAccountPage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const getuserToken = localStorage.getItem("userToken");
   const [orders, setOrders] = useState([]);
-  console.log(orders , "iikv")
+  const toast = useToast();
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
+  const [isLoadingOrders, setIsLoadingOrders] = useState(true); // Loader for Orders tab
+  const [isLoadingAddress, setIsLoadingAddress] = useState(true);
   const handleTabChange = (index) => {
     setSelectedTab(index);
   };
@@ -48,23 +54,57 @@ const MyAccountPage = () => {
   };
   function getStatusStyle(status) {
     switch (status) {
-      case 'Pending':
-        return { backgroundColor: 'orange' , color: "white" , padding:"2px 8px" , borderRadius:"5px"}; 
-      case 'Order Accepted':
-        return { backgroundColor: 'green' , color: "white" , padding:"2px 8px" , borderRadius:"5px" }; 
-      case 'Order Prepared':
-        return { backgroundColor: 'blue' , color: "white" , padding:"2px 8px" , borderRadius:"5px" };
-      case 'Out for Delivery':
-        return { backgroundColor: 'purple' , color: "white" , padding:"2px 8px" , borderRadius:"5px" }; 
-      case 'Delivered':
-        return { backgroundColor: 'lime' , color: "black" , padding:"2px 8px" , borderRadius:"5px" }; 
-      case 'Order Canceled':
-        return { backgroundColor: 'red' , color: "white" , padding:"2px 8px" , borderRadius:"5px"}; 
+      case "Pending":
+        return {
+          backgroundColor: "orange",
+          color: "white",
+          padding: "2px 8px",
+          borderRadius: "5px",
+        };
+      case "Order Accepted":
+        return {
+          backgroundColor: "green",
+          color: "white",
+          padding: "2px 8px",
+          borderRadius: "5px",
+        };
+      case "Order Prepared":
+        return {
+          backgroundColor: "blue",
+          color: "white",
+          padding: "2px 8px",
+          borderRadius: "5px",
+        };
+      case "Out for Delivery":
+        return {
+          backgroundColor: "purple",
+          color: "white",
+          padding: "2px 8px",
+          borderRadius: "5px",
+        };
+      case "Delivered":
+        return {
+          backgroundColor: "lime",
+          color: "black",
+          padding: "2px 8px",
+          borderRadius: "5px",
+        };
+      case "Order Canceled":
+        return {
+          backgroundColor: "red",
+          color: "white",
+          padding: "2px 8px",
+          borderRadius: "5px",
+        };
       default:
-        return {}; 
+        return {};
     }
   }
-  
+  const defaultToastConfig = {
+    duration: 2000,
+    isClosable: true,
+    position: "top",
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addressData, setAddressData] = useState({
     houseFloor: "",
@@ -90,12 +130,12 @@ const MyAccountPage = () => {
       const mappedOrders = result?.data?.orders?.map((order) => {
         return {
           id: order.id,
-          rate: order.order.reduce(
-            (totalPrice, dish) => totalPrice + dish.rate * dish.quantity,
-            0
-          ),
+          rate: order.order.reduce((totalPrice, dish) => {
+            console.log(dish.price, dish.count, "dish ere");
+            return totalPrice + dish.price * dish.count;
+          }, 0),
           quantity: order.order.reduce(
-            (totalQuantity, dish) => totalQuantity + dish.quantity,
+            (totalQuantity, dish) => totalQuantity + dish.count,
             0
           ),
           foodName: order.order.map((dish) => dish.foodName).join(", "),
@@ -104,6 +144,8 @@ const MyAccountPage = () => {
         };
       });
       setOrders(mappedOrders);
+      setIsLoadingOrders(false);
+      setIsLoadingAddress(false);
       setSavedAddresses(result?.data?.user?.addresses);
       setFirstName(result?.data?.user?.fullName);
       setEmail(result?.data?.user?.email);
@@ -127,7 +169,18 @@ const MyAccountPage = () => {
     );
     if (result.status) {
       GetDetails();
-      alert("profile updated successfully");
+      toast({
+        title: "profile Updated Sucessfully",
+        status: "success",
+        ...defaultToastConfig,
+      });
+    } else {
+      toast({
+        title: "profile not Updated Sucessfully",
+
+        status: "error",
+        ...defaultToastConfig,
+      });
     }
   };
   const saveAddress = async () => {
@@ -155,7 +208,6 @@ const MyAccountPage = () => {
     { label: "Address", content: "Content for Tab 2" },
     { label: "Profile", content: "Content for Tab 3" },
   ];
-
 
   return (
     <Box bg="gray.200" p={4} minHeight="85vh">
@@ -188,169 +240,206 @@ const MyAccountPage = () => {
           </NavLink>
         </TabList>
         <TabPanels>
-        <TabPanel key={1} p={4} bg="white" boxShadow="lg">
-  <Box minHeight={"86vh"}>
-    {orders.length === 0 ? (
-      <Box
-        h="100%"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        minHeight={"80vh"}
-      >
-        <Text fontSize="lg">No orders to display</Text>
-      </Box>
-    ) : (
-      orders.map((order) => (
-        <Box
-          key={order.id}
-          w="100%"
-          h="150px"
-          borderWidth="1px"
-          borderColor="gray.300"
-          p="4"
-          mb="4"
-          borderRadius="md"
-          display="flex"
-          flexDirection="column"
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Text fontSize="lg">{order.foodName}</Text>
-            <Text fontSize="md" mt="2" style={getStatusStyle(order.status)}>
-              {order.status}
-            </Text>
-          </Box>
-          <Text fontSize="md" mt="2">
-            Rate: ${order.price}
-          </Text>
-          <Text fontSize="md" mt="2">
-            Order ID: {order.id}
-          </Text>
-          <Text fontSize="md" mt="2">
-            Ordered Time: {order.orderedTime}
-          </Text>
-        </Box>
-      ))
-    )}
-  </Box>
-</TabPanel>
-
-
-          <TabPanel key={2} p={4} bg="white" boxShadow="lg">
-            <Box height="86vh">
-              <Box p={4}>
-                <Text fontSize="2xl" fontWeight="bold">
-                  All Saved Addresses
-                </Text>
-                <Button variant="outline" float="right" onClick={openModal}>
-                  Add New Address
-                </Button>
-
-                <Modal isOpen={isModalOpen} onClose={closeModal}>
-                  <ModalOverlay />
-                  <ModalContent>
-                    <ModalHeader>Enter Location Information</ModalHeader>
-                    <ModalBody>
-                      <Input
-                        name="houseFloor"
-                        placeholder="House No. & Floor*"
-                        value={addressData.houseFloor}
-                        onChange={handleInputChange}
-                      />
-                      <Input
-                        name="buildingBlock"
-                        placeholder="Building & Block No.*"
-                        value={addressData.buildingBlock}
-                        onChange={handleInputChange}
-                      />
-                      <Input
-                        name="landmarkArea"
-                        placeholder="Landmark & Area Name (Optional)"
-                        value={addressData.landmarkArea}
-                        onChange={handleInputChange}
-                      />
-                      <Select
-                        name="addressType"
-                        placeholder="Select Address Type"
-                        value={addressData.addressType}
-                        onChange={handleInputChange}
+          {isLoadingOrders ? ( // Display loader while data is loading
+            <TabPanel key={1} p={4} bg="white" boxShadow="lg">
+              <Center h="80vh">
+                <Spinner size="xl" />
+              </Center>
+            </TabPanel>
+          ) : (
+            <TabPanel
+              key={1}
+              p={4}
+              bg="white"
+              boxShadow="lg"
+              borderRadius={"5px"}
+            >
+              <Box minHeight={"86vh"}>
+                {orders.length === 0 ? (
+                  <Box
+                    h="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    minHeight={"80vh"}
+                  >
+                    <Text fontSize="lg">No orders to display</Text>
+                  </Box>
+                ) : (
+                  orders.map((order) => (
+                    <Box
+                      key={order.id}
+                      w="100%"
+                      h="150px"
+                      borderWidth="1px"
+                      borderColor="gray.300"
+                      p="4"
+                      mb="4"
+                      borderRadius="md"
+                      display="flex"
+                      flexDirection="column"
+                    >
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
                       >
-                        <option value="home">Home</option>
-                        <option value="office">Office</option>
-                        <option value="other">Other</option>
-                      </Select>
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button colorScheme="blue" mr={3} onClick={saveAddress}>
-                        Save
-                      </Button>
-                      <Button onClick={closeModal}>Close</Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
-
-                <List mt={4} marginTop={"100px"}>
-  {savedAddresses.length === 0 ? (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      minHeight={"60vh"}
-    >
-      <Text fontSize="lg">No addresses to display</Text>
-    </Box>
-  ) : (
-    savedAddresses.map((address, index) => (
-      <ListItem
-        key={index}
-        display="flex"
-        alignItems="center"
-        p={2}
-        m={"15px 2px"}
-        border={"1px"}
-        borderColor="black"
-        borderRadius={5}
-      >
-        <ListIcon color="green.500" />
-        <Box flex="1">
-          <Text fontWeight="bold">
-            Address Type: {address.addressType}
-          </Text>
-          <Text>
-            {address.houseFloor},{address.buildingBlock},{" "}
-            {address.landmarkArea}{" "}
-          </Text>
-        </Box>
-        <IconButton
-          colorScheme="red"
-          aria-label="Delete"
-          // icon={<CloseIcon />}
-          onClick={async () => {
-            const result = await post(
-              "user/delete/address",
-              {
-                id: address.id,
-              },
-              headers
-            );
-            if (result.status) {
-              GetDetails();
-            }
-          }}
-        />
-      </ListItem>
-    ))
-  )}
-</List>
-
+                        <Text fontSize="lg">{order.foodName}</Text>
+                        <Text
+                          fontSize="md"
+                          mt="2"
+                          style={getStatusStyle(order.status)}
+                        >
+                          {order.status}
+                        </Text>
+                      </Box>
+                      <Text fontSize="md" mt="2">
+                        Rate: ${order.rate}
+                      </Text>
+                      <Text fontSize="md" mt="2">
+                        Order ID: {order.id}
+                      </Text>
+                      <Text fontSize="md" mt="2">
+                        Ordered Time: {order.orderedTime}
+                      </Text>
+                    </Box>
+                  ))
+                )}
               </Box>
-            </Box>
-          </TabPanel>
-          <TabPanel key={3} p={4} bg="white" boxShadow="lg">
+            </TabPanel>
+          )}
+
+          {isLoadingAddress ? (
+            <TabPanel key={1} p={4} bg="white" boxShadow="lg">
+              <Center h="80vh">
+                <Spinner size="xl" />
+              </Center>
+            </TabPanel>
+          ) : (
+            <TabPanel
+              key={2}
+              p={4}
+              bg="white"
+              boxShadow="lg"
+              borderRadius={"5px"}
+            >
+              <Box minHeight="86vh">
+                <Box p={4}>
+                  <Text fontSize="2xl" fontWeight="bold">
+                    All Saved Addresses
+                  </Text>
+                  <Button variant="outline" float="right" onClick={openModal}>
+                    Add New Address
+                  </Button>
+
+                  <Modal isOpen={isModalOpen} onClose={closeModal}>
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Enter Location Information</ModalHeader>
+                      <ModalBody>
+                        <Input
+                          name="houseFloor"
+                          placeholder="House No. & Floor*"
+                          value={addressData.houseFloor}
+                          onChange={handleInputChange}
+                        />
+                        <Input
+                          name="buildingBlock"
+                          placeholder="Building & Block No.*"
+                          value={addressData.buildingBlock}
+                          onChange={handleInputChange}
+                        />
+                        <Input
+                          name="landmarkArea"
+                          placeholder="Landmark & Area Name (Optional)"
+                          value={addressData.landmarkArea}
+                          onChange={handleInputChange}
+                        />
+                        <Select
+                          name="addressType"
+                          placeholder="Select Address Type"
+                          value={addressData.addressType}
+                          onChange={handleInputChange}
+                        >
+                          <option value="home">Home</option>
+                          <option value="office">Office</option>
+                          <option value="other">Other</option>
+                        </Select>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={saveAddress}>
+                          Save
+                        </Button>
+                        <Button onClick={closeModal}>Close</Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+
+                  <List mt={4} marginTop={"100px"}>
+                    {savedAddresses.length === 0 ? (
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        minHeight={"60vh"}
+                      >
+                        <Text fontSize="lg">No addresses to display</Text>
+                      </Box>
+                    ) : (
+                      savedAddresses.map((address, index) => (
+                        <ListItem
+                          key={index}
+                          display="flex"
+                          alignItems="center"
+                          p={2}
+                          m={"15px 2px"}
+                          border={"1px"}
+                          borderColor="black"
+                          borderRadius={5}
+                        >
+                          <ListIcon color="green.500" />
+                          <Box flex="1">
+                            <Text fontWeight="bold">
+                              Address Type: {address.addressType}
+                            </Text>
+                            <Text>
+                              {address.houseFloor},{address.buildingBlock},{" "}
+                              {address.landmarkArea}{" "}
+                            </Text>
+                          </Box>
+                          <div
+                            className="addressDel"
+                            onClick={async () => {
+                              const result = await post(
+                                "user/delete/address",
+                                {
+                                  id: address.id,
+                                },
+                                headers
+                              );
+                              if (result.status) {
+                                GetDetails();
+                              }
+                            }}
+                          >
+                            <img src={DeleteImg} alt="" />
+                          </div>
+                        </ListItem>
+                      ))
+                    )}
+                  </List>
+                </Box>
+              </Box>
+            </TabPanel>
+          )}
+
+          <TabPanel
+            key={3}
+            p={4}
+            bg="white"
+            boxShadow="lg"
+            borderRadius={"5px"}
+          >
             <Box height="85vh" width="100%" margin="10px">
               <FormControl>
                 <FormLabel>First Name</FormLabel>

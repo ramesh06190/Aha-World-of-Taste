@@ -10,6 +10,14 @@
 
 .cart-con-card {
     width: 50%;
+    min-height: 80vh;
+}
+.cart-con-card-empty{
+    width: 50%;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .orderSucess {

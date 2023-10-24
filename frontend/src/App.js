@@ -32,8 +32,8 @@ function App() {
       </Routes>
       <Routes>
             <Route element={<AdminSidebar items={menuItems} />}>
-              <Route path="/admin" element={<AdminLanding />} />
               <Route path="/AdminManageOrders" element={<AdminManageOrders />} />
+              <Route path="/admin" element={<AdminLanding />} />
               <Route path="/AdminMangeReservation" element={<AdminMangeReservation />} />
               <Route path="/AdminViewMenu" element={<AdminViewMenu />} />
               <Route path="/AdminAddMenu" element={<AdminAddMenu />} />

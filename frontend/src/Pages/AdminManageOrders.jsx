@@ -8,268 +8,27 @@ import {
   Td,
   Button,
   Link,
+  Heading
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { get } from "../api/ApiService";
-const dummyData = [
-  {
-    orderID: 1,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 10:30 AM",
-    customerName: "John Doe",
-    orderRate: "$8.99",
-    orderQuantity: 2,
-    status: "delivered",
-  },
-  {
-    orderID: 2,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 11:45 AM",
-    customerName: "Jane Smith",
-    orderRate: "$12.99",
-    orderQuantity: 1,
-    status: "rejected",
-  },
-  {
-    orderID: 3,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-    ],
-    orderReceivedTime: "2023-10-14 1:15 PM",
-    customerName: "Alice Johnson",
-    orderRate: "$10.50",
-    orderQuantity: 3,
-    status: "inProgress",
-  },
-  {
-    orderID: 4,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 2:00 PM",
-    customerName: "Bob Wilson",
-    orderRate: "$15.75",
-    orderQuantity: 2,
-    status: "inProgress",
-  },
-  {
-    orderID: 5,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 3:30 PM",
-    customerName: "Eva Brown",
-    orderRate: "$7.25",
-    orderQuantity: 1,
-    status: "delivered",
-  },
-  {
-    orderID: 6,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 5:00 PM",
-    customerName: "David Lee",
-    orderRate: "$20.99",
-    orderQuantity: 2,
-    status: "inProgress",
-  },
-  {
-    orderID: 7,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 10:30 AM",
-    customerName: "John Doe",
-    orderRate: "$8.99",
-    orderQuantity: 2,
-    status: "delivered",
-  },
-  {
-    orderID: 8,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 11:45 AM",
-    customerName: "Jane Smith",
-    orderRate: "$12.99",
-    orderQuantity: 1,
-    status: "rejected",
-  },
-  {
-    orderID: 9,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 1:15 PM",
-    customerName: "Alice Johnson",
-    orderRate: "$10.50",
-    orderQuantity: 3,
-    status: "inProgress",
-  },
-  {
-    orderID: 10,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 2:00 PM",
-    customerName: "Bob Wilson",
-    orderRate: "$15.75",
-    orderQuantity: 2,
-    status: "inProgress",
-  },
-  {
-    orderID: 11,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 3:30 PM",
-    customerName: "Eva Brown",
-    orderRate: "$7.25",
-    orderQuantity: 1,
-    status: "delivered",
-  },
-  {
-    orderID: 12,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 5:00 PM",
-    customerName: "David Lee",
-    orderRate: "$20.99",
-    orderQuantity: 2,
-    status: "inProgress",
-  },
-  {
-    orderID: 11,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 3:30 PM",
-    customerName: "Eva Brown",
-    orderRate: "$7.25",
-    orderQuantity: 1,
-    status: "delivered",
-  },
-  {
-    orderID: 12,
-    foodName: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Burger", quantity: 3 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-      { name: "Salad", quantity: 4 },
-      { name: "Sushi", quantity: 2 },
-    ],
-    orderReceivedTime: "2023-10-14 5:00 PM",
-    customerName: "David Lee",
-    orderRate: "$20.99",
-    orderQuantity: 2,
-    status: "inProgress",
-  },
-];
+import { color } from "framer-motion";
 
-const pageSize = 10; // Number of items per page
+const pageSize = 10;
 
 const OrderTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRow, setSelectedRow] = useState(null);
   const [order, setOrder] = useState([]);
+  const [sortBy, setSortBy] = useState("orderID");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     GetDetails();
   }, []);
+
+
   const GetDetails = async () => {
     const result = await get("admin/order");
     if (result.status) {
@@ -277,11 +36,48 @@ const OrderTable = () => {
     }
   };
 
+  const toggleSort = (column) => {
+    if (sortBy === column) {
+      // Toggle sorting order if the same column is clicked
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      // If a different column is clicked, set it as the new sorting column
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+  };
+
+  const sortedOrder = [...order].sort((a, b) => {
+    const orderA = a[sortBy];
+    const orderB = b[sortBy];
+  
+    if (orderA === null || orderA === undefined) {
+      return sortOrder === "asc" ? 1 : -1;
+    }
+  
+    if (orderB === null || orderB === undefined) {
+      return sortOrder === "asc" ? -1 : 1;
+    }
+  
+    if (sortOrder === "asc") {
+      if (sortBy === "orderRate" || sortBy === "orderQuantity") {
+        return orderA - orderB; // Sort numerically for these columns
+      }
+      return orderA.localeCompare(orderB);
+    } else {
+      if (sortBy === "orderRate" || sortBy === "orderQuantity") {
+        return orderB - orderA; // Sort numerically for these columns
+      }
+      return orderB.localeCompare(orderA);
+    }
+  });
+
   const navigate = useNavigate();
+
   // Calculate the range of items to display on the current page
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginateData = order.slice(startIndex, endIndex);
+  const paginateData = sortedOrder.slice(startIndex, endIndex);
 
   // Define functions for changing the current page
   const nextPage = () => {
@@ -294,18 +90,26 @@ const OrderTable = () => {
 
   const handleViewStatus = (order) => {
     setSelectedRow(order); // Store the selected row's details in state
-    navigate("/status", { state: { selectedRow: order } }); // Navigate to the '/status' route
+    navigate("/status", {
+      state: {
+        selectedRow: order,
+    
+      },
+    });
   };
+
+
   return (
     <div className="manage-order-container">
+      <Heading p={"18px 20px "}>Manage Orders</Heading>
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th>Order ID</Th>
+            <Th onClick={() => toggleSort("orderID")} style={{ cursor: "pointer" }}>Order ID</Th>
             <Th>Order Received Time</Th>
-            <Th>Customer Name</Th>
-            <Th>Order Rate</Th>
-            <Th>Order Quantity</Th>
+            <Th onClick={() => toggleSort("customerName")} style={{ cursor: "pointer" }}>Customer Name</Th>
+            <Th onClick={() => toggleSort("orderRate")} style={{ cursor: "pointer" }}>Order Rate</Th>
+            <Th onClick={() => toggleSort("orderQuantity")} style={{ cursor: "pointer" }}>Order Quantity</Th>
             <Th>Status</Th>
           </Tr>
         </Thead>
@@ -358,13 +162,13 @@ const OrderTable = () => {
 
       {/* Pagination controls */}
       <div className="pagination-controls">
-        <Button onClick={prevPage} disabled={currentPage === 1}>
+        <button onClick={prevPage} disabled={currentPage === 1}>
           Previous
-        </Button>
+        </button>
         <span>Page {currentPage}</span>
-        <Button onClick={nextPage} disabled={endIndex >= dummyData.length}>
+        <button onClick={nextPage} disabled={endIndex >= order.length}>
           Next
-        </Button>
+        </button>
       </div>
     </div>
   );

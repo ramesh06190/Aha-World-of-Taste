@@ -46,6 +46,7 @@
   min-height: 93vh;
   background-color: rgb(255 255 255 / 0.3);
   backdrop-filter: blur(30px);
+  padding-bottom: 20px;
 }
 .view-status-container{
   min-height: 93vh;
@@ -98,4 +99,70 @@ margin-top: 12px !important;
 /* Customize the color for the rejected status */
 .progress-bar.rejected .progress-fill {
   background-color: red;
+}
+
+
+/* Apply the theme color to the buttons */
+.pagination-controls {
+  text-align: end;
+  margin: 20px 20px;
+  border-radius: 5px;
+}
+
+.pagination-controls button {
+  background-color: #EFD36D;
+  color: #fff;
+  border: none;
+  padding: 4px 20px;
+  cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Add some additional styles to make it look like pagination buttons */
+.pagination-controls button#prevButton {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.pagination-controls button#nextButton {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.pagination-controls span {
+  display: inline-block;
+  padding: 4px 20px;
+  background-color: #fff;
+  color: #000;
+}
+
+/* Style the current page number span */
+.pagination-controls #currentPage {
+  font-weight: bold;
+}
+.chakra-stack .css-ptvylg{
+  width: 100% !important;
+  display: flex !important;
+  /* flex-direction: column !important; */
+  justify-content: space-between !important;
+}
+.css-1zts0j{
+  color: black !important;
+}
+.addressDel{
+  width: 40px;
+  height: 40px;
+  background-color: #e53e3e;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.addressDel img{
+  width: 25px;
+  height: 25px;
 }

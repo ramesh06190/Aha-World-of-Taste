@@ -23,7 +23,7 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import "./Cart.css";
 
 function CartPage() {
-  const { cart, incrementCartItem, decrementCartItem, removeFromCart , fetchUserDetails} =
+  const { cart, incrementCartItem, decrementCartItem, removeFromCart, fetchUserDetails } =
     useCart();
   const getuserToken = localStorage.getItem("userToken");
   const headers = {
@@ -31,9 +31,10 @@ function CartPage() {
   };
   const [dummyAddresses, setDummyAddresses] = useState([]);
   const [address, setAddress] = useState({
-    street: "",
-    house: "",
-    pincode: "",
+    houseFloor: "",
+    buildingBlock: "",
+    landmarkArea: "",
+    addressType: "home",
   });
   useEffect(() => {
     GetDetails();
@@ -43,6 +44,30 @@ function CartPage() {
     if (result.status) {
       setDummyAddresses(result?.data?.user?.addresses);
     }
+  };
+
+  const saveAddress = async () => {
+    const result = await post(
+      "user/add/address",
+      {
+        ...address,
+      },
+      headers
+    );
+    if (result.status) {
+      GetDetails();
+      setAddressModalOpen(false);
+ 
+    }
+    // closeModal();
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setAddress({
+      ...address,
+      [name]: value,
+    });
   };
 
   const [totalPrice, setTotalPrice] = useState(0);
@@ -58,12 +83,7 @@ function CartPage() {
     return total;
   };
 
-  const handleAddressChange = (e) => {
-    setAddress({
-      ...address,
-      [e.target.name]: e.target.value,
-    });
-  };
+
   const userId = localStorage.getItem("userId");
   const handleDeliveryOptionChange = (option) => {
     setDeliveryOption(option);
@@ -100,6 +120,11 @@ function CartPage() {
     setChangeAddressPopupOpen(false);
   };
 
+  const closeChangeAddressPopupNew = () => {
+
+    closeAddressModal();
+
+  }
   // ... (other code)
 
   const handleCheckout = async () => {
@@ -117,6 +142,12 @@ function CartPage() {
 
   };
 
+  const saveaddressandclose = () => {
+    closeAddressModal();
+    saveAddress();
+    GetDetails()
+  }
+
   // Dummy list of addresses
 
   // State to track the selected address from the list
@@ -128,13 +159,6 @@ function CartPage() {
 
 
 
-  // State to track the user input for a new address
-  const [newAddress, setNewAddress] = useState({
-    street: "",
-    house: "",
-    pincode: "",
-  });
-
   const handleDummyAddressChange = (e) => {
     const index = e.target.value;
     setSelectedDummyAddress(dummyAddresses[index]);
@@ -144,6 +168,13 @@ function CartPage() {
 
   return (
     <div className="cart-container">
+         {cart.length === 0 ? ( // Check if the cart is empty
+        <div className="cart-con-card-empty">
+          <Text fontSize="xl" fontWeight="bold" textAlign="center">
+            Your cart is empty.
+          </Text>
+        </div>
+      ) :
       <div className="cart-con-card">
         <Box p={4}>
           <VStack spacing={4} align="stretch">
@@ -215,6 +246,22 @@ function CartPage() {
                 </Flex>
               </Box>
             ))}
+
+            <Box
+              textAlign="end"
+              borderWidth="1px"
+              borderRadius="lg"
+              p={4}
+              borderColor="black"
+            >
+              <Text color="red">
+                Total Price: $
+                {(
+                  calculateTotalPrice() +
+                  (deliveryOption === "delivery" ? deliveryCharges : 0)
+                ).toFixed(2)}
+              </Text>
+            </Box>
             {deliveryOption === "delivery" && (
               <Box
                 borderWidth="1px"
@@ -230,21 +277,7 @@ function CartPage() {
               address.buildingBlock &&
               address.landmarkArea ? (
               <>
-                <Box
-                  textAlign="end"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  p={4}
-                  borderColor="black"
-                >
-                  <Text color="red">
-                    Total Price: $
-                    {(
-                      calculateTotalPrice() +
-                      (deliveryOption === "delivery" ? deliveryCharges : 0)
-                    ).toFixed(2)}
-                  </Text>
-                </Box>
+
                 <Text color="green" textAlign="end" fontSize="lg" fontWeight="bold">
                   Address: {address.houseFloor}, {address.buildingBlock},{" "}
                   {address.landmarkArea}
@@ -270,15 +303,13 @@ function CartPage() {
               </>
             ) : (
               <Button backgroundColor="#EFD36D" onClick={openAddressModal}>
-                {address.street || address.house || address.pincode
-                  ? "Edit Address"
-                  : "Add Address"}
+               Add Address
               </Button>
             )}
           </VStack>
         </Box>
       </div>
-
+}
       {/* Address Modal */}
       <Modal isOpen={isAddressModalOpen} onClose={closeAddressModal}>
         <ModalOverlay />
@@ -292,7 +323,7 @@ function CartPage() {
               borderColor="black"
               placeholder="Enter Street Address"
               value={address.houseFloor}
-              onChange={handleAddressChange}
+              onChange={handleInputChange}
             />
             <Input
               margin={"6px 0px"}
@@ -300,7 +331,7 @@ function CartPage() {
               borderColor="black"
               placeholder="Enter House No"
               value={address.buildingBlock}
-              onChange={handleAddressChange}
+              onChange={handleInputChange}
             />
             <Input
               margin={"6px 0px"}
@@ -308,8 +339,22 @@ function CartPage() {
               borderColor="black"
               placeholder="Enter Pincode"
               value={address.landmarkArea}
-              onChange={handleAddressChange}
+              onChange={handleInputChange}
             />
+            <Select
+              name="addressType"
+              placeholder="Select Address Type"
+              value={address.addressType}
+              onChange={handleInputChange}
+            >
+              <option value="home">Home</option>
+              <option value="office">Office</option>
+              <option value="other">Other</option>
+            </Select>
+            <Button backgroundColor="#EFD36D" onClick={saveaddressandclose}>
+              Save & Confirm
+            </Button>
+
             {dummyAddresses.length === 0 ? "" : (
               <>
                 <Text>OR</Text>
@@ -329,8 +374,8 @@ function CartPage() {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button backgroundColor="#EFD36D" onClick={closeAddressModal}>
-              Save
+            <Button backgroundColor="#EFD36D" onClick={closeChangeAddressPopupNew}>
+              Confirm
             </Button>
           </ModalFooter>
         </ModalContent>
