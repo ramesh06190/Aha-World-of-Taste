@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { get, post } from "../api/ApiService";
 import DeleteImg from "../assets/deleteimg.png";
+import { StarIcon } from "@chakra-ui/icons";
+import { Icon } from "@chakra-ui/react";
 import {
   Box,
   Tabs,
@@ -28,6 +30,12 @@ import {
   Spinner,
   Center,
   useToast,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
 } from "@chakra-ui/react";
 
 const MyAccountPage = () => {
@@ -39,12 +47,20 @@ const MyAccountPage = () => {
   const [email, setEmail] = useState("");
   const [isLoadingOrders, setIsLoadingOrders] = useState(true); // Loader for Orders tab
   const [isLoadingAddress, setIsLoadingAddress] = useState(true);
+  const [foodRatings, setFoodRatings] = useState({});
+
+  const handleStarClick = (foodName, star) => {
+    setFoodRatings({
+      ...foodRatings,
+      [foodName]: star,
+    });
+  };
+  
   const handleTabChange = (index) => {
     setSelectedTab(index);
   };
   const navigate = useNavigate();
   const handleLogOutModal = () => {
-    // setChildData(false);
     navigate("/");
     localStorage.clear();
     window.location.reload();
@@ -52,6 +68,8 @@ const MyAccountPage = () => {
   const headers = {
     token: getuserToken,
   };
+
+  
   function getStatusStyle(status) {
     switch (status) {
       case "Pending":
@@ -139,7 +157,7 @@ const MyAccountPage = () => {
             0
           ),
           foodName: order.order.map((dish) => dish.foodName).join(", "),
-          orderedTime: order.createdAt, // Include order time (createdAt)
+          orderedTime: order.createdAt,
           status: order.status,
         };
       });
@@ -202,6 +220,25 @@ const MyAccountPage = () => {
     }
     closeModal();
   };
+
+  const [isReviewDrawerOpen, setIsReviewDrawerOpen] = useState(false);
+  const [reviewedFood, setReviewedFood] = useState([]);
+
+  const openReviewDrawer = () => {
+    const dummyFoodData = [
+      { name: "Food Item 1", rating: 0 },
+      { name: "Food Item 2", rating: 0 },
+    ];
+    setReviewedFood(dummyFoodData)
+    const initialRatings = {};
+    dummyFoodData.forEach((food) => {
+      initialRatings[food.name] = food.rating;
+    });
+  
+    setFoodRatings(initialRatings);
+    setIsReviewDrawerOpen(true);
+  };
+  
 
   const tabData = [
     { label: "Orders", content: "" },
@@ -270,7 +307,6 @@ const MyAccountPage = () => {
                     <Box
                       key={order.id}
                       w="100%"
-                      h="150px"
                       borderWidth="1px"
                       borderColor="gray.300"
                       p="4"
@@ -299,9 +335,14 @@ const MyAccountPage = () => {
                       <Text fontSize="md" mt="2">
                         Order ID: {order.id}
                       </Text>
-                      <Text fontSize="md" mt="2">
-                        Ordered Time: {order.orderedTime}
-                      </Text>
+                      <Box display="flex"
+                        justifyContent="space-between"
+                        alignItems="center">
+                        <Text fontSize="md" mt="2">
+                          Ordered Time: {order.orderedTime}
+                        </Text>
+                        <Button onClick={openReviewDrawer}>Review</Button>
+                      </Box>
                     </Box>
                   ))
                 )}
@@ -475,6 +516,38 @@ const MyAccountPage = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+
+      <Drawer isOpen={isReviewDrawerOpen} placement="bottom" onClose={() => setIsReviewDrawerOpen(false)}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Review Food Items</DrawerHeader>
+          <DrawerBody>
+            {reviewedFood.map((food, index) => (
+              <Box key={index} p={2} borderBottom="1px solid #ddd">
+                <Text>{food.name}</Text>
+                <Text display="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Icon
+                    key={star}
+                    as={StarIcon}
+                    boxSize="16px" // Set the size of the star
+                    color={
+                      star <= foodRatings[food.name]
+                        ? "yellow.500"
+                        : "gray.500"
+                    } // Set the star color based on the rating
+                    ml="2px"
+                    onClick={() => handleStarClick(food.name, star)}
+                    />
+                  ))}
+                </Text>
+              </Box>
+            ))}
+            {reviewedFood.length === 0 && <Text>No food items to review.</Text>}
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Box>
   );
 };

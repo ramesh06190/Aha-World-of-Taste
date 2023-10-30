@@ -1,0 +1,26 @@
+.reservation-con{
+    min-height: calc(100vh - 64px);
+    background-color: white;
+}
+.res-grid-con{
+min-height: calc(100vh - 313px);
+padding: 130px 60px 0px 60px ;
+}
+
+.reserve-now-button {
+    background-color: yellow;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    display: block;
+    margin-top: 20px;
+    opacity: 0; /* Initially hide the button */
+    transition: opacity 0.5s, transform 0.5s; /* Apply a transition effect */
+  width: 100%;
+  }
+  
+  .reserve-now-button.show {
+    opacity: 1; /* Show the button */
+    transform: translateY(0); /* Move it to the normal position */
+  }
+  
