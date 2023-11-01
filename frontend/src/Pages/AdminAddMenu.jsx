@@ -60,7 +60,7 @@ function AddItemForm() {
   });
 
   const defaultToastConfig = {
-    duration: 2000,
+    duration: 3000,
     isClosable: true,
     position: "top",
   };

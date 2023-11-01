@@ -44,7 +44,7 @@ const PasswordResetModal = ({ isOpen, onClose }) => {
     return emailPattern.test(email);
   };
   const defaultToastConfig = {
-    duration: 2000,
+    duration: 3000,
     isClosable: true,
     position: "top",
   };
@@ -68,7 +68,7 @@ const PasswordResetModal = ({ isOpen, onClose }) => {
 
   const handleSendEmail = async () => {
     if (validateEmail(email)) {
-      setEmailValid(true);
+     
       SetHideEmail(false);
       try {
         // Make a POST request to your API with the item data
@@ -80,6 +80,16 @@ const PasswordResetModal = ({ isOpen, onClose }) => {
             status: "success",
             ...defaultToastConfig,
           });
+          
+          setEmailValid(true);
+        }
+        else if (result.message == "User not found"){
+          toast({
+            title: "user not found",
+            status: "error",
+            ...defaultToastConfig,
+          });
+          SetHideEmail(true);
         }
       } catch (error) {
         toast({

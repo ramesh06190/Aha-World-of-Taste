@@ -142,13 +142,16 @@ function Navbar() {
             ) : (
               <li onClick={handleOpenModal}>Login</li>
             )}
-            <Button
+            {
+              isUserToken !== null ?   <Button
               onClick={() => {
                 navigate("/cart");
               }}
             >
               Cart {totalItemsInCart === 0 ? "" : <p>{totalItemsInCart}</p>}{" "}
-            </Button>
+            </Button> : ""
+            }
+          
           </div>
         </div>
         {searchValue !== "" ? (

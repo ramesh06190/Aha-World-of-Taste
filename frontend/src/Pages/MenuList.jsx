@@ -121,7 +121,8 @@ function MenuList() {
   }, []);
 
   return (
-    <Box display="flex">
+    <div className="mybackground-container">
+  <Box display="flex">
       <VStack w="20%" p={4} spacing={4} align="stretch">
         {updatedCatogery?.map((tab, index) => (
           <div style={{ textAlign: "start" }} key={index}>
@@ -253,6 +254,8 @@ function MenuList() {
         </Tabs>
       </Box>
     </Box>
+    </div>
+  
   );
 }
 

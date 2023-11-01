@@ -19,7 +19,7 @@ function Landing() {
         </div>
         <div className="overlay"></div>
         <div className="content-card">
-          <h1>Welcome to Aha restaurant <br /> Authentic Cuisine Palace <br />Dine In - Take Out - Catering</h1>
+          <h1>Welcome to Aha restaurant <br /> Authentic Cuisine Palace <br />Dine In - Take Out</h1>
           <div className="btn-wrap">
             <button className='contact'>Contact Us </button>
             <button className='call'>Call Us</button>

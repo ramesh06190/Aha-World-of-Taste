@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { get, post } from "../api/ApiService";
 import DeleteImg from "../assets/deleteimg.png";
 import { StarIcon } from "@chakra-ui/icons";
-import { Icon } from "@chakra-ui/react";
+import { Icon, flexbox } from "@chakra-ui/react";
 import {
   Box,
   Tabs,
@@ -36,8 +36,8 @@ import {
   DrawerCloseButton,
   DrawerHeader,
   DrawerBody,
+  Radio, RadioGroup
 } from "@chakra-ui/react";
-
 const MyAccountPage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const getuserToken = localStorage.getItem("userToken");
@@ -47,15 +47,59 @@ const MyAccountPage = () => {
   const [email, setEmail] = useState("");
   const [isLoadingOrders, setIsLoadingOrders] = useState(true); // Loader for Orders tab
   const [isLoadingAddress, setIsLoadingAddress] = useState(true);
+  const [Reviewsucess , setReviewSucess] = useState(false)
   const [foodRatings, setFoodRatings] = useState({});
-
-  const handleStarClick = (foodName, star) => {
-    setFoodRatings({
-      ...foodRatings,
-      [foodName]: star,
-    });
-  };
+  const handleSave = async () => {
+    const result = await post(
+      "user/update/review",
+      {
+        id: updateOrder.id,
+        status: true,
+      },
+      headers
+    );
+    console.log(result);
+    if (result.status) {
+      GetDetails();
+      toast({
+        title: "Thanks for your feed back",
+        description: "We value your comments",
+        status: "success",
+        ...defaultToastConfig,
+      });
+      setReviewSucess(true)
+     
+        setIsReviewDrawerOpen(false);
   
+    
+   
+    }
+  };
+  const handleStarClick = async (food, star) => {
+    console.log(updateOrder, "here");
+    let data = updateOrder;
+    data.review.forEach((item) => {
+      if (item.id === food.id) {
+        item.value = star;
+      }
+    });
+    const result = await post(
+      "api/update/rating",
+      {
+        id: food.id,
+        rating: star,
+        reviewerId: food.userId,
+      },
+      headers
+    );
+    if (result.status) {
+      setFoodRatings({
+        ...foodRatings,
+        [food.name]: star,
+      });
+    }
+  };
+
   const handleTabChange = (index) => {
     setSelectedTab(index);
   };
@@ -69,7 +113,6 @@ const MyAccountPage = () => {
     token: getuserToken,
   };
 
-  
   function getStatusStyle(status) {
     switch (status) {
       case "Pending":
@@ -119,7 +162,7 @@ const MyAccountPage = () => {
     }
   }
   const defaultToastConfig = {
-    duration: 2000,
+    duration: 3000,
     isClosable: true,
     position: "top",
   };
@@ -146,10 +189,15 @@ const MyAccountPage = () => {
     const result = await get("user/my/order", {}, headers);
     if (result.status) {
       const mappedOrders = result?.data?.orders?.map((order) => {
+        let reviewArray = [];
+        order.order.forEach((ele) => {
+          if (ele.review) {
+            reviewArray.push({ ...ele.review, userId: order.userId });
+          }
+        });
         return {
           id: order.id,
           rate: order.order.reduce((totalPrice, dish) => {
-            console.log(dish.price, dish.count, "dish ere");
             return totalPrice + dish.price * dish.count;
           }, 0),
           quantity: order.order.reduce(
@@ -159,6 +207,8 @@ const MyAccountPage = () => {
           foodName: order.order.map((dish) => dish.foodName).join(", "),
           orderedTime: order.createdAt,
           status: order.status,
+          reviewStatus: order?.reviewStatus,
+          review: reviewArray,
         };
       });
       setOrders(mappedOrders);
@@ -223,22 +273,14 @@ const MyAccountPage = () => {
 
   const [isReviewDrawerOpen, setIsReviewDrawerOpen] = useState(false);
   const [reviewedFood, setReviewedFood] = useState([]);
+  const [updateOrder, setUpdateOrder] = useState([]);
 
-  const openReviewDrawer = () => {
-    const dummyFoodData = [
-      { name: "Food Item 1", rating: 0 },
-      { name: "Food Item 2", rating: 0 },
-    ];
-    setReviewedFood(dummyFoodData)
-    const initialRatings = {};
-    dummyFoodData.forEach((food) => {
-      initialRatings[food.name] = food.rating;
-    });
-  
-    setFoodRatings(initialRatings);
+  const openReviewDrawer = (review, order) => {
+    setUpdateOrder(order);
+    setReviewedFood(review);
+    setFoodRatings(review);
     setIsReviewDrawerOpen(true);
   };
-  
 
   const tabData = [
     { label: "Orders", content: "" },
@@ -251,7 +293,6 @@ const MyAccountPage = () => {
       <Tabs
         isFitted
         orientation="vertical"
-        // variant="solid-rounded"
         colorScheme="teal"
         size="lg"
       >
@@ -277,7 +318,7 @@ const MyAccountPage = () => {
           </NavLink>
         </TabList>
         <TabPanels>
-          {isLoadingOrders ? ( // Display loader while data is loading
+          {isLoadingOrders ? ( 
             <TabPanel key={1} p={4} bg="white" boxShadow="lg">
               <Center h="80vh">
                 <Spinner size="xl" />
@@ -335,13 +376,23 @@ const MyAccountPage = () => {
                       <Text fontSize="md" mt="2">
                         Order ID: {order.id}
                       </Text>
-                      <Box display="flex"
+                      <Box
+                        display="flex"
                         justifyContent="space-between"
-                        alignItems="center">
+                        alignItems="center"
+                      >
                         <Text fontSize="md" mt="2">
                           Ordered Time: {order.orderedTime}
                         </Text>
-                        <Button onClick={openReviewDrawer}>Review</Button>
+                        {!order.reviewStatus && order.status == "Delivered" ? (
+                          <Button
+                            onClick={() =>
+                              openReviewDrawer(order.review, order)
+                            }
+                          >
+                            Review
+                          </Button>
+                        ) : null}
                       </Box>
                     </Box>
                   ))
@@ -517,35 +568,51 @@ const MyAccountPage = () => {
         </TabPanels>
       </Tabs>
 
-      <Drawer isOpen={isReviewDrawerOpen} placement="bottom" onClose={() => setIsReviewDrawerOpen(false)}>
+      <Drawer
+        isOpen={isReviewDrawerOpen}
+        placement="bottom"
+        onClose={() => setIsReviewDrawerOpen(false)}
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>Review Food Items</DrawerHeader>
           <DrawerBody>
-            {reviewedFood.map((food, index) => (
-              <Box key={index} p={2} borderBottom="1px solid #ddd">
-                <Text>{food.name}</Text>
-                <Text display="flex">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Icon
-                    key={star}
-                    as={StarIcon}
-                    boxSize="16px" // Set the size of the star
-                    color={
-                      star <= foodRatings[food.name]
-                        ? "yellow.500"
-                        : "gray.500"
-                    } // Set the star color based on the rating
-                    ml="2px"
-                    onClick={() => handleStarClick(food.name, star)}
-                    />
-                  ))}
-                </Text>
+          
+              {reviewedFood.map((food, index) => (
+                <Box key={index} p={2} borderBottom="1px solid #ddd">
+                  <Text>{food.name}</Text>
+                  <Box display="flex" justifyContent="space-between">
+                  <Text display="flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Icon
+                        key={star}
+                        as={StarIcon}
+                        boxSize="16px"
+                        color={
+                          star <= foodRatings[food.name]
+                            ? "yellow.500"
+                            : "gray.500"
+                        }
+                        ml="2px"
+                        onClick={() => handleStarClick(food, star)}
+                      />
+                    ))}
+                  </Text>
+                  <Radio value={`notInterested-${index}`}>Not Interested to review</Radio>
+                  </Box>
+                 
+                </Box>
+              ))}
+              <Box display="flex" justifyContent="end">
+                <Button onClick={() => handleSave()} padding="1px 60px" margin="15px 0px 10px 0px">
+                  Save
+                </Button>
               </Box>
-            ))}
-            {reviewedFood.length === 0 && <Text>No food items to review.</Text>}
+              {reviewedFood.length === 0 && <Text>No food items to review.</Text>}
+           
           </DrawerBody>
+
         </DrawerContent>
       </Drawer>
     </Box>

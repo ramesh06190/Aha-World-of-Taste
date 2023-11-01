@@ -30,7 +30,7 @@ const SignUpDetails = {
   email: "",
   password: "",
   mobile: "",
-  address: "",
+
   otp: "",
 };
 
@@ -57,7 +57,6 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [phoneNumberError, setPhoneNumberError] = useState("");
-  const [addressError, setaddressError] = useState("");
   const [ConfrimSignUpBtn, setConfrimSignUpBtn] = useState("");
 
   const handleInputChange = (index, value) => {
@@ -73,7 +72,7 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
   const navigate = useNavigate();
   const toast = useToast();
   const defaultToastConfig = {
-    duration: 2000,
+    duration: 3000,
     isClosable: true,
     position: "top",
   };
@@ -81,7 +80,7 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
     setEmailError("");
     setPasswordError("");
     setPhoneNumberError("");
-    setaddressError("");
+
     setfullNameError("");
   };
 
@@ -122,11 +121,6 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
       setPhoneNumberError("Please enter a valid phone number.");
       hasErrors = true;
     }
-
-    if (SignUp.address.trim() === "") {
-      setaddressError("address cannot be empty");
-    }
-
     return !hasErrors;
   };
 
@@ -187,10 +181,20 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
             status: "success",
             ...defaultToastConfig,
           });
-        }
-        setResponse(result);
+          setShowPinInput(true);
+          setResponse(result);
         setConfrimSignUpBtn(true);
-        setShowPinInput(true);
+        }
+        else if(result.message == "User already exists" ){
+          toast({
+            title: "User already exists",
+            description: "Please add new Email to complete Sign up",
+            status: "error",
+            ...defaultToastConfig,
+          });
+        }
+        
+        
       } catch (error) {
         toast({
           title: "Error in sending Email Verification OTP",
@@ -347,7 +351,7 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                           className="Login_as_Admin"
                           onClick={handleAdminLOginSubmit}
                         >
-                          Login as Admin
+                          Login as User
                         </Button>
                       ) : (
                         <>
@@ -374,7 +378,7 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                     className="admin-login-btn"
                     onClick={() => setAdminLogin(true)}
                   >
-                    Admin Log in
+                   User Login
                   </Button>
                 </div>
               </div>
@@ -432,16 +436,7 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                   />
                 </InputGroup>
                 <p className="custom-error">{phoneNumberError}</p>
-                <label htmlFor="">Address</label>
-                <Input
-                  placeholder="Address"
-                  size="md"
-                  name="address"
-                  onChange={(e) => {
-                    handleSignUpChange(e);
-                  }}
-                />
-                <p className="custom-error">{addressError}</p>
+                
 
                 {showPinInput ? (
                   <div className="verifyEmail-warp">
@@ -468,7 +463,7 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                 <div className="btn-wrap-pop">
                   {ConfrimSignUpBtn ? (
                     <Button className="signUpBtn" onClick={confrimSignup}>
-                      Confrim Sign Up
+                      Confirm Sign Up
                     </Button>
                   ) : (
                     <Button className="signUpBtn" onClick={handleSignUpSubmit}>

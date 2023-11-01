@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../Pages/CartContext";
 import { get, post } from "../api/ApiService";
-import SucessGif from "../assets/sucess.gif"
+import SucessGif from "../assets/sucess.gif";
 import {
   Box,
   Text,
@@ -23,8 +23,13 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import "./Cart.css";
 
 function CartPage() {
-  const { cart, incrementCartItem, decrementCartItem, removeFromCart, fetchUserDetails } =
-    useCart();
+  const {
+    cart,
+    incrementCartItem,
+    decrementCartItem,
+    removeFromCart,
+    fetchUserDetails,
+  } = useCart();
   const getuserToken = localStorage.getItem("userToken");
   const headers = {
     token: getuserToken,
@@ -57,7 +62,6 @@ function CartPage() {
     if (result.status) {
       GetDetails();
       setAddressModalOpen(false);
- 
     }
     // closeModal();
   };
@@ -82,7 +86,6 @@ function CartPage() {
     });
     return total;
   };
-
 
   const userId = localStorage.getItem("userId");
   const handleDeliveryOptionChange = (option) => {
@@ -121,15 +124,21 @@ function CartPage() {
   };
 
   const closeChangeAddressPopupNew = () => {
-
     closeAddressModal();
-
-  }
+  };
   // ... (other code)
 
   const handleCheckout = async () => {
+    const data = cart.map((obj) => ({
+      ...obj,
+      review: {
+        id: obj.id,
+        value: 0,
+        name: obj.foodName,
+      },
+    }));
     const payload = {
-      order: cart,
+      order: data,
       address: address,
     };
     const result = await post("user/add/order", payload, headers);
@@ -137,16 +146,15 @@ function CartPage() {
       GetDetails();
       openCheckoutModal();
       setShowOrderSuccess(true);
-      fetchUserDetails()
+      fetchUserDetails();
     }
-
   };
 
   const saveaddressandclose = () => {
     closeAddressModal();
     saveAddress();
-    GetDetails()
-  }
+    GetDetails();
+  };
 
   // Dummy list of addresses
 
@@ -157,159 +165,168 @@ function CartPage() {
     pincode: "",
   });
 
-
-
   const handleDummyAddressChange = (e) => {
     const index = e.target.value;
     setSelectedDummyAddress(dummyAddresses[index]);
     setAddress(dummyAddresses[index]);
   };
 
-
   return (
     <div className="cart-container">
-         {cart.length === 0 ? ( // Check if the cart is empty
+      {cart.length === 0 ? ( // Check if the cart is empty
         <div className="cart-con-card-empty">
           <Text fontSize="xl" fontWeight="bold" textAlign="center">
             Your cart is empty.
           </Text>
         </div>
-      ) :
-      <div className="cart-con-card">
-        <Box p={4}>
-          <VStack spacing={4} align="stretch">
-            <Text fontSize="xl" fontWeight="bold" textAlign="left">
-              Order Summary
-            </Text>
-            <Flex align="stretch">
-              <Button
-                colorScheme={deliveryOption === "pickup" ? "#EFD36D" : "gray"}
-                variant="outline"
-                width="50%"
-                onClick={() => handleDeliveryOptionChange("pickup")}
-              >
-                Pickup
-              </Button>
-              <Button
-                width="50%"
-                ml={4}
-                colorScheme={deliveryOption === "delivery" ? "#EFD36D" : "gray"}
-                variant="outline"
-                onClick={() => handleDeliveryOptionChange("delivery")}
-              >
-                Delivery
-              </Button>
-            </Flex>
-            {cart.map((item) => (
-              <Box
-                key={item.id}
-                borderWidth="1px"
-                borderRadius="lg"
-                borderColor="black"
-                p={4}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Flex alignItems="center">
-                  <Text>{item.foodName}</Text>
-                  <Text color="red" ml={4}>
-                    $ {item.price * item.count}
-                  </Text>
-                </Flex>
-                <Flex alignItems="center">
-                  <IconButton
-                    icon={<FaMinus />}
-                    aria-label="Decrement"
-                    onClick={() => {
-                      decrementCartItem(item.id);
-                      setTotalPrice(calculateTotalPrice());
-                    }}
-                  />
-                  {item.count}
-                  <IconButton
-                    icon={<FaPlus />}
-                    aria-label="Increment"
-                    borderColor="black"
-                    onClick={() => {
-                      incrementCartItem(item.id);
-                      setTotalPrice(calculateTotalPrice());
-                    }}
-                  />
-                  <Button
-                    ml={4}
-                    colorScheme="red"
-                    onClick={() => removeFromCart(item.id)}
-                  >
-                    Remove
-                  </Button>
-                </Flex>
-              </Box>
-            ))}
-
-            <Box
-              textAlign="end"
-              borderWidth="1px"
-              borderRadius="lg"
-              p={4}
-              borderColor="black"
-            >
-              <Text color="red">
-                Total Price: $
-                {(
-                  calculateTotalPrice() +
-                  (deliveryOption === "delivery" ? deliveryCharges : 0)
-                ).toFixed(2)}
+      ) : (
+        <div className="cart-con-card">
+          <Box p={4}>
+            <VStack spacing={4} align="stretch">
+              <Text fontSize="xl" fontWeight="bold" textAlign="left">
+                Order Summary
               </Text>
-            </Box>
-            {deliveryOption === "delivery" && (
+              <Flex align="stretch">
+                <Button
+                  colorScheme={deliveryOption === "pickup" ? "#EFD36D" : "gray"}
+                  variant="outline"
+                  width="50%"
+                  onClick={() => handleDeliveryOptionChange("pickup")}
+                >
+                  Pickup
+                </Button>
+                <Button
+                  width="50%"
+                  ml={4}
+                  colorScheme={
+                    deliveryOption === "delivery" ? "#EFD36D" : "gray"
+                  }
+                  variant="outline"
+                  onClick={() => handleDeliveryOptionChange("delivery")}
+                >
+                  Delivery
+                </Button>
+              </Flex>
+              {cart.map((item) => (
+
+                item.price * item.count !== 0 ?
+                
+                <Box
+                  key={item.id}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  borderColor="black"
+                  p={4}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Flex alignItems="center">
+                    <Text>{item.foodName}</Text>
+                    <Text color="red" ml={4}>
+                      $ {item.price * item.count}
+                    </Text>
+                  </Flex>
+                  <Flex alignItems="center">
+                    <IconButton
+                      icon={<FaMinus />}
+                      aria-label="Decrement"
+                      onClick={() => {
+                        decrementCartItem(item.id);
+                        setTotalPrice(calculateTotalPrice());
+                      }}
+                    />
+                    {item.count}
+                    <IconButton
+                      icon={<FaPlus />}
+                      aria-label="Increment"
+                      borderColor="black"
+                      onClick={() => {
+                        incrementCartItem(item.id);
+                        setTotalPrice(calculateTotalPrice());
+                      }}
+                    />
+                    <Button
+                      ml={4}
+                      colorScheme="red"
+                      onClick={() => removeFromCart(item.id)}
+                    >
+                      Remove
+                    </Button>
+                  </Flex>
+                </Box> : ""
+
+
+              ))}
+
               <Box
+                textAlign="end"
                 borderWidth="1px"
                 borderRadius="lg"
                 p={4}
                 borderColor="black"
-                textAlign="end"
               >
-                <Text>Delivery Charges: ${deliveryCharges.toFixed(2)}</Text>
-              </Box>
-            )}
-            {address.houseFloor &&
-              address.buildingBlock &&
-              address.landmarkArea ? (
-              <>
-
-                <Text color="green" textAlign="end" fontSize="lg" fontWeight="bold">
-                  Address: {address.houseFloor}, {address.buildingBlock},{" "}
-                  {address.landmarkArea}
+                <Text color="red">
+                  Total Price: $
+                  {(
+                    calculateTotalPrice() +
+                    (deliveryOption === "delivery" ? deliveryCharges : 0)
+                  ).toFixed(2)}
                 </Text>
+              </Box>
+              {deliveryOption === "delivery" && (
+                <Box
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  p={4}
+                  borderColor="black"
+                  textAlign="end"
+                >
+                  <Text>Delivery Charges: ${deliveryCharges.toFixed(2)}</Text>
+                </Box>
+              )}
+              {address.houseFloor &&
+                address.buildingBlock &&
+                address.landmarkArea ? (
+                <>
+                  <Text
+                    color="green"
+                    textAlign="end"
+                    fontSize="lg"
+                    fontWeight="bold"
+                  >
+                    Address: {address.houseFloor}, {address.buildingBlock},{" "}
+                    {address.landmarkArea}
+                  </Text>
 
+                  {dummyAddresses.length === 0 ? (
+                    ""
+                  ) : (
+                    <>
+                      <div className="changeaddresscon">
+                        <button
+                          className="changeAddressbtn"
+                          onClick={openChangeAddressPopup}
+                        >
+                          Change Address
+                        </button>
+                      </div>
+                    </>
+                  )}
 
-                {dummyAddresses.length === 0 ? "" : (
-                  <>
-                    <div className="changeaddresscon">
-                      <button
-                        className="changeAddressbtn"
-                        onClick={openChangeAddressPopup}
-                      >
-                        Change Address
-                      </button>
-                    </div>
-                  </>
-                )}
-
-                <Button backgroundColor="#EFD36D" onClick={handleCheckout}>
-                  Submit Order
+                  <Button backgroundColor="#EFD36D" onClick={handleCheckout}>
+                    Submit Order
+                  </Button>
+                </>
+              ) : (
+                <Button backgroundColor="#EFD36D" onClick={openAddressModal}>
+                  Add Address
                 </Button>
-              </>
-            ) : (
-              <Button backgroundColor="#EFD36D" onClick={openAddressModal}>
-               Add Address
-              </Button>
-            )}
-          </VStack>
-        </Box>
-      </div>
-}
+              )}
+            </VStack>
+          </Box>
+        </div>
+      )}
       {/* Address Modal */}
       <Modal isOpen={isAddressModalOpen} onClose={closeAddressModal}>
         <ModalOverlay />
@@ -355,7 +372,9 @@ function CartPage() {
               Save & Confirm
             </Button>
 
-            {dummyAddresses.length === 0 ? "" : (
+            {dummyAddresses.length === 0 ? (
+              ""
+            ) : (
               <>
                 <Text>OR</Text>
                 <Text>Select from the following addresses:</Text>
@@ -374,7 +393,10 @@ function CartPage() {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button backgroundColor="#EFD36D" onClick={closeChangeAddressPopupNew}>
+            <Button
+              backgroundColor="#EFD36D"
+              onClick={closeChangeAddressPopupNew}
+            >
               Confirm
             </Button>
           </ModalFooter>
@@ -412,27 +434,31 @@ function CartPage() {
         </ModalContent>
       </Modal>
       {/* isOpen={} onClose={closeCheckoutModal} */}
-      {
-        checkoutModelOpen ? <div className="orderSucess" >
-
+      {checkoutModelOpen ? (
+        <div className="orderSucess">
           <div className="sucesscard">
             <img src={SucessGif} alt="" />
             <p>Your order has been placed successfully!</p>
-            <p>Delivery Option: {deliveryOption === "pickup" ? "Pickup" : "Delivery"}</p>
-            <p>         Total Price: $
+            <p>
+              Delivery Option:{" "}
+              {deliveryOption === "pickup" ? "Pickup" : "Delivery"}
+            </p>
+            {/* <p>
+              {" "}
+              Total Price: $
               {(
                 calculateTotalPrice() +
                 (deliveryOption === "delivery" ? deliveryCharges : 0)
-              ).toFixed(2)}</p>
+              ).toFixed(2)}
+            </p> */}
             <Button backgroundColor="#EFD36D" onClick={closeCheckoutModal}>
               Close
             </Button>
           </div>
-        </div> : ""
-
-      }
-
-
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

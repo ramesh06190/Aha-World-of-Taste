@@ -77,7 +77,15 @@
   background-position: bottom !important;
   background-repeat: no-repeat !important;
 } */
-
+.mybackground-container{
+  background-image: url("../assets/./9739.jpg_wh1200.jpg") !important;
+  background-repeat: no-repeat !important;
+  position: relative !important;
+  min-height: calc(100vh - 62.22px) !important;
+  background-size: cover !important;
+  background-position: bottom !important;
+  background-repeat: no-repeat !important;
+}
 .css-14i3gmy h2 {
   font-size: 17px;
   font-weight: 900;
