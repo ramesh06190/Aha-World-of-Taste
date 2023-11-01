@@ -168,6 +168,50 @@ const deleteDish = async (req, res) => {
   }
 };
 
+const addOrUpdateRating = async (req, res) => {
+  try {
+    const { id, rating, reviewerId } = req.body;
+    if (
+      !id ||
+      rating === undefined ||
+      rating < 0 ||
+      rating > 5 ||
+      !reviewerId
+    ) {
+      return res.status(400).json({
+        message:
+          "Invalid input data. Check if 'id', 'rating' (between 0 and 5), and 'reviewerId' are provided.",
+        status: false,
+      });
+    }
+    // Check if the dish with the specified ID exists
+    const dish = await Dish.findOne({ id: id });
+    if (!dish) {
+      return res.status(404).json({ error: "Dish not found" });
+    }
+    // Check if there's already a rating with the same reviewerId
+    const existingRatingIndex = dish.ratings.findIndex(
+      (r) => r.reviewerId === reviewerId
+    );
+    if (existingRatingIndex !== -1) {
+      // Update the existing rating
+      dish.ratings[existingRatingIndex].rating = rating;
+    } else {
+      // Create a new rating object
+      dish.ratings.push({ rating, reviewerId });
+    }
+    // Save the updated dish document
+    const updatedDish = await dish.save();
+    res.json({
+      message: "Rating added/updated successfully",
+      data: updatedDish,
+      status: true,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message, status: false });
+  }
+};
+
 module.exports = {
   postDishes,
   getAllCategory,
@@ -177,4 +221,5 @@ module.exports = {
   addDish,
   editDish,
   deleteDish,
+  addOrUpdateRating,
 };

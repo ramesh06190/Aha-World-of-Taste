@@ -7,12 +7,13 @@ const TOKEN = "debba16c341017ee9ac193dd282c1b19";
 const nodemailer = require("nodemailer");
 const ENDPOINT = "https://send.api.mailtrap.io/";
 const Order = require("../model/order");
+const Reservation = require("../model/reservation");
 
 const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN });
 
 const signUp = async (req, res) => {
   const { fullName, email, password, address, mobile, otp } = req.body;
-  if (!fullName || !email || !password || !address || !mobile || !otp) {
+  if (!fullName || !email || !password || !mobile || !otp) {
     return res
       .status(400)
       .json({ success: false, message: "All fields are mandatory." });
@@ -521,7 +522,102 @@ const updateFirstName = async (req, res) => {
     return res.status(400).json({ error: error.message, status: false });
   }
 };
+const postReservation = async (req, res) => {
+  const userId = req.data.id;
+  try {
+    const { size, date, time, firstName, lastName, phone, email } = req.body;
+    if (
+      !size ||
+      !date ||
+      !time ||
+      !firstName ||
+      !lastName ||
+      !phone ||
+      !email
+    ) {
+      return res
+        .status(400)
+        .json({ message: "All mandatory fields are required", status: false });
+    }
+    const reservation = new Reservation({
+      id: bookidgen("Res-", 14522, 199585),
+      userId,
+      size,
+      date,
+      time,
+      firstName,
+      lastName,
+      phone,
+      email,
+    });
+    await reservation.save();
+    res
+      .status(201)
+      .json({ message: "reservation saved successfully", status: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", status: false });
+  }
+};
+const getReservation = async (req, res) => {
+  try {
+    const reservations = await Reservation.find();
+    res.status(200).json({ data: reservations, status: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", status: false });
+  }
+};
 
+const updateReservation = async (req, res) => {
+  try {
+    const { status, id } = req.body;
+    const updatedReservation = await Reservation.findOneAndUpdate(
+      { id: id },
+      { $set: { status } },
+      { new: true }
+    );
+    if (!updatedReservation) {
+      return res
+        .status(404)
+        .json({ message: "Reservation not found", status: false });
+    }
+    res.status(200).json({
+      message: "Reservation status updated successfully",
+      status: true,
+      reservation: updatedReservation,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", status: false });
+  }
+};
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { status, id } = req.body;
+    if (!id) {
+      res.json({ message: "Enter orderId and status", status: false });
+    } else {
+      const updatedOrder = await Order.findOneAndUpdate(
+        { id },
+        { $set: { reviewStatus: status } },
+        { new: true }
+      );
+      if (!updatedOrder) {
+        return res
+          .status(404)
+          .json({ message: "Order not found", status: false });
+      }
+
+      res.json({
+        message: "Order status updated successfully",
+        status: true,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message, status: false });
+  }
+};
 module.exports = {
   signUp,
   login,
@@ -538,4 +634,8 @@ module.exports = {
   addAddress,
   deleteAddress,
   updateFirstName,
+  postReservation,
+  getReservation,
+  updateReservation,
+  updateOrderStatus,
 };

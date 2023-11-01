@@ -12,5 +12,6 @@ router.post("/like", auth, dish.addLikeToFood);
 router.post("/add/dish", adminAuth, dish.addDish);
 router.post("/edit/dish", adminAuth, dish.editDish);
 router.post("/delete/dish", adminAuth, dish.deleteDish);
+router.post("/update/rating", dish.addOrUpdateRating);
 
 module.exports = router;

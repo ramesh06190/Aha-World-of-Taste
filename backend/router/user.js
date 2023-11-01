@@ -17,5 +17,9 @@ router.get("/my/order", auth, user.myOrder);
 router.post("/add/address", auth, user.addAddress);
 router.post("/delete/address", auth, user.deleteAddress);
 router.post("/update/details", auth, user.updateFirstName);
+router.post("/add/reservation", auth, user.postReservation);
+router.post("/all/reservation", user.getReservation);
+router.post("/update/reservation", user.updateReservation);
+router.post("/update/review", auth, user.updateOrderStatus);
 
 module.exports = router;

@@ -9,6 +9,7 @@ const Order = new mongose.Schema(
       type: Array,
     },
     address: { type: Object },
+    reviewStatus: { type: Boolean, default: false },
   },
   {
     timestamps: true,

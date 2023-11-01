@@ -1,5 +1,19 @@
-const mongose = require("mongoose");
-const dish = new mongose.Schema(
+const mongoose = require("mongoose");
+
+const ratingSchema = new mongoose.Schema({
+  rating: {
+    type: Number,
+    min: 0,
+    max: 5,
+    required: true,
+  },
+  reviewerId: {
+    type: String,
+    required: true,
+  },
+});
+
+const dishSchema = new mongoose.Schema(
   {
     id: { type: String },
     foodName: { type: String },
@@ -11,9 +25,14 @@ const dish = new mongose.Schema(
     price: { type: Number },
     description: { type: String },
     image: { type: String },
+    ratings: {
+      type: [ratingSchema],
+      default: [], // Empty array as default value
+    },
   },
   {
     timestamps: true,
   }
 );
-module.exports = mongose.model("dish", dish);
+
+module.exports = mongoose.model("dish", dishSchema);
