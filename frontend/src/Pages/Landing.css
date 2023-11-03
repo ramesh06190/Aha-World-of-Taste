@@ -121,7 +121,10 @@ h4 {
 .label-wrap {
     margin: 0px 20px;
 }
-
+.validation-wrap{
+    display: flex;
+    flex-direction: column;
+}
 .menu-section {
     background-image: url("../assets/./LoginBackground.jpg");
     background-repeat: no-repeat !important;

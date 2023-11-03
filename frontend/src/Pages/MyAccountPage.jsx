@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { get, post } from "../api/ApiService";
 import DeleteImg from "../assets/deleteimg.png";
 import { StarIcon } from "@chakra-ui/icons";
-import { Icon, flexbox } from "@chakra-ui/react";
+import { Icon, Textarea, flexbox } from "@chakra-ui/react";
 import {
   Box,
   Tabs,
@@ -36,7 +36,8 @@ import {
   DrawerCloseButton,
   DrawerHeader,
   DrawerBody,
-  Radio, RadioGroup
+  Radio,
+  RadioGroup,
 } from "@chakra-ui/react";
 const MyAccountPage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -47,14 +48,18 @@ const MyAccountPage = () => {
   const [email, setEmail] = useState("");
   const [isLoadingOrders, setIsLoadingOrders] = useState(true); // Loader for Orders tab
   const [isLoadingAddress, setIsLoadingAddress] = useState(true);
-  const [Reviewsucess , setReviewSucess] = useState(false)
+  const [Reviewsucess, setReviewSucess] = useState(false);
   const [foodRatings, setFoodRatings] = useState({});
+  const [orderRating, setOrderRating] = useState(0);
+  const [textValue, setTextValue] = useState("");
   const handleSave = async () => {
     const result = await post(
       "user/update/review",
       {
         id: updateOrder.id,
         status: true,
+        review: textValue,
+        rating: orderRating,
       },
       headers
     );
@@ -67,13 +72,13 @@ const MyAccountPage = () => {
         status: "success",
         ...defaultToastConfig,
       });
-      setReviewSucess(true)
-     
-        setIsReviewDrawerOpen(false);
-  
-    
-   
+      setReviewSucess(true);
+
+      setIsReviewDrawerOpen(false);
     }
+  };
+  const handleStarOrder = (star) => {
+    setOrderRating(star);
   };
   const handleStarClick = async (food, star) => {
     console.log(updateOrder, "here");
@@ -290,12 +295,7 @@ const MyAccountPage = () => {
 
   return (
     <Box bg="gray.200" p={4} minHeight="85vh">
-      <Tabs
-        isFitted
-        orientation="vertical"
-        colorScheme="teal"
-        size="lg"
-      >
+      <Tabs isFitted orientation="vertical" colorScheme="teal" size="lg">
         <TabList width="25%" height="0px">
           {tabData.map((tab, index) => (
             <Tab
@@ -318,7 +318,7 @@ const MyAccountPage = () => {
           </NavLink>
         </TabList>
         <TabPanels>
-          {isLoadingOrders ? ( 
+          {isLoadingOrders ? (
             <TabPanel key={1} p={4} bg="white" boxShadow="lg">
               <Center h="80vh">
                 <Spinner size="xl" />
@@ -393,6 +393,14 @@ const MyAccountPage = () => {
                             Review
                           </Button>
                         ) : null}
+
+                        {order.status == "Out for Delivery" ? (
+                          <Button onClick={() => navigate("/track")}>
+                            track
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </Box>
                     </Box>
                   ))
@@ -578,11 +586,10 @@ const MyAccountPage = () => {
           <DrawerCloseButton />
           <DrawerHeader>Review Food Items</DrawerHeader>
           <DrawerBody>
-          
-              {reviewedFood.map((food, index) => (
-                <Box key={index} p={2} borderBottom="1px solid #ddd">
-                  <Text>{food.name}</Text>
-                  <Box display="flex" justifyContent="space-between">
+            {reviewedFood.map((food, index) => (
+              <Box key={index} p={2} borderBottom="1px solid #ddd">
+                <Text>{food.name}</Text>
+                <Box display="flex" justifyContent="space-between">
                   <Text display="flex">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Icon
@@ -599,20 +606,47 @@ const MyAccountPage = () => {
                       />
                     ))}
                   </Text>
-                  <Radio value={`notInterested-${index}`}>Not Interested to review</Radio>
-                  </Box>
-                 
+                  <Radio value={`notInterested-${index}`}>
+                    Not Interested to review
+                  </Radio>
                 </Box>
-              ))}
-              <Box display="flex" justifyContent="end">
-                <Button onClick={() => handleSave()} padding="1px 60px" margin="15px 0px 10px 0px">
-                  Save
-                </Button>
+                <Text>Review Order</Text>
+                <Box display="flex" justifyContent="space-between">
+                  <Text display="flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Icon
+                        key={star}
+                        as={StarIcon}
+                        boxSize="16px"
+                        color={star <= orderRating ? "yellow.500" : "gray.500"}
+                        ml="2px"
+                        onClick={() => handleStarOrder(star)}
+                      />
+                    ))}
+                  </Text>
+                </Box>
+                <Text>Write review</Text>
+                <Textarea
+                  value={textValue}
+                  onChange={(event) => {
+                    const newText = event.target.value;
+                    setTextValue(newText);
+                  }}
+                  placeholder="Write a review..."
+                />
               </Box>
-              {reviewedFood.length === 0 && <Text>No food items to review.</Text>}
-           
+            ))}
+            <Box display="flex" justifyContent="end">
+              <Button
+                onClick={() => handleSave()}
+                padding="1px 60px"
+                margin="15px 0px 10px 0px"
+              >
+                Save
+              </Button>
+            </Box>
+            {reviewedFood.length === 0 && <Text>No food items to review.</Text>}
           </DrawerBody>
-
         </DrawerContent>
       </Drawer>
     </Box>
