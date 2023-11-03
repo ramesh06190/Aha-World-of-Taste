@@ -207,57 +207,56 @@ function CartPage() {
                   Delivery
                 </Button>
               </Flex>
-              {cart.map((item) => (
-
-                item.price * item.count !== 0 ?
-                
-                <Box
-                  key={item.id}
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  borderColor="black"
-                  p={4}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Flex alignItems="center">
-                    <Text>{item.foodName}</Text>
-                    <Text color="red" ml={4}>
-                      $ {item.price * item.count}
-                    </Text>
-                  </Flex>
-                  <Flex alignItems="center">
-                    <IconButton
-                      icon={<FaMinus />}
-                      aria-label="Decrement"
-                      onClick={() => {
-                        decrementCartItem(item.id);
-                        setTotalPrice(calculateTotalPrice());
-                      }}
-                    />
-                    {item.count}
-                    <IconButton
-                      icon={<FaPlus />}
-                      aria-label="Increment"
-                      borderColor="black"
-                      onClick={() => {
-                        incrementCartItem(item.id);
-                        setTotalPrice(calculateTotalPrice());
-                      }}
-                    />
-                    <Button
-                      ml={4}
-                      colorScheme="red"
-                      onClick={() => removeFromCart(item.id)}
-                    >
-                      Remove
-                    </Button>
-                  </Flex>
-                </Box> : ""
-
-
-              ))}
+              {cart.map((item) =>
+                item.price * item.count !== 0 ? (
+                  <Box
+                    key={item.id}
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    borderColor="black"
+                    p={4}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Flex alignItems="center">
+                      <Text>{item.foodName}</Text>
+                      <Text color="red" ml={4}>
+                        $ {item.price * item.count}
+                      </Text>
+                    </Flex>
+                    <Flex alignItems="center">
+                      <IconButton
+                        icon={<FaMinus />}
+                        aria-label="Decrement"
+                        onClick={() => {
+                          decrementCartItem(item.id);
+                          setTotalPrice(calculateTotalPrice());
+                        }}
+                      />
+                      {item.count}
+                      <IconButton
+                        icon={<FaPlus />}
+                        aria-label="Increment"
+                        borderColor="black"
+                        onClick={() => {
+                          incrementCartItem(item.id);
+                          setTotalPrice(calculateTotalPrice());
+                        }}
+                      />
+                      <Button
+                        ml={4}
+                        colorScheme="red"
+                        onClick={() => removeFromCart(item.id)}
+                      >
+                        Remove
+                      </Button>
+                    </Flex>
+                  </Box>
+                ) : (
+                  ""
+                )
+              )}
 
               <Box
                 textAlign="end"
@@ -286,8 +285,8 @@ function CartPage() {
                 </Box>
               )}
               {address.houseFloor &&
-                address.buildingBlock &&
-                address.landmarkArea ? (
+              address.buildingBlock &&
+              address.landmarkArea ? (
                 <>
                   <Text
                     color="green"

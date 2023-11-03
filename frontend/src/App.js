@@ -17,6 +17,9 @@ import Reservation from "./Pages/Reservation";
 import AboutUs from "./Pages/AboutUs";
 import MyAccountPage from "./Pages/MyAccountPage";
 import OrderStatusPage from "./Pages/ViewStatusPage"
+import Maps from "./Components/Maps";
+import Track from "./Components/Track";
+import UserDetailPage from "./Pages/userDetailPage.js";
 function App() {
   return (
     <div className="App">
@@ -28,6 +31,8 @@ function App() {
           <Route path='/reservation' element={<Reservation />} />
           <Route path='/aboutUs' element={<AboutUs />} />
           <Route path="/MyAccountPage" element={<MyAccountPage />} />
+          <Route path="/track" element={<Maps />} />
+          <Route path="/userDetailPage" element={<UserDetailPage />} />
         </Route>
       </Routes>
       <Routes>

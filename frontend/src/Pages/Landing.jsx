@@ -1,4 +1,4 @@
-import React from 'react'
+import React , {useState , useEffect} from 'react'
 import "./Landing.css"
 import { foodItems } from './LandingConfig'
 import { Link } from 'react-router-dom'
@@ -12,6 +12,31 @@ function Landing() {
   const traditionalItems = foodItems.filter(
     (item) => item.type === 'Traditional'
   );
+  const [location, setLocation] = useState(null);
+ 
+  const [error, setError] = useState(null);
+
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          localStorage.setItem('latitude', latitude);
+          localStorage.setItem('longitude', longitude);
+
+          setLocation({ latitude, longitude });
+        },
+        (error) => {
+          setError(error.message);
+        }
+      );
+    } else {
+      setError("Geolocation is not available in your browser.");
+    }
+  }, []);
+
   return (
     <>
       <div className='landing-img-con'>
