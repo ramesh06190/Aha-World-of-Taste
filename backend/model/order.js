@@ -10,6 +10,13 @@ const Order = new mongose.Schema(
     },
     address: { type: Object },
     reviewStatus: { type: Boolean, default: false },
+    review: { type: String, default: "" },
+    rating: {
+      type: Number,
+      min: 0,
+      max: 5,
+      default: 0,
+    },
   },
   {
     timestamps: true,

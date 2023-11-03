@@ -594,13 +594,13 @@ const updateReservation = async (req, res) => {
 };
 const updateOrderStatus = async (req, res) => {
   try {
-    const { status, id } = req.body;
+    const { status, id, review, rating } = req.body;
     if (!id) {
       res.json({ message: "Enter orderId and status", status: false });
     } else {
       const updatedOrder = await Order.findOneAndUpdate(
         { id },
-        { $set: { reviewStatus: status } },
+        { $set: { reviewStatus: status, review, rating } },
         { new: true }
       );
       if (!updatedOrder) {
