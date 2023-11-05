@@ -48,6 +48,10 @@ const menuItems = [
       name: 'Chats',
       to: '/admin',
     },
+    {
+      name: 'Reviews',
+      to: '/AdminReviewList',
+    },
   ];
   
   export default menuItems;

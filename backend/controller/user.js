@@ -194,7 +194,7 @@ async function sendInitialOtp(email, token) {
       },
       port: 465,
       secure: true,
-      host: "smtp.hostinger.com",
+      host: "smtpout.secureserver.net",
     })
     .sendMail(passwordMsg, (err) => {
       if (err) {
@@ -569,6 +569,32 @@ const getReservation = async (req, res) => {
   }
 };
 
+async function sendReservationMail(email, status) {
+  const passwordMsg = {
+    from: "naveen@naveenrio.me",
+    to: email,
+    subject: "Reservation Status",
+    html: `<div>Your reservation has been ${status} by the Admin</div>`,
+  };
+  nodemailer
+    .createTransport({
+      auth: {
+        user: GRIEVANCE_EMAIL,
+        pass: GRIEVANCE_EMAIL_PASSWORD,
+      },
+      port: 465,
+      secure: true,
+      host: "smtpout.secureserver.net",
+    })
+    .sendMail(passwordMsg, (err) => {
+      if (err) {
+        return console.log("error while sending mail", err);
+      } else {
+        return console.log("email sent");
+      }
+    });
+}
+
 const updateReservation = async (req, res) => {
   try {
     const { status, id } = req.body;
@@ -587,6 +613,10 @@ const updateReservation = async (req, res) => {
       status: true,
       reservation: updatedReservation,
     });
+    console.log(updatedReservation, "dsds");
+    if (status === "Rejected") {
+      sendReservationMail(updatedReservation.email, status);
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error", status: false });

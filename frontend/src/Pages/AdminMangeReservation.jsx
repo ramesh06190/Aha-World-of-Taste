@@ -9,6 +9,8 @@ import {
   Button,
   Link,
   Heading,
+  Box,
+  Center
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
@@ -107,7 +109,7 @@ const AdminMangeReservation = () => {
       const result = await post("user/update/reservation", postData);
       if (result.status) {
         console.log(result);
-        alert("updated successfylly");
+        // alert("updated successfylly");
         GetDetails();
       }
 
@@ -175,36 +177,72 @@ const AdminMangeReservation = () => {
               <Tr key={index}>
                 <Td>{order.id}</Td>
                 <Td>{order.createdAt}</Td>
-                <Td>{order.fullName}</Td>
+                <Td>{order.size}</Td>
+                <Td>{order.date}</Td>
+                <Td>{order.time}</Td>
                 {/* <Td>{totalOrderPrice}</Td>
                 <Td>{totalOrderQuantity}</Td>{" "} */}
-                <Td>
-                  <div>
-                    <Button
-                      size="sm"
-                      padding="0px 10px"
-                      height="25px"
-                      margin={"0px 2px"}
-                      backgroundColor={"Green"}
-                      color={"white"}
-                      onClick={() => Approve(order.id, "Approved")}
-                    >
-                      Approve
-                    </Button>
-                    <Button
-                      size="sm"
-                      padding="0px 10px"
-                      height="25px"
-                      margin={"0px 2px"}
-                      backgroundColor={"red"}
-                      color={"white"}
-                      onClick={() => Approve(order.id, "Rejected")}
-                    >
-                      Reject
-                    </Button>
-                  </div>
-                </Td>
-                <Td>{order.status}</Td>
+                {
+                  order.status === "Approved" ? <Td>
+                    <div>
+                      <Box
+                        size="sm"
+                        width="140px"
+                        textAlign={"center"}
+                        borderRadius={"5px"}
+                        paddingTop={"2px"}
+                        height="25px"
+                        margin={"0px 2px"}
+                        backgroundColor={"Green"}
+                        color={"white"}
+                      >
+                        Approved
+                      </Box>
+
+                    </div>
+                  </Td> : order.status === "Rejected" ? <Td>
+                  <Box
+                        size="sm"
+                        width="140px"
+                        textAlign={"center"}
+                        borderRadius={"5px"}
+                        paddingTop={"2px"}
+                        height="25px"
+                        margin={"0px 2px"}
+                        backgroundColor={"red"}
+                        color={"white"}
+                      >
+                        Rejected
+                      </Box>
+                  </Td> : <Td>
+                    <div>
+                      <Button
+                        size="sm"
+                        padding="0px 10px"
+                        height="25px"
+                        margin={"0px 2px"}
+                        backgroundColor={"Green"}
+                        color={"white"}
+                        onClick={() => Approve(order.id, "Approved")}
+                      >
+                        Approve
+                      </Button>
+                      <Button
+                        size="sm"
+                        padding="0px 10px"
+                        height="25px"
+                        margin={"0px 2px"}
+                        backgroundColor={"red"}
+                        color={"white"}
+                        onClick={() => Approve(order.id, "Rejected")}
+                      >
+                        Reject
+                      </Button>
+                    </div>
+                  </Td>
+                }
+
+                {/* <Td>{order.status}</Td> */}
               </Tr>
             );
           })}

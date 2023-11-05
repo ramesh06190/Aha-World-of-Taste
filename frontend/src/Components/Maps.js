@@ -1,3 +1,5 @@
+
+
 import {
   Box,
   Button,
@@ -23,7 +25,7 @@ const center = { lat: 8.307736, lng: 77.220462 }
 
 function App() {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCIWbUh6hK1P_ARYXLVwqm2B_IOeACS8is",
+    googleMapsApiKey: "AIzaSyCIWbUh6hK1P_ARYXLVwqm2B_IOeACS8is", // Replace with your actual API key
     libraries: ['places'],
   })
 
@@ -32,44 +34,51 @@ function App() {
 
   const concatenatedValue = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
   console.log(concatenatedValue);
-  useEffect(()=>{
-    calculateRoute()
-    
-  },[])
 
- 
- 
-  const [map, setMap] = useState(null)
-  const [directionsResponse, setDirectionsResponse] = useState(null)
-  const [distance, setDistance] = useState('')
-  const [duration, setDuration] = useState('')
-  const [origin, setOrigin] = useState(concatenatedValue)
-  const [destination, setDestination] = useState(' 41.26444007396637, -96.0901829202387')
-  // 41.26444007396637, -96.0901829202387
+  useEffect(() => {
+    calculateRoute();
+  }, [isLoaded]);
+
+
+
+  const [map, setMap] = useState(null);
+  const [directionsResponse, setDirectionsResponse] = useState(null);
+  const [distance, setDistance] = useState('');
+  const [duration, setDuration] = useState('');
+  const [origin, setOrigin] = useState(concatenatedValue);
+  const [destination, setDestination] = useState('41.26444007396637, -96.0901829202387');
+//8.307142710706065, 77.22871839260522
+// 41.26444007396637, -96.0901829202387
   if (!isLoaded) {
-    return <SkeletonText />
+    return <SkeletonText />;
   }
-  async function calculateRoute() {
-  
-    // eslint-disable-next-line no-undef
-    const directionsService = new google.maps.DirectionsService()
-    const results = await directionsService.route({
-      origin,
-      destination,
-      // eslint-disable-next-line no-undef
-      travelMode: google.maps.TravelMode.DRIVING,
-    })
-    setDirectionsResponse(results)
-    setDistance(results.routes[0].legs[0].distance.text)
-    setDuration(results.routes[0].legs[0].duration.text)
-  }
+ 
 
+
+  async function calculateRoute() {
+    if (window.google && window.google.maps && isLoaded) {
+      // eslint-disable-next-line no-undef
+      const directionsService = new window.google.maps.DirectionsService();
+      const results = await directionsService.route({
+        origin,
+        destination,
+        // eslint-disable-next-line no-undef
+        travelMode: window.google.maps.TravelMode.DRIVING,
+      });
+      setDirectionsResponse(results);
+      setDistance(results.routes[0].legs[0].distance.text);
+      setDuration(results.routes[0].legs[0].duration.text);
+    } else {
+      console.error("Google Maps API is not available.");
+    }
+  }
+  
   function clearRoute() {
-    setDirectionsResponse(null)
-    setDistance('')
-    setDuration('')
-    setOrigin('')
-    setDestination('')
+    setDirectionsResponse(null);
+    setDistance('');
+    setDuration('');
+    setOrigin('');
+    setDestination('');
   }
 
   return (
@@ -92,9 +101,12 @@ function App() {
             mapTypeControl: false,
             fullscreenControl: false,
           }}
-          onLoad={map => setMap(map)}
+          onLoad={(map) => {
+            setMap(map);
+
+         
+          }}
         >
-          <Marker position={center} />
           {directionsResponse && (
             <DirectionsRenderer directions={directionsResponse} />
           )}
@@ -148,10 +160,9 @@ function App() {
         </HStack>
       </Box>
     </Flex>
-  )
+  );
 }
 
-export default App
-
+export default App;
 
 // AIzaSyCIWbUh6hK1P_ARYXLVwqm2B_IOeACS8is

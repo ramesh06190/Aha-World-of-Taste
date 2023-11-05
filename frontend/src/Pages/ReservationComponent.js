@@ -3,7 +3,7 @@ import { Button, Select } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-function ReservationComponent({ onDataReceived }) {
+function ReservationComponent() {
   const [partySize, setPartySize] = useState("");
   const [date, setDate] = useState("");
   const [partySizeError, setPartySizeError] = useState("");
@@ -45,8 +45,9 @@ function ReservationComponent({ onDataReceived }) {
     const isDateValid = validateDate();
 
     if (isPartySizeValid && isDateValid) {
-      navigate("/reservation");
-      onDataReceived({ date, partySize });
+      //   navigate("/reservation");
+      navigate(`/reservation?input1=${partySize}&input2=${date}`);
+
     }
   };
   ReservationComponent.propTypes = {
@@ -71,12 +72,12 @@ function ReservationComponent({ onDataReceived }) {
               value={partySize}
               onChange={handlePartySizeChange}
             >
-              <option value="option1">Guest 1</option>
-              <option value="option2">Guest 2</option>
-              <option value="option3">Guest 4</option>
-              <option value="option3">Guest 6</option>
-              <option value="option3">Guest 8</option>
-              <option value="option3">Guest 8+</option>
+              <option value="Guest1">Guest 1</option>
+              <option value="Guest2">Guest 2</option>
+              <option value="Guest4">Guest 4</option>
+              <option value="Guest6">Guest 6</option>
+              <option value="Guest8">Guest 8</option>
+              <option value="Guest8+">Guest 8+</option>
             </Select>
             <p className="custom-errornew">{partySizeError}</p>
           </div>

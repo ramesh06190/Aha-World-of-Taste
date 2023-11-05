@@ -1,6 +1,19 @@
+
+
+
+
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { get, post } from "../api/ApiService";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+} from "@chakra-ui/react";
 
 function UserDetailPage() {
   const location = useLocation();
@@ -22,6 +35,7 @@ function UserDetailPage() {
   const headers = {
     token: getuserToken,
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -102,79 +116,83 @@ function UserDetailPage() {
   };
 
   return (
-    <div className="admin-chat-con">
-      <h1>Complete your reservation</h1>
-      <h3>Please Fill in your details:</h3>
+    <div className="manage-order-container">
+ <Box p="4" m="0px 10px">
+      <h1 className="completeReservationHeading"> Complete your reservation</h1>
+      <h3 className="completeReservationfill">Please Fill in your details:</h3>
 
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>First Name</label>
-          <input
+        <FormControl>
+          <FormLabel>First Name</FormLabel>
+          <Input
             type="text"
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
           />
-          <p className="error-message">{validationMessages.firstName}</p>
-        </div>
+          <Text color="red" fontSize="sm">
+            {validationMessages.firstName}
+          </Text>
+        </FormControl>
 
-        <div>
-          <label>Last Name</label>
-          <input
+        <FormControl>
+          <FormLabel>Last Name</FormLabel>
+          <Input
             type="text"
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
           />
-          <p className="error-message">{validationMessages.lastName}</p>
-        </div>
+          <Text color="red" fontSize="sm">
+            {validationMessages.lastName}
+          </Text>
+        </FormControl>
 
-        <div>
-          <label>Phone</label>
-          <input
+        <FormControl>
+          <FormLabel>Phone</FormLabel>
+          <Input
             type="text"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
           />
-          <p className="error-message">{validationMessages.phone}</p>
-        </div>
+          <Text color="red" fontSize="sm">
+            {validationMessages.phone}
+          </Text>
+        </FormControl>
 
-        <div>
-          <label>Email</label>
-          <input
+        <FormControl>
+          <FormLabel>Email</FormLabel>
+          <Input
             type="text"
             name="email"
             value={formData.email}
             onChange={handleChange}
           />
-          <p className="error-message">{validationMessages.email}</p>
-        </div>
+          <Text color="red" fontSize="sm">
+            {validationMessages.email}
+          </Text>
+        </FormControl>
 
-        <button type="submit">Submit</button>
+        <FormControl m="10px 0px">
+          <Checkbox >Agree to Terms and Conditions</Checkbox>
+        </FormControl>
+
+        <Button type="submit" mt="4" w="200px ">
+          Submit
+        </Button>
       </form>
 
       {checkoutModelOpen ? (
-        <div className="orderSucess">
-          <div className="sucesscard">
-            your Reservation is sucessfull
-            {/* <p>
-              {" "}
-              Total Price: $
-              {(
-                calculateTotalPrice() +
-                (deliveryOption === "delivery" ? deliveryCharges : 0)
-              ).toFixed(2)}
-            </p> */}
-            {/* <Button backgroundColor="#EFD36D" onClick={closeCheckoutModal}>
-              Close
-            </Button> */}
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
+        <Box className="orderSucess">
+          <Box className="sucesscard">
+            your Reservation is successful
+          </Box>
+        </Box>
+      ) : null}
+    </Box>
     </div>
+   
   );
 }
 

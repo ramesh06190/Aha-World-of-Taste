@@ -28,7 +28,7 @@
 }
 
 .food-card {
-    flex: 0 0 calc(450px); 
+    flex: 0 0 calc(400px); 
     padding: 1rem;
     border: 1px solid #ccc;
     border-radius: 0.5rem;

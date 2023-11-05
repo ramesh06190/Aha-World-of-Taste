@@ -42,6 +42,7 @@ import {
 const MyAccountPage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const getuserToken = localStorage.getItem("userToken");
+  const getUserId = localStorage.getItem("userId");
   const [orders, setOrders] = useState([]);
   const toast = useToast();
   const [firstName, setFirstName] = useState("");
@@ -51,6 +52,7 @@ const MyAccountPage = () => {
   const [Reviewsucess, setReviewSucess] = useState(false);
   const [foodRatings, setFoodRatings] = useState({});
   const [orderRating, setOrderRating] = useState(0);
+  const [order, setOrder] = useState([]);
   const [textValue, setTextValue] = useState("");
   const handleSave = async () => {
     const result = await post(
@@ -77,6 +79,19 @@ const MyAccountPage = () => {
       setIsReviewDrawerOpen(false);
     }
   };
+
+  
+  useEffect(() => {
+    GetReservationDetail();
+  }, []);
+
+  const GetReservationDetail = async () => {
+    const result = await get("user/all/reservation");
+    if (result.status) {
+      setOrder(result.data.filter((val)=>val.userId === getUserId));
+    }
+  };
+
   const handleStarOrder = (star) => {
     setOrderRating(star);
   };
@@ -156,6 +171,34 @@ const MyAccountPage = () => {
           borderRadius: "5px",
         };
       case "Order Canceled":
+        return {
+          backgroundColor: "red",
+          color: "white",
+          padding: "2px 8px",
+          borderRadius: "5px",
+        };
+      default:
+        return {};
+    }
+  }
+  function getStatusStylenew(status) {
+    switch (status) {
+      case "Pending":
+        return {
+          backgroundColor: "orange",
+          color: "white",
+          padding: "2px 8px",
+          borderRadius: "5px",
+        };
+      case "Approved":
+        return {
+          backgroundColor: "green",
+          color: "white",
+          padding: "2px 8px",
+          borderRadius: "5px",
+        };
+  
+      case "Rejected":
         return {
           backgroundColor: "red",
           color: "white",
@@ -289,8 +332,10 @@ const MyAccountPage = () => {
 
   const tabData = [
     { label: "Orders", content: "" },
+    { label: "Reservations", content: "Content for Tab 3" },
     { label: "Address", content: "Content for Tab 2" },
     { label: "Profile", content: "Content for Tab 3" },
+
   ];
 
   return (
@@ -408,7 +453,80 @@ const MyAccountPage = () => {
               </Box>
             </TabPanel>
           )}
-
+  {isLoadingOrders ? (
+            <TabPanel key={1} p={4} bg="white" boxShadow="lg">
+              <Center h="80vh">
+                <Spinner size="xl" />
+              </Center>
+            </TabPanel>
+          ) : (
+            <TabPanel
+              key={1}
+              p={4}
+              bg="white"
+              boxShadow="lg"
+              borderRadius={"5px"}
+            >
+              <Box minHeight={"86vh"}>
+                {order.length === 0 ? (
+                  <Box
+                    h="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    minHeight={"80vh"}
+                  >
+                    <Text fontSize="lg">No Reservation to display</Text>
+                  </Box>
+                ) : (
+                  order.map((order) => (
+                    <Box
+                      key={order.id}
+                      w="100%"
+                      borderWidth="1px"
+                      borderColor="gray.300"
+                      p="4"
+                      mb="4"
+                      borderRadius="md"
+                      display="flex"
+                      flexDirection="column"
+                    >
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Text fontSize="lg">{order.size}</Text>
+                        <Text
+                          fontSize="md"
+                          mt="2"
+                          style={getStatusStylenew(order.status)}
+                        >
+                          {order.status}
+                        </Text>
+                      </Box>
+                      <Text fontSize="md" mt="2">
+                        Name: {order.firstName} {order.lastName}
+                      </Text>
+                      <Text fontSize="md" mt="2">
+                        Reservation ID: {order.id}
+                      </Text>
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Text fontSize="md" mt="2">
+                          Reservation Time: {order.time}
+                        </Text>
+                  
+                      </Box>
+                    </Box>
+                  ))
+                )}
+              </Box>
+            </TabPanel>
+          )}
           {isLoadingAddress ? (
             <TabPanel key={1} p={4} bg="white" boxShadow="lg">
               <Center h="80vh">
@@ -587,7 +705,7 @@ const MyAccountPage = () => {
           <DrawerHeader>Review Food Items</DrawerHeader>
           <DrawerBody>
             {reviewedFood.map((food, index) => (
-              <Box key={index} p={2} borderBottom="1px solid #ddd">
+              <Box key={index} p={2} >
                 <Text>{food.name}</Text>
                 <Box display="flex" justifyContent="space-between">
                   <Text display="flex">
@@ -610,7 +728,7 @@ const MyAccountPage = () => {
                     Not Interested to review
                   </Radio>
                 </Box>
-                <Text>Review Order</Text>
+                <Text>Over all Rateing</Text>
                 <Box display="flex" justifyContent="space-between">
                   <Text display="flex">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -625,7 +743,8 @@ const MyAccountPage = () => {
                     ))}
                   </Text>
                 </Box>
-                <Text>Write review</Text>
+            <Box borderBottom="1px solid #ddd" paddingBottom="20px" paddingTop="20px">
+            <Text>Write review</Text>
                 <Textarea
                   value={textValue}
                   onChange={(event) => {
@@ -634,7 +753,10 @@ const MyAccountPage = () => {
                   }}
                   placeholder="Write a review..."
                 />
+            </Box>
               </Box>
+
+              
             ))}
             <Box display="flex" justifyContent="end">
               <Button

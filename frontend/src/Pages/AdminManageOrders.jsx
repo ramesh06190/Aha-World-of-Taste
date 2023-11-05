@@ -21,6 +21,7 @@ const OrderTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRow, setSelectedRow] = useState(null);
   const [order, setOrder] = useState([]);
+  console.log(order , "order")
   const [sortBy, setSortBy] = useState("orderID");
   const [sortOrder, setSortOrder] = useState("asc");
 

@@ -90,6 +90,19 @@
 .custom-error {
     color: red;
 }
+.custom-errornew{
+    color: red;
+    position: absolute;
+    top: 65px;
+}
+.custom-errornewone{
+    color: red;
+    position: absolute;
+    top: 65px;
+}
+.label-wrap{
+    position: relative;
+}
 .center-model{
     min-height: 100vh !important;
     display: flex !important;
