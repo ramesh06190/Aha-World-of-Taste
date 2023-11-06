@@ -391,7 +391,9 @@ const getAllUser = async (req, res) => {
   try {
     const users = await User.find({
       fullName: { $exists: true, $ne: "" },
-    }).select("fullName id");
+    })
+      .select("fullName id chatMessages")
+      .sort({ updatedAt: -1 });
     if (!users) {
       return res.status(404).json({
         message: "User not found",
@@ -561,7 +563,7 @@ const postReservation = async (req, res) => {
 };
 const getReservation = async (req, res) => {
   try {
-    const reservations = await Reservation.find();
+    const reservations = await Reservation.find().sort({ createdAt: -1 });
     res.status(200).json({ data: reservations, status: true });
   } catch (error) {
     console.error(error);

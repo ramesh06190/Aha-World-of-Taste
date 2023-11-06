@@ -90,9 +90,12 @@ function AdminLanding() {
 
   const getAllUser = async () => {
     const result = await get("user/all-user");
-    GetChat(result.data[0].id);
-    setRoomId(result.data[0].id);
-    setUser(result.data);
+    let data = result.data;
+    let filteredArray = data.filter((ele) => ele.chatMessages.length !== 0);
+    GetChat(filteredArray[0].id);
+    setRoomId(filteredArray[0].id);
+
+    setUser(filteredArray);
   };
   function formatTimestamp(timestamp) {
     const date = new Date(timestamp);

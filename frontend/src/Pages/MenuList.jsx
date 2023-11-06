@@ -128,7 +128,8 @@ function MenuList() {
 
     const getAllDish = async () => {
       const result = await get("api/all/dish");
-      setDish(result.data);
+      let data = result.data.filter((ele) => ele.disable === false);
+      setDish(data);
       setIsLoading(false); // Set loading to false when data is fetched
     };
 

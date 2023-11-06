@@ -12,7 +12,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
 import "./AdminViewMenu.css";
 
 const FoodCard = ({
@@ -21,6 +21,7 @@ const FoodCard = ({
   price,
   onDelete,
   updateRenderData,
+  disable,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -35,12 +36,14 @@ const FoodCard = ({
 
   return (
     <div className="food-card">
-      <h2 className="food-name">{foodName}</h2>
-      <p className="food-description">{description}</p>
+      <div>
+        <h2 className="food-name">{foodName}</h2>
+        <p className="food-description">{description}</p>
+      </div>
       <div className="rate-wrap">
         <p className="food-rate">{price}</p>
         <IconButton
-          icon={<DeleteIcon />}
+          icon={!disable ? <DeleteIcon /> : <AddIcon />}
           aria-label="Delete"
           variant="outline"
           colorScheme="red"

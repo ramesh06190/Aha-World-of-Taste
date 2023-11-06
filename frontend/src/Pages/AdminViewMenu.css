@@ -1,58 +1,60 @@
 .admin-viewcontainer {
-    padding: 0 1rem;
-    padding-bottom: 20px;
-    background-color: rgb(255 255 255 / 0.3);
-    backdrop-filter: blur(30px);
+  padding: 0 1rem;
+  padding-bottom: 20px;
+  background-color: rgb(255 255 255 / 0.3);
+  backdrop-filter: blur(30px);
 }
 
 .search-input {
-    width: 400px;
-    padding: 1rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
-    margin: 2rem 24px 2rem 0px !important;
-    
+  width: 400px;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  margin: 2rem 24px 2rem 0px !important;
 }
-.search-wrap{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.search-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .food-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
 }
 
 .food-card {
-    flex: 0 0 calc(400px); 
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    width: 100%;
+  flex: 0 0 calc(400px);
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .food-name {
-    font-weight: bold;
-    font-size: 1.5rem;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .food-description {
-    font-size: 1rem;
-    color: wheat;
+  font-size: 1rem;
+  color: wheat;
 }
 
 .food-rate {
-    font-size: 1rem;
-    margin-top: 1rem;
-    color: #c53030;
+  font-size: 1rem;
+  margin-top: 1rem;
+  color: #c53030;
 }
-.search-wrap h1{
-    font-size: 30px;
-    font-weight: 600;
+.search-wrap h1 {
+  font-size: 30px;
+  font-weight: 600;
 }

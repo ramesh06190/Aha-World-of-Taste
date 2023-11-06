@@ -154,13 +154,33 @@ const deleteDish = async (req, res) => {
         status: false,
       });
     }
-    const deletedDish = await Dish.findOneAndDelete({ id: id });
-    if (!deletedDish) {
-      return res.status(404).json({ error: "Dish not found" });
+
+    const dish = await Dish.findOne({ id: id });
+
+    if (!dish) {
+      return res.status(404).json({
+        message: "Dish not found",
+        status: false,
+      });
     }
+
+    const newDisableValue = !dish.disable;
+    const updatedDish = await Dish.findOneAndUpdate(
+      { id: id },
+      { $set: { disable: newDisableValue } },
+      { new: true }
+    );
+
+    if (!updatedDish) {
+      return res.status(500).json({
+        message: "Failed to update the dish",
+        status: false,
+      });
+    }
+
     res.json({
-      message: "Dish deleted successfully",
-      data: deletedDish,
+      message: "Dish updated successfully",
+      data: updatedDish,
       status: true,
     });
   } catch (error) {

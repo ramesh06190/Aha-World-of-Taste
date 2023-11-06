@@ -25,6 +25,7 @@ const dishSchema = new mongoose.Schema(
     price: { type: Number },
     description: { type: String },
     image: { type: String },
+    disable: { type: Boolean, default: false },
     ratings: {
       type: [ratingSchema],
       default: [], // Empty array as default value
