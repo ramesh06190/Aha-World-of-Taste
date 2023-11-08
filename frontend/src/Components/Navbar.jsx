@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import LoginSignUp from "./LoginSignUp";
 import { NavLink, Link, useNavigate } from "react-router-dom";
+import Logo from "../assets/logo.png"
 // import { CartContext } from '../Pages/MenuList'
 import { useCart } from "../Pages/CartContext"; // Import the useCart hook
 
@@ -92,7 +93,7 @@ function Navbar() {
       <div className="landing-container">
         <div className="nav-container">
           <div className="logo">
-            <h1>Logo</h1>
+            <img src={Logo} alt=""></img>
           </div>
           <div className="search">
             <input
@@ -134,7 +135,7 @@ function Navbar() {
                       justifyContent="center"
                       alignItems="center"
                     >
-                      {userr?.fullName?.slice(-1)?.toUpperCase()}
+                      {userr?.fullName?.charAt(0)?.toUpperCase()}
                     </Box>
                   </PopoverTrigger>
                 </Popover>
@@ -143,15 +144,15 @@ function Navbar() {
               <li onClick={handleOpenModal}>Login</li>
             )}
             {
-              isUserToken !== null ?   <Button
-              onClick={() => {
-                navigate("/cart");
-              }}
-            >
-              Cart {totalItemsInCart === 0 ? "" : <p>{totalItemsInCart}</p>}{" "}
-            </Button> : ""
+              isUserToken !== null ? <Button
+                onClick={() => {
+                  navigate("/cart");
+                }}
+              >
+                Cart {totalItemsInCart === 0 ? "" : <p>{totalItemsInCart}</p>}{" "}
+              </Button> : ""
             }
-          
+
           </div>
         </div>
         {searchValue !== "" ? (
@@ -163,7 +164,7 @@ function Navbar() {
                   <div key={dish.id} className="card">
                     <img src={dish.image} alt=""></img>
                     <h3>{dish.foodName}</h3>
-
+                    <p className="ellipsis-text">{dish.description}</p>
                     <div className="rate-con">
                       <div className="dish-rate">{dish.price}</div>
                       <Flex justify="space-between">

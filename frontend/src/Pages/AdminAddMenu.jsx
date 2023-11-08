@@ -18,6 +18,7 @@ import "./AdminAddMenu.css";
 import axios from "axios";
 function AddItemForm() {
   const [ImageFile, setImageFile] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   const [item, setItem] = useState({
     foodName: "",
     category: "", // Initialize category with an empty string
@@ -38,6 +39,9 @@ function AddItemForm() {
   const uploadImage = async (e) => {
     setLoading(true);
     let formData = new FormData();
+
+    const file = e.target.files[0];
+    setSelectedFile(file);
     formData.append("image", e.target.files[0]);
     let u = await axios.post(
       `http://localhost:8090/api/upload/image`,
@@ -247,11 +251,11 @@ function AddItemForm() {
               display="none" // Hide the actual file input
             />
           </Box>
-          {item.image && (
-            <Text mt={2} fontSize="sm">
-              Selected File: {item.image.name}
-            </Text>
-          )}
+          {selectedFile && (
+        <p className="seledtedname">
+          Selected File: {selectedFile.name}
+        </p>
+      )}
         </FormControl>
 
         <Button mt={4} onClick={handleAddItem} backgroundColor="#EFD36D">

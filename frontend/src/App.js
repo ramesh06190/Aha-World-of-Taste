@@ -21,6 +21,7 @@ import Maps from "./Components/Maps";
 import AdminReviewList from "./Components/AdminReviewList.jsx";
 import Track from "./Components/Track";
 import UserDetailPage from "./Pages/userDetailPage.js";
+import AdminOverview from "./Pages/AdminOverview.js";
 function App() {
   return (
     <div className="App">
@@ -46,6 +47,7 @@ function App() {
               <Route path="/AdminEditMenu" element={<AdminEditMenu />} />
               <Route path="/AdminDeleteMenu" element={<AdminDeleteMenu />} />
               <Route path="/AdminReviewList" element={<AdminReviewList />} />
+              <Route path="/AdminOverview" element={<AdminOverview />} />
               <Route path="/status" element={<OrderStatusPage />} />
             </Route>
 

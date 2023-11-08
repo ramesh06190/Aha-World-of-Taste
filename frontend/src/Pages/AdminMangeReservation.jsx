@@ -23,6 +23,7 @@ const AdminMangeReservation = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRow, setSelectedRow] = useState(null);
   const [order, setOrder] = useState([]);
+  // console.log(order , "order")
   const [sortBy, setSortBy] = useState("orderID");
   const [sortOrder, setSortOrder] = useState("asc");
 
@@ -176,7 +177,7 @@ const AdminMangeReservation = () => {
             return (
               <Tr key={index}>
                 <Td>{order.id}</Td>
-                <Td>{order.createdAt}</Td>
+                <Td>{order.firstName}</Td>
                 <Td>{order.size}</Td>
                 <Td>{order.date}</Td>
                 <Td>{order.time}</Td>

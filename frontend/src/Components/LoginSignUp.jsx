@@ -339,19 +339,21 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                   </InputGroup>
                   <p className="custom-error">{passwordError}</p>
                   <>
-                    <p
+                  {adminLogin === true ? "" :<p
                       className="forgetPasstext"
                       onClick={openResetPasswordModal}
                     >
                       forget password
-                    </p>
+                    </p> }
+                    
                     <div className="btn-wrap-pop-login">
                       {adminLogin === true ? (
                         <Button
                           className="Login_as_Admin"
                           onClick={handleAdminLOginSubmit}
+                  
                         >
-                          Login as User
+                        admin Login
                         </Button>
                       ) : (
                         <>
@@ -374,12 +376,20 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                 </div>
 
                 <div className="admin-login">
-                  <Button
+                <Button
                     className="admin-login-btn"
                     onClick={() => setAdminLogin(true)}
+                    m={"0px 10px 0px 0px"}
                   >
-                   User Login
+                  login as admin
                   </Button>
+                  <Button
+                    className="admin-login-btn"
+                    onClick={() => setAdminLogin(false)}
+                  >
+                  login as User
+                  </Button>
+               
                 </div>
               </div>
             ) : (

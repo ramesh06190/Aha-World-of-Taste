@@ -6,84 +6,104 @@
   font-family: 'Montserrat', sans-serif;
   font-family: 'Urbanist', sans-serif;
 }
+
 /* @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&family=Montserrat:wght@100;200;300&family=Urbanist:wght@300;400;500;600&display=swap'); */
 
-.admin-parent_conatiner{
+.admin-parent_conatiner {
   display: flex;
 }
-.css-4sd9dj{
+
+.css-4sd9dj {
   padding: 0 !important;
 }
-.admin-sidebar{
+
+.admin-sidebar {
   width: 250px;
   position: sticky;
   height: 100vh;
   top: 0;
 
 }
-.admin-content{
+
+.admin-content {
   width: calc(100vw - 250px);
 }
-.rate-wrap{
+
+.rate-wrap {
   display: flex;
   justify-content: space-between;
 }
-.chakra-stack.css-12sxl0c{
+
+.chakra-stack.css-12sxl0c {
   height: 93vh !important;
   position: sticky !important;
   top: 64px !important;
 }
+
 ::-webkit-scrollbar {
   display: none;
 }
 
-.admin-chat-con{
+.admin-chat-con {
   min-height: 93vh;
   background-color: rgb(255 255 255 / 0.3);
   backdrop-filter: blur(30px);
 }
-.manage-order-container{
+
+.manage-order-container {
   min-height: 93vh;
   background-color: rgb(255 255 255 / 0.3);
   backdrop-filter: blur(30px);
   padding-bottom: 20px;
 }
-.view-status-container{
+
+.view-status-container {
   min-height: 93vh;
   background-color: rgb(255 255 255 / 0.3);
   backdrop-filter: blur(30px);
 }
-.css-hip9hq-MuiPaper-root-MuiAppBar-root{
+
+.css-hip9hq-MuiPaper-root-MuiAppBar-root {
   background-color: white !important;
 }
-.css-ptiqhd-MuiSvgIcon-root{
+
+.css-ptiqhd-MuiSvgIcon-root {
   color: black !important;
 }
-.chat-admin-area{
+
+.chat-admin-area {
   height: 70vh;
   overflow-y: scroll;
 }
-.chat-admin-area{
-margin-top: 12px !important;
+
+.chat-admin-area {
+  margin-top: 12px !important;
 }
-.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected{
+
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
   color: black !important;
 }
-.css-1aquho2-MuiTabs-indicator{
+
+.css-1aquho2-MuiTabs-indicator {
   background-color: black !important;
 }
-.admin-input-area{
+
+.admin-input-area {
   margin: 0px 10px;
 }
-.myaccountpage{
+
+.myaccountpage {
   min-height: 100vh;
   background-color: gray;
 }
+
 /* CSS for the Custom Progress Bar */
 .progress-bar {
   width: 100%;
-  background-color: #ccc; /* Background color for the progress bar */
-  height: 20px; /* Height of the progress bar */
+  background-color: #ccc;
+  /* Background color for the progress bar */
+  height: 20px;
+  /* Height of the progress bar */
   border-radius: 5px;
   position: relative;
 }
@@ -91,9 +111,12 @@ margin-top: 12px !important;
 .progress-fill {
   height: 100%;
   border-radius: 5px;
-  background-color: teal; /* Default progress bar color */
-  width: 0; /* Initial width, will be adjusted dynamically */
-  transition: width 0.3s; /* Smooth transition effect for width changes */
+  background-color: teal;
+  /* Default progress bar color */
+  width: 0;
+  /* Initial width, will be adjusted dynamically */
+  transition: width 0.3s;
+  /* Smooth transition effect for width changes */
 }
 
 /* Customize the color for the rejected status */
@@ -144,16 +167,19 @@ margin-top: 12px !important;
 .pagination-controls #currentPage {
   font-weight: bold;
 }
-.chakra-stack .css-ptvylg{
+
+.chakra-stack .css-ptvylg {
   width: 100% !important;
   display: flex !important;
   /* flex-direction: column !important; */
   justify-content: space-between !important;
 }
-.css-1zts0j{
+
+.css-1zts0j {
   color: black !important;
 }
-.addressDel{
+
+.addressDel {
   width: 40px;
   height: 40px;
   background-color: #e53e3e;
@@ -162,16 +188,43 @@ margin-top: 12px !important;
   justify-content: center;
   align-items: center;
 }
-.addressDel img{
+
+.addressDel img {
   width: 25px;
   height: 25px;
 }
-.completeReservationHeading{
+
+.completeReservationHeading {
   font-size: 30px;
-  margin: 20px 0px ;
+  margin: 20px 0px;
   font-weight: bold;
 }
-.completeReservationfill{
+
+.completeReservationfill {
   font-size: 21px;
-  margin: 20px 0px ;
+  margin: 20px 0px;
+}
+
+.deliveredtext {
+  background-color: #198754;
+color: white;
+  padding: "2px 8px";
+  border-radius: 5px;
+  width: 125px;
+  text-align: center;
+}
+.Rejectedtext{
+  background-color: red;
+color: white !important;
+  padding: "2px 8px";
+  border-radius: 5px;
+  width: 125px;
+  text-align: center;
+}
+.slect-conn{
+display: flex;
+justify-content: end;
+margin-top: -30px;
+margin-right: 50px;
+padding-bottom: 30px;
 }

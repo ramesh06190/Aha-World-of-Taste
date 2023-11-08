@@ -284,44 +284,54 @@ function CartPage() {
                   <Text>Delivery Charges: ${deliveryCharges.toFixed(2)}</Text>
                 </Box>
               )}
-              {address.houseFloor &&
-              address.buildingBlock &&
-              address.landmarkArea ? (
-                <>
-                  <Text
-                    color="green"
-                    textAlign="end"
-                    fontSize="lg"
-                    fontWeight="bold"
-                  >
-                    Address: {address.houseFloor}, {address.buildingBlock},{" "}
-                    {address.landmarkArea}
-                  </Text>
 
-                  {dummyAddresses.length === 0 ? (
-                    ""
-                  ) : (
-                    <>
-                      <div className="changeaddresscon">
-                        <button
-                          className="changeAddressbtn"
-                          onClick={openChangeAddressPopup}
-                        >
-                          Change Address
-                        </button>
-                      </div>
-                    </>
-                  )}
-
-                  <Button backgroundColor="#EFD36D" onClick={handleCheckout}>
-                    Submit Order
-                  </Button>
-                </>
-              ) : (
-                <Button backgroundColor="#EFD36D" onClick={openAddressModal}>
-                  Add Address
+              {deliveryOption === "pickup" ? (
+                <Button backgroundColor="#EFD36D" onClick={handleCheckout}>
+                  Submit Order
                 </Button>
+              ) : (
+                <>
+                  {address.houseFloor &&
+                    address.buildingBlock &&
+                    address.landmarkArea ? (
+                    <>
+                      <Text
+                        color="green"
+                        textAlign="end"
+                        fontSize="lg"
+                        fontWeight="bold"
+                      >
+                        Address: {address.houseFloor}, {address.buildingBlock},{" "}
+                        {address.landmarkArea}
+                      </Text>
+
+                      {dummyAddresses.length === 0 ? (
+                        ""
+                      ) : (
+                        <>
+                          <div className="changeaddresscon">
+                            <button
+                              className="changeAddressbtn"
+                              onClick={openChangeAddressPopup}
+                            >
+                              Change Address
+                            </button>
+                          </div>
+                        </>
+                      )}
+
+                      <Button backgroundColor="#EFD36D" onClick={handleCheckout}>
+                        Submit Order
+                      </Button>
+                    </>
+                  ) : (
+                    <Button backgroundColor="#EFD36D" onClick={openAddressModal}>
+                      Add Address
+                    </Button>
+                  )}
+                </>
               )}
+
             </VStack>
           </Box>
         </div>
@@ -367,7 +377,7 @@ function CartPage() {
               <option value="office">Office</option>
               <option value="other">Other</option>
             </Select>
-            <Button backgroundColor="#EFD36D" onClick={saveaddressandclose}>
+            <Button backgroundColor="#EFD36D" margin={"8px 0px"} onClick={saveaddressandclose}>
               Save & Confirm
             </Button>
 

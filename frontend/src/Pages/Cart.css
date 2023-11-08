@@ -50,12 +50,13 @@
 }  
 
 .changeAddressbtn {
-    color: black; /* White text color */
+    color: red; /* White text color */
     border: none; /* Remove button border */
     border-radius: 5px; /* Rounded corners */
     cursor: pointer; /* Cursor style on hover */
     font-size: 16px; /* Font size */
     margin: 0 !important;
+    text-decoration: underline;
   }
   
   .changeaddresscon{

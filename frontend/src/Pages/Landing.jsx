@@ -3,6 +3,7 @@ import "./Landing.css"
 import { foodItems } from './LandingConfig'
 import { Link } from 'react-router-dom'
 import ReservationComponent from './ReservationComponent'
+import { useNavigate, useLocation } from 'react-router-dom';
 function Landing() {
 
   const vegItems = foodItems.filter((item) => item.type === 'Vegetarian');
@@ -13,9 +14,11 @@ function Landing() {
     (item) => item.type === 'Traditional'
   );
   const [location, setLocation] = useState(null);
- 
+ const navigate = useNavigate()
   const [error, setError] = useState(null);
-
+const menuNav = ()=>{
+  navigate("/menuList")
+}
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -46,8 +49,8 @@ function Landing() {
         <div className="content-card">
           <h1>Welcome to Aha restaurant <br /> Authentic Cuisine Palace <br />Dine In - Take Out</h1>
           <div className="btn-wrap">
-            <button className='contact'>Contact Us </button>
-            <button className='call'>Call Us</button>
+            <button className='contact' onClick={menuNav}>Pickup / Delivery</button>
+        
           </div>
         </div>
       </div>

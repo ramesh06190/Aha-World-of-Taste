@@ -8,7 +8,8 @@ import {
   Td,
   Button,
   Link,
-  Heading
+  Heading,
+  Text
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
@@ -138,10 +139,11 @@ const OrderTable = () => {
                 <Td>{totalOrderQuantity}</Td>{" "}
                 {/* Display the total order quantity */}
                 <Td>
-                  {order.status === "delivered" ? (
-                    "Delivered"
-                  ) : order.status === "rejected" ? (
-                    "Rejected"
+                  {order.status === "Delivered" ? (
+                    <Text className="deliveredtext" >Delivered</Text>
+                  ) : order.status === "Order Canceled" ? (
+                    <Text className="Rejectedtext" >Rejected</Text>
+            
                   ) : (
                     <Link
                       as={Button}

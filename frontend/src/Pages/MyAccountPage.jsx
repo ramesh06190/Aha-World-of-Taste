@@ -560,21 +560,25 @@ const MyAccountPage = () => {
                           placeholder="House No. & Floor*"
                           value={addressData.houseFloor}
                           onChange={handleInputChange}
+                          margin={"8px 0px"}
                         />
                         <Input
                           name="buildingBlock"
                           placeholder="Building & Block No.*"
                           value={addressData.buildingBlock}
+                          margin={"8px 0px"}
                           onChange={handleInputChange}
                         />
                         <Input
                           name="landmarkArea"
+                          margin={"8px 0px"}
                           placeholder="Landmark & Area Name (Optional)"
                           value={addressData.landmarkArea}
                           onChange={handleInputChange}
                         />
                         <Select
                           name="addressType"
+                          margin={"8px 0px"}
                           placeholder="Select Address Type"
                           value={addressData.addressType}
                           onChange={handleInputChange}
@@ -585,7 +589,7 @@ const MyAccountPage = () => {
                         </Select>
                       </ModalBody>
                       <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={saveAddress}>
+                        <Button color="black" backgroundColor={"#EFD36D"} mr={3} onClick={saveAddress}>
                           Save
                         </Button>
                         <Button onClick={closeModal}>Close</Button>
@@ -728,7 +732,7 @@ const MyAccountPage = () => {
                     Not Interested to review
                   </Radio>
                 </Box>
-                <Text>Over all Rateing</Text>
+                <Text>Rate our restaurant</Text>
                 <Box display="flex" justifyContent="space-between">
                   <Text display="flex">
                     {[1, 2, 3, 4, 5].map((star) => (

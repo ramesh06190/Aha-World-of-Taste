@@ -1,6 +1,9 @@
 // src/data.js
 const menuItems = [
-
+  {
+    name: 'Over view',
+    to: '/AdminOverview',
+  },
     {
         name: 'Manage Orders',
         to: '/AdminManageOrders',

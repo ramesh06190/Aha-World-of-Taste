@@ -112,13 +112,13 @@
 
 .card {
     background-color: #fff;
-    padding: 20px;
+    padding: 20px 20px 0px 20px;
     margin: 10px;
     background-color: #fff;
     border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
     width: 280px;
-    height: 235px;
+    height: 258px;
     border-radius: 8px;
   }
   .search-header{
@@ -136,11 +136,13 @@
   .rate-con{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
   }
-  .card h3{
-    padding: 10px 0px;
+  .card h3 {
+    padding: 7px 0px 7px 0px;
     font-weight: 600;
-  }
+}
   .dish-rate{
     color: red;
   }
@@ -149,4 +151,17 @@
     color: #EFD36D;
     padding: 10px;
     border-radius: 10px;
+  }
+  .nav-container .logo img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .ellipsis-text {
+    white-space: nowrap;         
+    overflow: hidden;           
+    text-overflow: ellipsis;     
+    width: 250px;               
   }

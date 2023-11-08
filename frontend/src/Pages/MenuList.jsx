@@ -67,8 +67,9 @@ function MenuList() {
     data.sort((a, b) => b.averageRating - a.averageRating);
     const filteredData = data.filter((item) => item.averageRating > 0);
     return filteredData;
+   
   }
-
+  console.log(filteredData , "filteredData")
   const headers = {
     token: getuserToken,
   };
@@ -135,7 +136,7 @@ function MenuList() {
 
     getCategory();
     getAllDish();
-    setSelectedTab("Best Seller");
+    setSelectedTab("All");
   }, []);
 
   return (

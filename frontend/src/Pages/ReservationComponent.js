@@ -54,6 +54,15 @@ function ReservationComponent() {
     onDataReceived: PropTypes.func.isRequired,
   };
 
+  function getCurrentDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, "0");
+    const day = today.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+  
+
   return (
     <div>
       <div className="reservation-section">
@@ -74,10 +83,10 @@ function ReservationComponent() {
             >
               <option value="Guest1">Guest 1</option>
               <option value="Guest2">Guest 2</option>
+              <option value="Guest3">Guest 3</option>
               <option value="Guest4">Guest 4</option>
-              <option value="Guest6">Guest 6</option>
-              <option value="Guest8">Guest 8</option>
-              <option value="Guest8+">Guest 8+</option>
+              <option value="Guest4+">Guest 4+</option>
+       
             </Select>
             <p className="custom-errornew">{partySizeError}</p>
           </div>
@@ -92,6 +101,7 @@ function ReservationComponent() {
               type="date"
               value={date}
               onChange={handleDateChange}
+              min={getCurrentDate()}
             />
             <p className="custom-errornewone">{dateError}</p>
           </div>

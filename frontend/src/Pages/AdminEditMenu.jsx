@@ -24,7 +24,7 @@ const FoodCard = ({
   const [AdminDish, setAdminDish] = useState([]);
   const [ImageFile, setImageFile] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [selectedFile, setSelectedFile] = useState(null);
   const handleEditClick = () => {
     setIsEditing(true);
   };
@@ -40,6 +40,8 @@ const FoodCard = ({
 
   const uploadImage = async (e) => {
     setLoading(true);
+    const file = e.target.files[0];
+    setSelectedFile(file);
     let formData = new FormData();
     formData.append("image", e.target.files[0]);
     let u = await axios.post(
@@ -180,19 +182,27 @@ const FoodCard = ({
                 onChange={uploadImage}
                 display="none" // Hide the actual file input
               />
+              
             </Box>
+            
           ) : (
             ""
           )}
         </div>
         {isEditing ? (
-          <button onClick={() => handleSaveClick(id)}>Save</button>
+          <button onClick={() => handleSaveClick(id)}>Save</button> 
         ) : (
           <button onClick={handleEditClick}>
             <RiEdit2Line /> Edit
           </button>
         )}
+          
       </div>
+      {selectedFile && (
+        <p className="seledtedname">
+          Selected File: {selectedFile.name}
+        </p>
+      )}
     </div>
   );
 };
