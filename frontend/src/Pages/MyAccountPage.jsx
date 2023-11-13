@@ -233,8 +233,10 @@ const MyAccountPage = () => {
   useEffect(() => {
     GetDetails();
   }, []);
+
   const GetDetails = async () => {
     const result = await get("user/my/order", {}, headers);
+  
     if (result.status) {
       const mappedOrders = result?.data?.orders?.map((order) => {
         let reviewArray = [];
@@ -259,7 +261,13 @@ const MyAccountPage = () => {
           review: reviewArray,
         };
       });
-      setOrders(mappedOrders);
+  
+      // Sort orders by orderedTime in descending order (most recent first)
+      const sortedOrders = mappedOrders.sort((a, b) =>
+        new Date(b.orderedTime) - new Date(a.orderedTime)
+      );
+  
+      setOrders(sortedOrders);
       setIsLoadingOrders(false);
       setIsLoadingAddress(false);
       setSavedAddresses(result?.data?.user?.addresses);
@@ -267,6 +275,7 @@ const MyAccountPage = () => {
       setEmail(result?.data?.user?.email);
     }
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
