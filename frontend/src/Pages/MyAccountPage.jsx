@@ -522,15 +522,16 @@ const MyAccountPage = () => {
                       </Text>
                       <Box
                         display="flex"
-                        justifyContent="space-between"
                         alignItems="center"
+                        
                       >
                         <Text fontSize="md" mt="2">
-                          Reservation Time: {order.time}
+                          Reservation Date & Time: {order.date} {order.time}
                         </Text>
-                  
+  
+                       </Box>
                       </Box>
-                    </Box>
+                  
                   ))
                 )}
               </Box>
