@@ -9,7 +9,7 @@ import {
   Button,
   Link,
   Heading,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
@@ -22,14 +22,13 @@ const OrderTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRow, setSelectedRow] = useState(null);
   const [order, setOrder] = useState([]);
-  console.log(order , "order")
-  const [sortBy, setSortBy] = useState("orderID");
+  console.log(order, "order");
+  const [sortBy, setSortBy] = useState("order.createdAt");
   const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     GetDetails();
   }, []);
-
 
   const GetDetails = async () => {
     const result = await get("admin/order");
@@ -52,15 +51,15 @@ const OrderTable = () => {
   const sortedOrder = [...order].sort((a, b) => {
     const orderA = a[sortBy];
     const orderB = b[sortBy];
-  
+
     if (orderA === null || orderA === undefined) {
       return sortOrder === "asc" ? 1 : -1;
     }
-  
+
     if (orderB === null || orderB === undefined) {
       return sortOrder === "asc" ? -1 : 1;
     }
-  
+
     if (sortOrder === "asc") {
       if (sortBy === "orderRate" || sortBy === "orderQuantity") {
         return orderA - orderB; // Sort numerically for these columns
@@ -95,11 +94,9 @@ const OrderTable = () => {
     navigate("/status", {
       state: {
         selectedRow: order,
-    
       },
     });
   };
-
 
   return (
     <div className="manage-order-container">
@@ -107,11 +104,31 @@ const OrderTable = () => {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th onClick={() => toggleSort("orderID")} style={{ cursor: "pointer" }}>Order ID</Th>
+            <Th
+              onClick={() => toggleSort("orderID")}
+              style={{ cursor: "pointer" }}
+            >
+              Order ID
+            </Th>
             <Th>Order Received Time</Th>
-            <Th onClick={() => toggleSort("customerName")} style={{ cursor: "pointer" }}>Customer Name</Th>
-            <Th onClick={() => toggleSort("orderRate")} style={{ cursor: "pointer" }}>Order Rate</Th>
-            <Th onClick={() => toggleSort("orderQuantity")} style={{ cursor: "pointer" }}>Order Quantity</Th>
+            <Th
+              onClick={() => toggleSort("customerName")}
+              style={{ cursor: "pointer" }}
+            >
+              Customer Name
+            </Th>
+            <Th
+              onClick={() => toggleSort("orderRate")}
+              style={{ cursor: "pointer" }}
+            >
+              Order Rate
+            </Th>
+            <Th
+              onClick={() => toggleSort("orderQuantity")}
+              style={{ cursor: "pointer" }}
+            >
+              Order Quantity
+            </Th>
             <Th>Status</Th>
           </Tr>
         </Thead>
@@ -140,10 +157,9 @@ const OrderTable = () => {
                 {/* Display the total order quantity */}
                 <Td>
                   {order.status === "Delivered" ? (
-                    <Text className="deliveredtext" >Delivered</Text>
+                    <Text className="deliveredtext">Delivered</Text>
                   ) : order.status === "Order Canceled" ? (
-                    <Text className="Rejectedtext" >Rejected</Text>
-            
+                    <Text className="Rejectedtext">Rejected</Text>
                   ) : (
                     <Link
                       as={Button}

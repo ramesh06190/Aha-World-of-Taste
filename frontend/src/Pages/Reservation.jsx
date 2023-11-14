@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/react";
 import { get } from "../api/ApiService";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 const hours = [
   //"9:00 AM",
   //"10:00 AM",
@@ -13,7 +13,7 @@ const hours = [
   "12:00 PM",
   "1:00 PM",
   "2:00 PM",
- // "3:00 PM",
+  // "3:00 PM",
   "4:00 PM",
   "5:00 PM",
   "6:00 PM",
@@ -30,17 +30,17 @@ function Reservation() {
   console.log(childData, "here");
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
-  const input1 = searchParams.get('input1');
-  const input2 = searchParams.get('input2');
+  const input1 = searchParams.get("input1");
+  const input2 = searchParams.get("input2");
   const [partySize, setPartySize] = useState("");
   const [date, setDate] = useState("");
   const [partySizeError, setPartySizeError] = useState("");
   const [dateError, setDateError] = useState("");
   const [order, setOrder] = useState([]);
-  const [reservations, setReservations] = useState([])
+  const [reservations, setReservations] = useState([]);
   const getUserId = localStorage.getItem("userId");
-  console.log(reservations, "reservations")
-  console.log(order, "order ")
+  console.log(reservations, "reservations");
+  console.log(order, "order ");
 
   useEffect(() => {
     GetReservationDetail();
@@ -74,7 +74,6 @@ function Reservation() {
         setPartySizeError("Party size is required");
       } else {
         setPartySizeError("");
-
       }
       if (!date) {
         setDateError("Date is required");
@@ -86,7 +85,7 @@ function Reservation() {
             size: partySize,
             time: selectedButton,
           },
-        })
+        });
       }
     }
   };
@@ -97,7 +96,6 @@ function Reservation() {
     const day = today.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
-  
 
   // Handle input changes
   const handlePartySizeChange = (e) => {
@@ -114,8 +112,8 @@ function Reservation() {
   };
   const handleDateChange = (e) => {
     setDate(e.target.value);
-    let data = order.filter((val) => val.date === e.target.value)
-    setReservations(data)
+    let data = order.filter((val) => val.date === e.target.value);
+    setReservations(data);
   };
 
   return (
@@ -138,11 +136,11 @@ function Reservation() {
                   value={input1 || partySize}
                   onChange={handlePartySizeChange}
                 >
-                  <option value="Guest1">Guest 1</option>
-                  <option value="Guest2">Guest 2</option>
-                  <option value="Guest3">Guest 3</option>
-                  <option value="Guest4">Guest 4</option>
-                  <option value="Guest4+">Guest 4+</option>
+                  <option value="Guest1">1 Guest</option>
+                  <option value="Guest2">2 Guests</option>
+                  <option value="Guest3">3 Guests</option>
+                  <option value="Guest4">4 Guests</option>
+                  <option value="Guest4+">4+ Guests</option>
                 </Select>
                 <p className="custom-errornew">{partySizeError}</p>
               </div>
@@ -162,8 +160,6 @@ function Reservation() {
 
                 <p className="custom-errornewone">{dateError}</p>
               </div>
-
-
             </div>
           </div>
         </div>
@@ -171,7 +167,8 @@ function Reservation() {
           <div className="res-card">
             <Grid templateColumns="repeat(5, 1fr)" gap={3} width={"100%"}>
               {hours.map((hour, index) => {
-                const isBooked = reservations.some(val => val.time === hour && val.status === "Approved"
+                const isBooked = reservations.some(
+                  (val) => val.time === hour && val.status === "Approved"
                 );
 
                 return (
@@ -188,7 +185,6 @@ function Reservation() {
                 );
               })}
             </Grid>
-
 
             {selectedButton && getUserId && (
               <Button

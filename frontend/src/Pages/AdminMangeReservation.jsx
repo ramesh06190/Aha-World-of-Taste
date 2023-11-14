@@ -10,7 +10,7 @@ import {
   Link,
   Heading,
   Box,
-  Center
+  Center,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ const AdminMangeReservation = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [order, setOrder] = useState([]);
   // console.log(order , "order")
-  const [sortBy, setSortBy] = useState("orderID");
+  const [sortBy, setSortBy] = useState("reservation.id");
   const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
@@ -183,8 +183,8 @@ const AdminMangeReservation = () => {
                 <Td>{order.time}</Td>
                 {/* <Td>{totalOrderPrice}</Td>
                 <Td>{totalOrderQuantity}</Td>{" "} */}
-                {
-                  order.status === "Approved" ? <Td>
+                {order.status === "Approved" ? (
+                  <Td>
                     <div>
                       <Box
                         size="sm"
@@ -199,23 +199,26 @@ const AdminMangeReservation = () => {
                       >
                         Approved
                       </Box>
-
                     </div>
-                  </Td> : order.status === "Rejected" ? <Td>
-                  <Box
-                        size="sm"
-                        width="140px"
-                        textAlign={"center"}
-                        borderRadius={"5px"}
-                        paddingTop={"2px"}
-                        height="25px"
-                        margin={"0px 2px"}
-                        backgroundColor={"red"}
-                        color={"white"}
-                      >
-                        Rejected
-                      </Box>
-                  </Td> : <Td>
+                  </Td>
+                ) : order.status === "Rejected" ? (
+                  <Td>
+                    <Box
+                      size="sm"
+                      width="140px"
+                      textAlign={"center"}
+                      borderRadius={"5px"}
+                      paddingTop={"2px"}
+                      height="25px"
+                      margin={"0px 2px"}
+                      backgroundColor={"red"}
+                      color={"white"}
+                    >
+                      Rejected
+                    </Box>
+                  </Td>
+                ) : (
+                  <Td>
                     <div>
                       <Button
                         size="sm"
@@ -241,7 +244,7 @@ const AdminMangeReservation = () => {
                       </Button>
                     </div>
                   </Td>
-                }
+                )}
 
                 {/* <Td>{order.status}</Td> */}
               </Tr>
