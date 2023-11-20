@@ -17,6 +17,7 @@ import {
 
 function UserDetailPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { date, size, time } = location.state;
   const [formData, setFormData] = useState({
     firstName: "",
@@ -96,8 +97,7 @@ function UserDetailPage() {
         // Make the API POST request
         const result = await post("user/add/reservation", postData, headers);
         if (result.status) {
-          console.log(result);
-          alert("successfully reserved");
+          openCheckoutModal()
         }
 
         // Handle the result, e.g., show a success message
@@ -115,84 +115,92 @@ function UserDetailPage() {
     setCheckoutModelOpen(true);
   };
 
+  const backReserve = () => {
+    navigate("/reservation")
+  }
+
   return (
     <div className="manage-order-container">
- <Box p="4" m="0px 10px">
-      <h1 className="completeReservationHeading"> Complete your reservation</h1>
-      <h3 className="completeReservationfill">Please Fill in your details:</h3>
+      <Box p="4" m="0px 10px">
+        <h1 className="completeReservationHeading"> Complete your reservation</h1>
+        <h3 className="completeReservationfill">Please Fill in your details:</h3>
 
-      <form onSubmit={handleSubmit}>
-        <FormControl>
-          <FormLabel>First Name</FormLabel>
-          <Input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-          <Text color="red" fontSize="sm">
-            {validationMessages.firstName}
-          </Text>
-        </FormControl>
+        <form onSubmit={handleSubmit}>
+          <FormControl>
+            <FormLabel>First Name</FormLabel>
+            <Input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+            />
+            <Text color="red" fontSize="sm">
+              {validationMessages.firstName}
+            </Text>
+          </FormControl>
 
-        <FormControl>
-          <FormLabel>Last Name</FormLabel>
-          <Input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-          <Text color="red" fontSize="sm">
-            {validationMessages.lastName}
-          </Text>
-        </FormControl>
+          <FormControl>
+            <FormLabel>Last Name</FormLabel>
+            <Input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+            />
+            <Text color="red" fontSize="sm">
+              {validationMessages.lastName}
+            </Text>
+          </FormControl>
 
-        <FormControl>
-          <FormLabel>Phone</FormLabel>
-          <Input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-          <Text color="red" fontSize="sm">
-            {validationMessages.phone}
-          </Text>
-        </FormControl>
+          <FormControl>
+            <FormLabel>Phone</FormLabel>
+            <Input
+              type="text"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+            />
+            <Text color="red" fontSize="sm">
+              {validationMessages.phone}
+            </Text>
+          </FormControl>
 
-        <FormControl>
-          <FormLabel>Email</FormLabel>
-          <Input
-            type="text"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <Text color="red" fontSize="sm">
-            {validationMessages.email}
-          </Text>
-        </FormControl>
+          <FormControl>
+            <FormLabel>Email</FormLabel>
+            <Input
+              type="text"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <Text color="red" fontSize="sm">
+              {validationMessages.email}
+            </Text>
+          </FormControl>
 
-        <FormControl m="10px 0px">
-          <Checkbox >Agree to Terms and Conditions</Checkbox>
-        </FormControl>
+          <FormControl m="10px 0px">
+            <Checkbox >Agree to Terms and Conditions</Checkbox>
+          </FormControl>
 
-        <Button type="submit" mt="4" w="200px ">
-          Submit
-        </Button>
-      </form>
+          <Button type="submit" mt="4" w="200px ">
+            Submit
+          </Button>
+        </form>
+
+
+      </Box>
 
       {checkoutModelOpen ? (
         <Box className="orderSucess">
           <Box className="sucesscard">
-            your Reservation is successful
+            <Text>your Reservation is successful</Text>
+            <Button onClick={backReserve}>Back to Reservation Menu</Button>
           </Box>
+
         </Box>
       ) : null}
-    </Box>
     </div>
-   
+
   );
 }
 

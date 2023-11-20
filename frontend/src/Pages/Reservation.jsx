@@ -5,19 +5,35 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/react";
 import { get } from "../api/ApiService";
+<<<<<<< Updated upstream
 import { useLocation } from "react-router-dom";
 
 const hours = [
+=======
+import { useLocation } from 'react-router-dom';
+const hours = [
+  "9:00 AM",
+  "10:00 AM",
+>>>>>>> Stashed changes
   "11:00 AM",
   "12:00 PM",
   "1:00 PM",
   "2:00 PM",
+<<<<<<< Updated upstream
+=======
+  "3:00 PM",
+>>>>>>> Stashed changes
   "4:00 PM",
   "5:00 PM",
   "6:00 PM",
   "7:00 PM",
   "8:00 PM",
   "9:00 PM",
+<<<<<<< Updated upstream
+=======
+  "10:00 PM",
+  "11:00 PM",
+>>>>>>> Stashed changes
 ];
 
 function Reservation() {
@@ -25,17 +41,22 @@ function Reservation() {
   const [childData, setChildData] = useState({});
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
-  const input1 = searchParams.get("input1");
-  const input2 = searchParams.get("input2");
+  const input1 = searchParams.get('input1');
+  const input2 = searchParams.get('input2');
   const [partySize, setPartySize] = useState("");
   const [date, setDate] = useState("");
   const [partySizeError, setPartySizeError] = useState("");
   const [dateError, setDateError] = useState("");
   const [order, setOrder] = useState([]);
-  const [reservations, setReservations] = useState([]);
+  const [reservations, setReservations] = useState([])
   const getUserId = localStorage.getItem("userId");
+<<<<<<< Updated upstream
 
   const [showTimeSlots, setShowTimeSlots] = useState(false);
+=======
+  console.log(reservations, "reservations")
+  console.log(order, "order ")
+>>>>>>> Stashed changes
 
   useEffect(() => {
     GetReservationDetail();
@@ -70,6 +91,7 @@ function Reservation() {
         setPartySizeError("Party size is required");
       } else {
         setPartySizeError("");
+
       }
 
       if (!date) {
@@ -82,7 +104,7 @@ function Reservation() {
             size: partySize,
             time: selectedButton,
           },
-        });
+        })
       }
     }
   };
@@ -94,6 +116,7 @@ function Reservation() {
     const day = today.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
+  
 
   const handlePartySizeChange = (e) => {
     setPartySize(e.target.value);
@@ -111,8 +134,8 @@ function Reservation() {
 
   const handleDateChange = (e) => {
     setDate(e.target.value);
-    let data = order.filter((val) => val.date === e.target.value);
-    setReservations(data);
+    let data = order.filter((val) => val.date === e.target.value)
+    setReservations(data)
   };
 
   const validatePartySize = () => {
@@ -154,11 +177,11 @@ function Reservation() {
                   value={input1 || partySize}
                   onChange={handlePartySizeChange}
                 >
-                  <option value="Guest1">1 Guest</option>
-                  <option value="Guest2">2 Guests</option>
-                  <option value="Guest3">3 Guests</option>
-                  <option value="Guest4">4 Guests</option>
-                  <option value="Guest4+">4+ Guests</option>
+                  <option value="Guest1">Guest 1</option>
+                  <option value="Guest2">Guest 2</option>
+                  <option value="Guest3">Guest 3</option>
+                  <option value="Guest4">Guest 4</option>
+                  <option value="Guest4+">Guest 4+</option>
                 </Select>
                 <p className="custom-errornew">{partySizeError}</p>
               </div>
@@ -178,6 +201,7 @@ function Reservation() {
 
                 <p className="custom-errornewone">{dateError}</p>
               </div>
+<<<<<<< Updated upstream
               <div className="label-wrap-btn">
                 <div>
                   <Button
@@ -189,10 +213,15 @@ function Reservation() {
                   </Button>
                 </div>
               </div>
+=======
+
+
+>>>>>>> Stashed changes
             </div>
           </div>
         </div>
         <div className="res-grid-con">
+<<<<<<< Updated upstream
           {showTimeSlots && (
             <div className="res-card">
               <Grid templateColumns="repeat(5, 1fr)" gap={3} width={"100%"}>
@@ -200,6 +229,13 @@ function Reservation() {
                   const isBooked = reservations.some(
                     (val) => val.time === hour && val.status === "Approved"
                   );
+=======
+          <div className="res-card">
+            <Grid templateColumns="repeat(5, 1fr)" gap={3} width={"100%"}>
+              {hours.map((hour, index) => {
+                const isBooked = reservations.some(val => val.time === hour && val.status === "Approved"
+                );
+>>>>>>> Stashed changes
 
                   return (
                     <Button
@@ -216,6 +252,7 @@ function Reservation() {
                 })}
               </Grid>
 
+<<<<<<< Updated upstream
               {selectedButton && getUserId && (
                 <Button
                   className={`reserve-now-button ${selectedButton ? "show" : ""}`}
@@ -226,6 +263,18 @@ function Reservation() {
               )}
             </div>
           )}
+=======
+
+            {selectedButton && getUserId && (
+              <Button
+                className={`reserve-now-button ${selectedButton ? "show" : ""}`}
+                onClick={navFun}
+              >
+                Reserve Now
+              </Button>
+            )}
+          </div>
+>>>>>>> Stashed changes
         </div>
       </div>
     </div>

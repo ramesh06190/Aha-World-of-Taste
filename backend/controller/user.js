@@ -450,6 +450,55 @@ const addAddress = async (req, res) => {
     return res.status(500).json({ status: false, message: error.message });
   }
 };
+const editAddress = async (req, res) => {
+  const addressPayload = req.body;
+  const requiredFields = [
+    "id",
+    "addressType",
+    "buildingBlock",
+    "houseFloor",
+    "landmarkArea",
+  ];
+  const missingFields = requiredFields.filter(
+    (field) => !(field in addressPayload)
+  );
+
+  if (missingFields.length > 0) {
+    return res
+      .status(400)
+      .json({ error: `Missing required fields: ${missingFields.join(", ")}` });
+  }
+
+  const userId = req.data.id;
+
+  try {
+    const user = await User.findOne({ id: userId });
+
+    if (user) {
+      const addressId = addressPayload.id;
+      const existingAddressIndex = user.addresses.findIndex(
+        (addr) => addr.id === addressId
+      );
+
+      if (existingAddressIndex !== -1) {
+        user.addresses[existingAddressIndex] = addressPayload;
+        await user.save();
+
+        return res
+          .status(200)
+          .json({ status: true, message: "Address updated successfully" });
+      } else {
+        return res
+          .status(404)
+          .json({ status: false, message: "Address not found for the user" });
+      }
+    } else {
+      return res.status(404).json({ status: false, message: "User not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ status: false, message: error.message });
+  }
+};
 
 const deleteAddress = async (req, res) => {
   const userId = req.data.id;
@@ -618,6 +667,8 @@ const updateReservation = async (req, res) => {
     console.log(updatedReservation, "dsds");
     if (status === "Rejected") {
       sendReservationMail(updatedReservation.email, status);
+    } else {
+      sendReservationMail(updatedReservation.email, status);
     }
   } catch (error) {
     console.error(error);
@@ -650,6 +701,83 @@ const updateOrderStatus = async (req, res) => {
     res.status(500).json({ message: error.message, status: false });
   }
 };
+const editReservation = async (req, res) => {
+  const userId = req.data.id;
+  try {
+    const { id, size, date, time, firstName, lastName, phone, email } =
+      req.body;
+    if (
+      !id ||
+      !size ||
+      !date ||
+      !time ||
+      !firstName ||
+      !lastName ||
+      !phone ||
+      !email
+    ) {
+      return res
+        .status(400)
+        .json({ message: "All mandatory fields are required", status: false });
+    }
+    const existingReservation = await Reservation.findOne({ id, userId });
+    if (existingReservation) {
+      await Reservation.findOneAndUpdate(
+        { id, userId },
+        {
+          size,
+          date,
+          time,
+          firstName,
+          lastName,
+          phone,
+          email,
+        },
+        { new: true } // Return the updated document
+      );
+      return res
+        .status(200)
+        .json({ message: "Reservation updated successfully", status: true });
+    } else {
+      return res
+        .status(404)
+        .json({ message: "Reservation not found for the user", status: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", status: false });
+  }
+};
+
+const deleteReservation = async (req, res) => {
+  const userId = req.data.id;
+  try {
+    const { id } = req.body;
+    if (!id) {
+      return res.status(400).json({
+        message: "Reservation ID is required in the request body",
+        status: false,
+      });
+    }
+    const deletedReservation = await Reservation.findOneAndDelete({
+      id,
+      userId,
+    });
+    if (deletedReservation) {
+      return res
+        .status(200)
+        .json({ message: "Reservation deleted successfully", status: true });
+    } else {
+      return res
+        .status(404)
+        .json({ message: "Reservation not found for the user", status: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", status: false });
+  }
+};
+
 module.exports = {
   signUp,
   login,
@@ -670,4 +798,7 @@ module.exports = {
   getReservation,
   updateReservation,
   updateOrderStatus,
+  editAddress,
+  editReservation,
+  deleteReservation,
 };

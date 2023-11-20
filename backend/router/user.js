@@ -15,11 +15,14 @@ router.get("/all-user", user.getAllUser);
 router.post("/add/order", auth, user.order);
 router.get("/my/order", auth, user.myOrder);
 router.post("/add/address", auth, user.addAddress);
+router.post("/edit/address", auth, user.editAddress);
 router.post("/delete/address", auth, user.deleteAddress);
 router.post("/update/details", auth, user.updateFirstName);
 router.post("/add/reservation", auth, user.postReservation);
 router.get("/all/reservation", user.getReservation);
 router.post("/update/reservation", user.updateReservation);
 router.post("/update/review", auth, user.updateOrderStatus);
+router.post("/edit/reservation", auth, user.editReservation);
+router.post("/delete/reservation", auth, user.deleteReservation);
 
 module.exports = router;

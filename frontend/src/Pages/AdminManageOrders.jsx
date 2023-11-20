@@ -10,11 +10,11 @@ import {
   Link,
   Heading,
   Text,
+  Select
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { get } from "../api/ApiService";
-import { color } from "framer-motion";
 
 const pageSize = 10;
 
@@ -22,9 +22,10 @@ const OrderTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRow, setSelectedRow] = useState(null);
   const [order, setOrder] = useState([]);
-  console.log(order, "order");
-  const [sortBy, setSortBy] = useState("order.createdAt");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortOrder, setSortOrder] = useState("latest");
+  const [statusFilter, setStatusFilter] = useState("Pending");
+console.log(statusFilter , "statusFilter")
+  const navigate = useNavigate();
 
   useEffect(() => {
     GetDetails();
@@ -37,50 +38,6 @@ const OrderTable = () => {
     }
   };
 
-  const toggleSort = (column) => {
-    if (sortBy === column) {
-      // Toggle sorting order if the same column is clicked
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      // If a different column is clicked, set it as the new sorting column
-      setSortBy(column);
-      setSortOrder("asc");
-    }
-  };
-
-  const sortedOrder = [...order].sort((a, b) => {
-    const orderA = a[sortBy];
-    const orderB = b[sortBy];
-
-    if (orderA === null || orderA === undefined) {
-      return sortOrder === "asc" ? 1 : -1;
-    }
-
-    if (orderB === null || orderB === undefined) {
-      return sortOrder === "asc" ? -1 : 1;
-    }
-
-    if (sortOrder === "asc") {
-      if (sortBy === "orderRate" || sortBy === "orderQuantity") {
-        return orderA - orderB; // Sort numerically for these columns
-      }
-      return orderA.localeCompare(orderB);
-    } else {
-      if (sortBy === "orderRate" || sortBy === "orderQuantity") {
-        return orderB - orderA; // Sort numerically for these columns
-      }
-      return orderB.localeCompare(orderA);
-    }
-  });
-
-  const navigate = useNavigate();
-
-  // Calculate the range of items to display on the current page
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginateData = sortedOrder.slice(startIndex, endIndex);
-
-  // Define functions for changing the current page
   const nextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
@@ -90,12 +47,40 @@ const OrderTable = () => {
   };
 
   const handleViewStatus = (order) => {
-    setSelectedRow(order); // Store the selected row's details in state
+    setSelectedRow(order);
     navigate("/status", {
       state: {
         selectedRow: order,
       },
     });
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+
+  // Sorting logic
+  const sortedOrder = [...order].sort((a, b) => {
+    const multiplier = sortOrder === "least" ? -1 : 1;
+    return multiplier * (new Date(b.createdAt) - new Date(a.createdAt));
+  });
+
+  // Filter by status
+  const filteredOrder = sortedOrder.filter((item) => {
+    if (statusFilter === "All") {
+      return true;
+    } else {
+      return item.status === statusFilter;
+    }
+  });
+
+  const paginateData = filteredOrder.slice(startIndex, endIndex);
+
+  const toggleSortOrder = () => {
+    setSortOrder((prevOrder) => (prevOrder === "least" ? "latest" : "least"));
+  };
+
+  const handleStatusFilter = (status) => {
+    setStatusFilter(status);
   };
 
   return (
@@ -104,32 +89,18 @@ const OrderTable = () => {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th
-              onClick={() => toggleSort("orderID")}
-              style={{ cursor: "pointer" }}
-            >
-              Order ID
+            <Th>Order ID</Th>
+            <Th onClick={toggleSortOrder}>Order Date</Th>
+            <Th>Customer Name</Th>
+            <Th>Order Rate</Th>
+            <Th>Order Quantity</Th>
+            <Th>
+              <Select value={statusFilter} onChange={(e) => handleStatusFilter(e.target.value)}>
+                <option value="Pending">Pending</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Order Canceled">Rejected</option>
+              </Select>
             </Th>
-            <Th>Order Received Time</Th>
-            <Th
-              onClick={() => toggleSort("customerName")}
-              style={{ cursor: "pointer" }}
-            >
-              Customer Name
-            </Th>
-            <Th
-              onClick={() => toggleSort("orderRate")}
-              style={{ cursor: "pointer" }}
-            >
-              Order Rate
-            </Th>
-            <Th
-              onClick={() => toggleSort("orderQuantity")}
-              style={{ cursor: "pointer" }}
-            >
-              Order Quantity
-            </Th>
-            <Th>Status</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -145,22 +116,30 @@ const OrderTable = () => {
               (totalQuantity, foodItem) => totalQuantity + foodItem.count,
               0
             );
+            const createdAtDate = new Date(order.createdAt);
+            const formattedCreatedAt = createdAtDate.toLocaleString('en-US', {
+              month: '2-digit',
+              day: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+            });
             let data = { ...order, totalOrderPrice, totalOrderQuantity };
 
             return (
               <Tr key={index}>
                 <Td>{order.id}</Td>
-                <Td>{order.createdAt}</Td>
+                <Td>{formattedCreatedAt}</Td>
                 <Td>{order.fullName}</Td>
-                <Td>{totalOrderPrice}</Td> {/* Display the total order price */}
-                <Td>{totalOrderQuantity}</Td>{" "}
-                {/* Display the total order quantity */}
+                <Td>{totalOrderPrice}</Td>
+                <Td>{totalOrderQuantity}</Td>
                 <Td>
                   {order.status === "Delivered" ? (
                     <Text className="deliveredtext">Delivered</Text>
                   ) : order.status === "Order Canceled" ? (
                     <Text className="Rejectedtext">Rejected</Text>
-                  ) : (
+                  ) : statusFilter === "Pending" || order.status === statusFilter ? (
                     <Link
                       as={Button}
                       size="sm"
@@ -171,7 +150,7 @@ const OrderTable = () => {
                       <ChevronRightIcon />
                       View Status
                     </Link>
-                  )}
+                  ) : null}
                 </Td>
               </Tr>
             );
@@ -179,13 +158,12 @@ const OrderTable = () => {
         </Tbody>
       </Table>
 
-      {/* Pagination controls */}
       <div className="pagination-controls">
         <button onClick={prevPage} disabled={currentPage === 1}>
           Previous
         </button>
         <span>Page {currentPage}</span>
-        <button onClick={nextPage} disabled={endIndex >= order.length}>
+        <button onClick={nextPage} disabled={endIndex >= filteredOrder.length}>
           Next
         </button>
       </div>

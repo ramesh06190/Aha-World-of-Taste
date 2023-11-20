@@ -94,6 +94,7 @@ const ViewStatusPage = () => {
             <Text>Order ID: {selectedRow.id}</Text>
             <Text>Order Received Time: {selectedRow.createdAt}</Text>
             <Text>Customer Name: {selectedRow.fullName}</Text>
+           <Text> Item Name: {selectedRow.order.map((val) => val.foodName).join(", ")}</Text>
             <Text>Order Rate: {selectedRow.totalOrderPrice}</Text>
             <Text>Order Quantity: {selectedRow.totalOrderQuantity}</Text>
 

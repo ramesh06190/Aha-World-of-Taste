@@ -7,202 +7,122 @@ import {
   Th,
   Td,
   Button,
-  Link,
   Heading,
   Box,
-  Center,
+  Select,
 } from "@chakra-ui/react";
-import { ChevronRightIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+
 import { get, post } from "../api/ApiService";
-import { color } from "framer-motion";
 
 const pageSize = 10;
 
-const AdminMangeReservation = () => {
+const AdminManageReservation = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedRow, setSelectedRow] = useState(null);
   const [order, setOrder] = useState([]);
-  // console.log(order , "order")
-  const [sortBy, setSortBy] = useState("reservation.id");
-  const [sortOrder, setSortOrder] = useState("asc");
-
+  const [sortOrder, setSortOrder] = useState("latest");
+  const [statusFilter, setStatusFilter] = useState("Pending");
   useEffect(() => {
-    GetDetails();
+    getDetails();
   }, []);
 
-  const GetDetails = async () => {
+  const getDetails = async () => {
     const result = await get("user/all/reservation");
     if (result.status) {
       setOrder(result.data);
     }
   };
 
-  const toggleSort = (column) => {
-    if (sortBy === column) {
-      // Toggle sorting order if the same column is clicked
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      // If a different column is clicked, set it as the new sorting column
-      setSortBy(column);
-      setSortOrder("asc");
-    }
-  };
-
-  const sortedOrder = [...order].sort((a, b) => {
-    const orderA = a[sortBy];
-    const orderB = b[sortBy];
-
-    if (orderA === null || orderA === undefined) {
-      return sortOrder === "asc" ? 1 : -1;
-    }
-
-    if (orderB === null || orderB === undefined) {
-      return sortOrder === "asc" ? -1 : 1;
-    }
-
-    if (sortOrder === "asc") {
-      if (sortBy === "orderRate" || sortBy === "orderQuantity") {
-        return orderA - orderB; // Sort numerically for these columns
-      }
-      return orderA.localeCompare(orderB);
-    } else {
-      if (sortBy === "orderRate" || sortBy === "orderQuantity") {
-        return orderB - orderA; // Sort numerically for these columns
-      }
-      return orderB.localeCompare(orderA);
-    }
-  });
-
-  const navigate = useNavigate();
-
-  // Calculate the range of items to display on the current page
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginateData = sortedOrder.slice(startIndex, endIndex);
 
-  // Define functions for changing the current page
-  const nextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+  const toggleSortOrder = () => {
+    setSortOrder((prevOrder) => (prevOrder === "least" ? "latest" : "least"));
   };
 
-  const prevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-
-  const handleViewStatus = (order) => {
-    setSelectedRow(order); // Store the selected row's details in state
-    navigate("/status", {
-      state: {
-        selectedRow: order,
-      },
-    });
-  };
-
-  const Approve = async (id, status) => {
+  const approve = async (id, status) => {
     const postData = {
       id,
       status,
     };
 
+
+
     try {
-      // Make the API POST request
       const result = await post("user/update/reservation", postData);
       if (result.status) {
         console.log(result);
-        // alert("updated successfylly");
-        GetDetails();
+        getDetails();
       }
-
-      // Handle the result, e.g., show a success message
-      console.log("API call successful:", result);
-
-      // Set checkoutModelOpen to true to display the success message
-      // setCheckoutModelOpen(true);
     } catch (error) {
-      // Handle the API request error, e.g., show an error message
       console.error("API call failed:", error);
     }
   };
 
+
+  const filteredOrders = order
+    .slice()
+    .sort((a, b) => {
+      const multiplier = sortOrder === "least" ? -1 : 1;
+      return multiplier * (new Date(b.date) - new Date(a.date));
+    })
+    .filter((currentOrder) => {
+      if (statusFilter === "All") {
+        return true;
+      } else {
+        return currentOrder.status === statusFilter;
+      }
+    })
+
+    const paginateData = filteredOrders.slice(startIndex, endIndex);
   return (
     <div className="manage-order-container">
       <Heading p={"18px 20px "}>Manage Reservation</Heading>
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th
-              onClick={() => toggleSort("orderID")}
-              style={{ cursor: "pointer" }}
-            >
-              Order ID
+            <Th>Order ID</Th>
+            <Th onClick={toggleSortOrder}>Reservation Date</Th>
+            <Th>Customer Name</Th>
+            <Th>Party Size</Th>
+            <Th>Reservation Time</Th>
+            <Th>
+              <Select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </Select>
             </Th>
-            <Th
-              onClick={() => toggleSort("customerName")}
-              style={{ cursor: "pointer" }}
-            >
-              Customer Name
-            </Th>
-            <Th
-              onClick={() => toggleSort("orderRate")}
-              style={{ cursor: "pointer" }}
-            >
-              Party Size
-            </Th>
-            <Th
-              onClick={() => toggleSort("orderQuantity")}
-              style={{ cursor: "pointer" }}
-            >
-              Reservation date
-            </Th>
-            <Th style={{ cursor: "pointer" }}>Reservation Time</Th>
-            <Th>Status</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {paginateData.map((order, index) => {
-            // const totalOrderPrice = order.order
-            //   .reduce(
-            //     (totalPrice, foodItem) =>
-            //       totalPrice + foodItem.price * foodItem.count,
-            //     0
-            //   )
-            //   .toFixed(2);
-            // const totalOrderQuantity = order.order.reduce(
-            //   (totalQuantity, foodItem) => totalQuantity + foodItem.count,
-            //   0
-            // );
-            // let data = { ...order, totalOrderPrice, totalOrderQuantity };
-
-            return (
+          {
+            paginateData.map((currentOrder, index) => (
+              
               <Tr key={index}>
-                <Td>{order.id}</Td>
-                <Td>{order.firstName}</Td>
-                <Td>{order.size}</Td>
-                <Td>{order.date}</Td>
-                <Td>{order.time}</Td>
-                {/* <Td>{totalOrderPrice}</Td>
-                <Td>{totalOrderQuantity}</Td>{" "} */}
-                {order.status === "Approved" ? (
-                  <Td>
-                    <div>
-                      <Box
-                        size="sm"
-                        width="140px"
-                        textAlign={"center"}
-                        borderRadius={"5px"}
-                        paddingTop={"2px"}
-                        height="25px"
-                        margin={"0px 2px"}
-                        backgroundColor={"Green"}
-                        color={"white"}
-                      >
-                        Approved
-                      </Box>
-                    </div>
-                  </Td>
-                ) : order.status === "Rejected" ? (
-                  <Td>
+                <Td>{currentOrder.id}</Td>
+                <Td>{currentOrder.date}</Td>
+                <Td>{currentOrder.firstName}</Td>
+                <Td>{currentOrder.size}</Td>
+                <Td>{currentOrder.time}</Td>
+                <Td>
+                  {currentOrder.status === "Approved" ? (
+                    <Box
+                      size="sm"
+                      width="140px"
+                      textAlign={"center"}
+                      borderRadius={"5px"}
+                      paddingTop={"2px"}
+                      height="25px"
+                      margin={"0px 2px"}
+                      backgroundColor={"Green"}
+                      color={"white"}
+                    >
+                      Approved
+                    </Box>
+                  ) : currentOrder.status === "Rejected" ? (
                     <Box
                       size="sm"
                       width="140px"
@@ -216,9 +136,7 @@ const AdminMangeReservation = () => {
                     >
                       Rejected
                     </Box>
-                  </Td>
-                ) : (
-                  <Td>
+                  ) : (
                     <div>
                       <Button
                         size="sm"
@@ -227,7 +145,7 @@ const AdminMangeReservation = () => {
                         margin={"0px 2px"}
                         backgroundColor={"Green"}
                         color={"white"}
-                        onClick={() => Approve(order.id, "Approved")}
+                        onClick={() => approve(currentOrder.id, "Approved")}
                       >
                         Approve
                       </Button>
@@ -238,28 +156,36 @@ const AdminMangeReservation = () => {
                         margin={"0px 2px"}
                         backgroundColor={"red"}
                         color={"white"}
-                        onClick={() => Approve(order.id, "Rejected")}
+                        onClick={() => approve(currentOrder.id, "Rejected")}
                       >
                         Reject
                       </Button>
                     </div>
-                  </Td>
-                )}
-
-                {/* <Td>{order.status}</Td> */}
+                  )}
+                </Td>
               </Tr>
-            );
-          })}
+            ))}
         </Tbody>
       </Table>
 
-      {/* Pagination controls */}
       <div className="pagination-controls">
-        <button onClick={prevPage} disabled={currentPage === 1}>
+        <button
+          onClick={() =>
+            setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 1))
+          }
+          disabled={currentPage === 1}
+        >
           Previous
         </button>
         <span>Page {currentPage}</span>
-        <button onClick={nextPage} disabled={endIndex >= order.length}>
+        <button
+          onClick={() =>
+            setCurrentPage((prevPage) =>
+              endIndex < filteredOrders.length ? prevPage + 1 : prevPage
+            )
+          }
+          disabled={endIndex >= filteredOrders.length}
+        >
           Next
         </button>
       </div>
@@ -267,4 +193,4 @@ const AdminMangeReservation = () => {
   );
 };
 
-export default AdminMangeReservation;
+export default AdminManageReservation;

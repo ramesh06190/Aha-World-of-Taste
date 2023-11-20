@@ -173,6 +173,7 @@ function AdminLanding() {
               variant="contained"
               onClick={handleSendClick}
               fullWidth
+              disabled={adminMessage.length === 0}
             >
               Send
             </Button>

@@ -233,10 +233,8 @@ const MyAccountPage = () => {
   useEffect(() => {
     GetDetails();
   }, []);
-
   const GetDetails = async () => {
     const result = await get("user/my/order", {}, headers);
-  
     if (result.status) {
       const mappedOrders = result?.data?.orders?.map((order) => {
         let reviewArray = [];
@@ -261,13 +259,9 @@ const MyAccountPage = () => {
           review: reviewArray,
         };
       });
-  
-      // Sort orders by orderedTime in descending order (most recent first)
-      const sortedOrders = mappedOrders.sort((a, b) =>
-        new Date(b.orderedTime) - new Date(a.orderedTime)
-      );
-  
-      setOrders(sortedOrders);
+
+      const reversedMappedOrders = mappedOrders.slice().reverse();
+      setOrders(reversedMappedOrders);
       setIsLoadingOrders(false);
       setIsLoadingAddress(false);
       setSavedAddresses(result?.data?.user?.addresses);
@@ -275,7 +269,6 @@ const MyAccountPage = () => {
       setEmail(result?.data?.user?.email);
     }
   };
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -742,7 +735,15 @@ const MyAccountPage = () => {
                     Not Interested to review
                   </Radio>
                 </Box>
-                <Text>Rate our restaurant</Text>
+              
+          
+              </Box>
+
+              
+            ))}
+
+<Box borderBottom="1px solid #ddd" paddingBottom="20px" paddingTop="20px">
+            <Text>Rate our restaurant</Text>
                 <Box display="flex" justifyContent="space-between">
                   <Text display="flex">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -757,7 +758,6 @@ const MyAccountPage = () => {
                     ))}
                   </Text>
                 </Box>
-            <Box borderBottom="1px solid #ddd" paddingBottom="20px" paddingTop="20px">
             <Text>Write review</Text>
                 <Textarea
                   value={textValue}
@@ -768,10 +768,6 @@ const MyAccountPage = () => {
                   placeholder="Write a review..."
                 />
             </Box>
-              </Box>
-
-              
-            ))}
             <Box display="flex" justifyContent="end">
               <Button
                 onClick={() => handleSave()}

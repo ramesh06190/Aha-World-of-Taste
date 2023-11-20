@@ -7,11 +7,11 @@ import { Select } from "@chakra-ui/react";
 export default function Bar() {
   const [selectedInterval, setSelectedInterval] = useState("7");
   const [order, setOrder] = useState([]);
-  const [review , setReview] = useState([])
+  const [review, setReview] = useState([]);
   const [reservations, setReservations] = useState([]);
   const [orderCounts, setOrderCounts] = useState({});
   const [reserveCounts, setReserveCounts] = useState({});
-  const [reviewCounts , setReviewCounts] = useState({})
+  const [reviewCounts, setReviewCounts] = useState({});
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [reservationLoadComplete, setReservationLoadComplete] = useState(false);
 
@@ -44,26 +44,34 @@ export default function Bar() {
   }
 
   function countReviewByDay(review) {
-    const ReviewCounts = {};
+    const reviewCounts = {};
+    const reviewScores = {};
     review?.forEach((order) => {
-      const ReviewDate = new Date(order.createdAt).toDateString();
-
-      if (ReviewCounts[ReviewDate]) {
-        ReviewCounts[ReviewDate]++;
-      } else {
-        ReviewCounts[ReviewDate] = 1;
+      if (order.rating !== undefined) {
+        const reviewDate = new Date(order.createdAt).toDateString();
+        const currentReview = order.rating;
+        if (reviewScores[reviewDate]) {
+          reviewScores[reviewDate] += currentReview;
+          reviewCounts[reviewDate]++;
+        } else {
+          reviewScores[reviewDate] = currentReview;
+          reviewCounts[reviewDate] = 1;
+        }
       }
     });
-    return ReviewCounts;
-  
+    const averageReviewByDay = {};
+    for (const date in reviewCounts) {
+      averageReviewByDay[date] = reviewScores[date] / reviewCounts[date];
+    }
+    return averageReviewByDay;
   }
   const { data, randomizeData } = useDemoConfig({
     series: 3,
     dataType: "ordinal",
     selectedInterval: selectedInterval,
     orderCount: orderCounts,
-    reserveCount : reserveCounts,
-    reviewCount : reviewCounts
+    reserveCount: reserveCounts,
+    reviewCount: reviewCounts,
   });
 
   useEffect(() => {
@@ -71,13 +79,11 @@ export default function Bar() {
       GetDetails();
       setInitialLoadComplete(true);
     }
-    
   }, []);
 
   useEffect(() => {
     setOrderCounts(countOrdersByDay(order));
   }, [order]);
-
 
   useEffect(() => {
     setReserveCounts(countReservationByDay(reservations));
@@ -90,7 +96,6 @@ export default function Bar() {
     if (!reservationLoadComplete) {
       GetReservation();
       setReservationLoadComplete(true);
-    
     }
   }, []);
 
@@ -99,7 +104,7 @@ export default function Bar() {
       const result = await get("admin/order");
       if (result.status) {
         setOrder(result.data);
-        setReview(result.data.filter((val)=>val.review !== ""))
+        setReview(result.data.filter((val) => val.review !== ""));
       }
     } catch (error) {
       console.error("Error fetching order details:", error);
@@ -117,15 +122,21 @@ export default function Bar() {
     }
   };
 
-  const primaryAxis = React.useMemo(() => ({
-    getValue: (datum) => datum.primary,
-  }), []);
+  const primaryAxis = React.useMemo(
+    () => ({
+      getValue: (datum) => datum.primary,
+    }),
+    []
+  );
 
-  const secondaryAxes = React.useMemo(() => [
-    {
-      getValue: (datum) => datum.secondary,
-    },
-  ], []);
+  const secondaryAxes = React.useMemo(
+    () => [
+      {
+        getValue: (datum) => datum.secondary,
+      },
+    ],
+    []
+  );
 
   const handleIntervalChange = (event) => {
     const newInterval = event.target.value;
@@ -135,11 +146,14 @@ export default function Bar() {
   return (
     <>
       <div className="slect-conn">
-     
-      <Select value={selectedInterval} onChange={handleIntervalChange} w="350px">
-  <option value="7">Weekly</option>
-  <option value="30">Monthly</option>
-</Select>
+        <Select
+          value={selectedInterval}
+          onChange={handleIntervalChange}
+          w="350px"
+        >
+          <option value="7">Weekly</option>
+          <option value="30">Monthly</option>
+        </Select>
       </div>
 
       <ResizableBox>
