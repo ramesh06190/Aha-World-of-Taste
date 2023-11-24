@@ -5,40 +5,29 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/react";
 import { get } from "../api/ApiService";
-<<<<<<< Updated upstream
-import { useLocation } from "react-router-dom";
-
-const hours = [
-=======
 import { useLocation } from 'react-router-dom';
 const hours = [
   "9:00 AM",
   "10:00 AM",
->>>>>>> Stashed changes
   "11:00 AM",
   "12:00 PM",
   "1:00 PM",
   "2:00 PM",
-<<<<<<< Updated upstream
-=======
   "3:00 PM",
->>>>>>> Stashed changes
   "4:00 PM",
   "5:00 PM",
   "6:00 PM",
   "7:00 PM",
   "8:00 PM",
   "9:00 PM",
-<<<<<<< Updated upstream
-=======
   "10:00 PM",
   "11:00 PM",
->>>>>>> Stashed changes
 ];
 
 function Reservation() {
   const [selectedButton, setSelectedButton] = useState(null);
   const [childData, setChildData] = useState({});
+  console.log(childData, "here");
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const input1 = searchParams.get('input1');
@@ -50,13 +39,8 @@ function Reservation() {
   const [order, setOrder] = useState([]);
   const [reservations, setReservations] = useState([])
   const getUserId = localStorage.getItem("userId");
-<<<<<<< Updated upstream
-
-  const [showTimeSlots, setShowTimeSlots] = useState(false);
-=======
   console.log(reservations, "reservations")
   console.log(order, "order ")
->>>>>>> Stashed changes
 
   useEffect(() => {
     GetReservationDetail();
@@ -68,13 +52,11 @@ function Reservation() {
       setOrder(result.data.filter((val) => val.userId === getUserId));
     }
   };
-
   const handleButtonClick = (hour) => {
     setSelectedButton(hour);
   };
-
   const navigate = useNavigate();
-
+  console.log(selectedButton);
   const navFun = () => {
     if ((input1 && input2) || (input1 && date)) {
       navigate("/UserDetailPage", {
@@ -85,15 +67,15 @@ function Reservation() {
         },
       });
     } else {
+      // Scroll to the top of the page
       window.scrollTo(0, 0);
-
+      // Set error messages if needed
       if (!partySize && !date) {
         setPartySizeError("Party size is required");
       } else {
         setPartySizeError("");
 
       }
-
       if (!date) {
         setDateError("Date is required");
       } else {
@@ -108,7 +90,6 @@ function Reservation() {
       }
     }
   };
-
   function getCurrentDate() {
     const today = new Date();
     const year = today.getFullYear();
@@ -118,43 +99,23 @@ function Reservation() {
   }
   
 
+  // Handle input changes
   const handlePartySizeChange = (e) => {
     setPartySize(e.target.value);
   };
-
   const validateDate = () => {
     if (date === "") {
       setDateError("Date is required");
       return false;
     }
-
+    // Additional validation logic if needed
     setDateError("");
     return true;
   };
-
   const handleDateChange = (e) => {
     setDate(e.target.value);
     let data = order.filter((val) => val.date === e.target.value)
     setReservations(data)
-  };
-
-  const validatePartySize = () => {
-    if (partySize === "") {
-      setPartySizeError("Party size is required");
-      return false;
-    }
-
-    setPartySizeError("");
-    return true;
-  };
-
-  const handleReservationSubmit = () => {
-    const isPartySizeValid = validatePartySize();
-    const isDateValid = validateDate();
-
-    if (isPartySizeValid && isDateValid) {
-      setShowTimeSlots(true);
-    }
   };
 
   return (
@@ -201,69 +162,33 @@ function Reservation() {
 
                 <p className="custom-errornewone">{dateError}</p>
               </div>
-<<<<<<< Updated upstream
-              <div className="label-wrap-btn">
-                <div>
-                  <Button
-                    borderRadius="2px"
-                    colorScheme="gray"
-                    onClick={handleReservationSubmit}
-                  >
-                    Find Slots
-                  </Button>
-                </div>
-              </div>
-=======
 
 
->>>>>>> Stashed changes
             </div>
           </div>
         </div>
         <div className="res-grid-con">
-<<<<<<< Updated upstream
-          {showTimeSlots && (
-            <div className="res-card">
-              <Grid templateColumns="repeat(5, 1fr)" gap={3} width={"100%"}>
-                {hours.map((hour, index) => {
-                  const isBooked = reservations.some(
-                    (val) => val.time === hour && val.status === "Approved"
-                  );
-=======
           <div className="res-card">
             <Grid templateColumns="repeat(5, 1fr)" gap={3} width={"100%"}>
               {hours.map((hour, index) => {
                 const isBooked = reservations.some(val => val.time === hour && val.status === "Approved"
                 );
->>>>>>> Stashed changes
 
-                  return (
-                    <Button
-                      key={hour}
-                      onClick={() => handleButtonClick(hour)}
-                      colorScheme={selectedButton === hour ? "yellow" : "gray"}
-                      isDisabled={isBooked}
-                      bg={isBooked ? "yellow" : undefined}
-                      color={isBooked ? "black" : undefined}
-                    >
-                      {isBooked ? "Booked" : hour}
-                    </Button>
-                  );
-                })}
-              </Grid>
+                return (
+                  <Button
+                    key={hour}
+                    onClick={() => handleButtonClick(hour)}
+                    colorScheme={selectedButton === hour ? "yellow" : "gray"}
+                    isDisabled={isBooked}
+                    bg={isBooked ? "yellow" : undefined}
+                    color={isBooked ? "black" : undefined}
+                  >
+                    {isBooked ? "Booked" : hour}
+                  </Button>
+                );
+              })}
+            </Grid>
 
-<<<<<<< Updated upstream
-              {selectedButton && getUserId && (
-                <Button
-                  className={`reserve-now-button ${selectedButton ? "show" : ""}`}
-                  onClick={navFun}
-                >
-                  Reserve Now
-                </Button>
-              )}
-            </div>
-          )}
-=======
 
             {selectedButton && getUserId && (
               <Button
@@ -274,7 +199,6 @@ function Reservation() {
               </Button>
             )}
           </div>
->>>>>>> Stashed changes
         </div>
       </div>
     </div>

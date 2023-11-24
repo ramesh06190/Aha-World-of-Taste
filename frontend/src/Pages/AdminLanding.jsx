@@ -93,6 +93,7 @@ function AdminLanding() {
     let data = result.data;
     let filteredArray = data.filter((ele) => ele.chatMessages.length !== 0);
     GetChat(filteredArray[0].id);
+    handleJoinRoom(filteredArray[0].id);
     setRoomId(filteredArray[0].id);
 
     setUser(filteredArray);

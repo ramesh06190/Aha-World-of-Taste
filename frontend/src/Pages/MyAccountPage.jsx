@@ -25,7 +25,6 @@ import {
   ModalFooter,
   List,
   ListItem,
-  IconButton,
   ListIcon,
   Spinner,
   Center,
@@ -37,7 +36,6 @@ import {
   DrawerHeader,
   DrawerBody,
   Radio,
-  RadioGroup,
 } from "@chakra-ui/react";
 const MyAccountPage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -54,6 +52,11 @@ const MyAccountPage = () => {
   const [orderRating, setOrderRating] = useState(0);
   const [order, setOrder] = useState([]);
   const [textValue, setTextValue] = useState("");
+  const [isAddingAddress, setIsAddingAddress] = useState(true);
+  const [updateAddress, setupdateAddress] = useState(false)
+  const [getAddressId, setGetAddressId] = useState("")
+
+  console.log(getAddressId, "getAddressId")
   const handleSave = async () => {
     const result = await post(
       "user/update/review",
@@ -80,15 +83,64 @@ const MyAccountPage = () => {
     }
   };
 
-  
+
+  const myEditFun = (val)=>{
+    navigate("/EditUserDetailPage", { state: { myVal: val } });
+  }
+
+  const DeleteRes = async ( id ) => {
+    const result = await post(
+      "user/delete/reservation",
+      {
+        id: id,
+      },
+      headers
+    )
+    if (result.status) {
+     
+      toast({
+        title: "Reservation Deleted Successfully",
+        status: "success",
+        ...defaultToastConfig,
+      });
+      GetReservationDetail()
+    }
+  }
+
   useEffect(() => {
     GetReservationDetail();
   }, []);
 
+  const openAddModal = () => {
+    setIsAddingAddress(true);
+    setEditingAddress([]);
+    openModal();
+    setupdateAddress(false)
+  };
+
+  const openEditModal = (address, addressId) => {
+    const getDefaultAddressData = () => {
+      return {
+        houseFloor: address.houseFloor,
+        buildingBlock: address.buildingBlock,
+        landmarkArea: address.landmarkArea,
+        addressType: address.addressType,
+      };
+    };
+
+
+    setGetAddressId(addressId)
+    setIsAddingAddress(false);
+    setEditingAddress(getDefaultAddressData);
+    openModal();
+    setupdateAddress(true)
+  };
+
+
   const GetReservationDetail = async () => {
     const result = await get("user/all/reservation");
     if (result.status) {
-      setOrder(result.data.filter((val)=>val.userId === getUserId));
+      setOrder(result.data.filter((val) => val.userId === getUserId));
     }
   };
 
@@ -197,7 +249,7 @@ const MyAccountPage = () => {
           padding: "2px 8px",
           borderRadius: "5px",
         };
-  
+
       case "Rejected":
         return {
           backgroundColor: "red",
@@ -221,8 +273,9 @@ const MyAccountPage = () => {
     landmarkArea: "",
     addressType: "home",
   });
+  console.log(addressData, "addressData")
   const [savedAddresses, setSavedAddresses] = useState([]);
-
+  console.log(savedAddresses, "savedAddresses")
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -272,11 +325,19 @@ const MyAccountPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setAddressData({
-      ...addressData,
-      [name]: value,
-    });
+    if (isAddingAddress) {
+      setAddressData({
+        ...addressData,
+        [name]: value,
+      });
+    } else {
+      setEditingAddress({
+        ...editingAddress,
+        [name]: value,
+      });
+    }
   };
+  
   const updateProfile = async () => {
     const result = await post(
       "user/update/details",
@@ -321,6 +382,27 @@ const MyAccountPage = () => {
     closeModal();
   };
 
+  const updateNewAddress = async () => {
+    const result = await post(
+      "user/edit/address",
+      {
+        id: getAddressId,
+        ...editingAddress,
+      },
+      headers
+    );
+    if (result.status) {
+      GetDetails();
+      setAddressData({
+        houseFloor: "",
+        buildingBlock: "",
+        landmarkArea: "",
+        addressType: "home",
+      });
+    }
+    closeModal();
+  };
+
   const [isReviewDrawerOpen, setIsReviewDrawerOpen] = useState(false);
   const [reviewedFood, setReviewedFood] = useState([]);
   const [updateOrder, setUpdateOrder] = useState([]);
@@ -339,6 +421,9 @@ const MyAccountPage = () => {
     { label: "Profile", content: "Content for Tab 3" },
 
   ];
+  const [editingAddress, setEditingAddress] = useState([]);
+  console.log(editingAddress, "editingAddress")
+
 
   return (
     <Box bg="gray.200" p={4} minHeight="85vh">
@@ -455,7 +540,7 @@ const MyAccountPage = () => {
               </Box>
             </TabPanel>
           )}
-  {isLoadingOrders ? (
+          {isLoadingOrders ? (
             <TabPanel key={1} p={4} bg="white" boxShadow="lg">
               <Center h="80vh">
                 <Spinner size="xl" />
@@ -515,16 +600,42 @@ const MyAccountPage = () => {
                       </Text>
                       <Box
                         display="flex"
+                        justifyContent="space-between"
                         alignItems="center"
-                        
                       >
                         <Text fontSize="md" mt="2">
-                          Reservation Date & Time: {order.date} {order.time}
+                          Reservation Time: {order.time}
                         </Text>
-  
-                       </Box>
+
                       </Box>
-                  
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Text fontSize="md" mt="2">
+                    
+                        </Text>
+                    
+                      <Box>
+                      <Button
+                           onClick={() => myEditFun(order)}
+                
+                          >
+                            Edit
+                          </Button>
+             
+
+                       
+                          <Button onClick={() => DeleteRes(order.id)}>
+                            Delete
+                          </Button>
+                      </Box>
+                 
+                       
+                    
+                      </Box>
+                    </Box>
                   ))
                 )}
               </Box>
@@ -549,7 +660,7 @@ const MyAccountPage = () => {
                   <Text fontSize="2xl" fontWeight="bold">
                     All Saved Addresses
                   </Text>
-                  <Button variant="outline" float="right" onClick={openModal}>
+                  <Button variant="outline" float="right" onClick={openAddModal}>
                     Add New Address
                   </Button>
 
@@ -557,18 +668,19 @@ const MyAccountPage = () => {
                     <ModalOverlay />
                     <ModalContent>
                       <ModalHeader>Enter Location Information</ModalHeader>
+                    
                       <ModalBody>
                         <Input
                           name="houseFloor"
                           placeholder="House No. & Floor*"
-                          value={addressData.houseFloor}
+                          value={addressData.houseFloor || (editingAddress ? editingAddress.houseFloor : '')}
                           onChange={handleInputChange}
                           margin={"8px 0px"}
                         />
                         <Input
                           name="buildingBlock"
                           placeholder="Building & Block No.*"
-                          value={addressData.buildingBlock}
+                          value={addressData.buildingBlock || (editingAddress ? editingAddress.buildingBlock : '')}
                           margin={"8px 0px"}
                           onChange={handleInputChange}
                         />
@@ -576,14 +688,14 @@ const MyAccountPage = () => {
                           name="landmarkArea"
                           margin={"8px 0px"}
                           placeholder="Landmark & Area Name (Optional)"
-                          value={addressData.landmarkArea}
+                          value={addressData.landmarkArea || (editingAddress ? editingAddress.landmarkArea : '')}
                           onChange={handleInputChange}
                         />
                         <Select
                           name="addressType"
                           margin={"8px 0px"}
                           placeholder="Select Address Type"
-                          value={addressData.addressType}
+                          value={addressData.addressType || (editingAddress ? editingAddress.addressType : 'home')}
                           onChange={handleInputChange}
                         >
                           <option value="home">Home</option>
@@ -591,10 +703,18 @@ const MyAccountPage = () => {
                           <option value="other">Other</option>
                         </Select>
                       </ModalBody>
+
+
+
                       <ModalFooter>
-                        <Button color="black" backgroundColor={"#EFD36D"} mr={3} onClick={saveAddress}>
-                          Save
-                        </Button>
+                        {
+                          updateAddress ? <Button color="black" backgroundColor={"#EFD36D"} mr={3} onClick={updateNewAddress}>
+                            Update
+                          </Button> : <Button color="black" backgroundColor={"#EFD36D"} mr={3} onClick={saveAddress}>
+                            Save
+                          </Button>
+                        }
+
                         <Button onClick={closeModal}>Close</Button>
                       </ModalFooter>
                     </ModalContent>
@@ -632,6 +752,10 @@ const MyAccountPage = () => {
                               {address.landmarkArea}{" "}
                             </Text>
                           </Box>
+
+                          <Button className="addressEdit" m={"0px 8px"} onClick={() => openEditModal(address, address.id)}>
+                            Edit
+                          </Button>
                           <div
                             className="addressDel"
                             onClick={async () => {
@@ -735,38 +859,38 @@ const MyAccountPage = () => {
                     Not Interested to review
                   </Radio>
                 </Box>
-              
-          
+
+
               </Box>
 
-              
+
             ))}
 
-<Box borderBottom="1px solid #ddd" paddingBottom="20px" paddingTop="20px">
-            <Text>Rate our restaurant</Text>
-                <Box display="flex" justifyContent="space-between">
-                  <Text display="flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Icon
-                        key={star}
-                        as={StarIcon}
-                        boxSize="16px"
-                        color={star <= orderRating ? "yellow.500" : "gray.500"}
-                        ml="2px"
-                        onClick={() => handleStarOrder(star)}
-                      />
-                    ))}
-                  </Text>
-                </Box>
-            <Text>Write review</Text>
-                <Textarea
-                  value={textValue}
-                  onChange={(event) => {
-                    const newText = event.target.value;
-                    setTextValue(newText);
-                  }}
-                  placeholder="Write a review..."
-                />
+            <Box borderBottom="1px solid #ddd" paddingBottom="20px" paddingTop="20px">
+              <Text>Rate our restaurant</Text>
+              <Box display="flex" justifyContent="space-between">
+                <Text display="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Icon
+                      key={star}
+                      as={StarIcon}
+                      boxSize="16px"
+                      color={star <= orderRating ? "yellow.500" : "gray.500"}
+                      ml="2px"
+                      onClick={() => handleStarOrder(star)}
+                    />
+                  ))}
+                </Text>
+              </Box>
+              <Text>Write review</Text>
+              <Textarea
+                value={textValue}
+                onChange={(event) => {
+                  const newText = event.target.value;
+                  setTextValue(newText);
+                }}
+                placeholder="Write a review..."
+              />
             </Box>
             <Box display="flex" justifyContent="end">
               <Button

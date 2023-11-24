@@ -60,24 +60,35 @@ const addLikeToFood = async (req, res) => {
   }
   try {
     const dish = await Dish.findOne({ id: dishId });
+
     if (!dish) {
       return res
         .status(404)
         .json({ success: false, message: "Dish not found." });
     }
+
     const userId = req.data.id;
-    const alreadyLiked = dish.likes.some((like) => like === userId);
-    if (alreadyLiked) {
+    const alreadyLikedIndex = dish.likes.findIndex((like) => like === userId);
+
+    if (alreadyLikedIndex !== -1) {
+      // User has already liked the dish, so remove the like
+      dish.likes.splice(alreadyLikedIndex, 1);
+      await dish.save();
       return res.json({
-        success: false,
-        message: "You have already liked this dish.",
+        success: true,
+        message: "Like removed successfully.",
+        data: dish,
+      });
+    } else {
+      // User has not liked the dish, so add the like
+      dish.likes.push(userId);
+      await dish.save();
+      return res.json({
+        success: true,
+        message: "Like added successfully.",
+        data: dish,
       });
     }
-    dish.likes.push(userId);
-    await dish.save();
-    res
-      .status(200)
-      .json({ success: true, message: "Like added successfully.", data: dish });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

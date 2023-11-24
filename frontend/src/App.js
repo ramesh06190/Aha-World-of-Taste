@@ -19,7 +19,7 @@ import MyAccountPage from "./Pages/MyAccountPage";
 import OrderStatusPage from "./Pages/ViewStatusPage"
 import Maps from "./Components/Maps";
 import AdminReviewList from "./Components/AdminReviewList.jsx";
-import Track from "./Components/Track";
+import EditUserDetailPage from "./Pages/EditUserDetailPage.js";
 import UserDetailPage from "./Pages/userDetailPage.js";
 import AdminOverview from "./Pages/AdminOverview.js";
 function App() {
@@ -35,6 +35,7 @@ function App() {
           <Route path="/MyAccountPage" element={<MyAccountPage />} />
           <Route path="/track" element={<Maps />} />
           <Route path="/userDetailPage" element={<UserDetailPage />} />
+          <Route path="/EditUserDetailPage" element={<EditUserDetailPage />} />
         </Route>
       </Routes>
       <Routes>

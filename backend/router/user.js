@@ -24,5 +24,6 @@ router.post("/update/reservation", user.updateReservation);
 router.post("/update/review", auth, user.updateOrderStatus);
 router.post("/edit/reservation", auth, user.editReservation);
 router.post("/delete/reservation", auth, user.deleteReservation);
+router.post("/delete/order", auth, user.deleteOrder);
 
 module.exports = router;

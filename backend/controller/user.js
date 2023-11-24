@@ -777,6 +777,34 @@ const deleteReservation = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", status: false });
   }
 };
+const deleteOrder = async (req, res) => {
+  const userId = req.data.id;
+  try {
+    const { id } = req.body;
+    if (!id) {
+      return res.status(400).json({
+        message: "Order ID is required in the request body",
+        status: false,
+      });
+    }
+    const deletedReservation = await Order.findOneAndDelete({
+      id,
+      userId,
+    });
+    if (deletedReservation) {
+      return res
+        .status(200)
+        .json({ message: "Order deleted successfully", status: true });
+    } else {
+      return res
+        .status(404)
+        .json({ message: "Order not found for the user", status: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", status: false });
+  }
+};
 
 module.exports = {
   signUp,
@@ -801,4 +829,5 @@ module.exports = {
   editAddress,
   editReservation,
   deleteReservation,
+  deleteOrder,
 };
