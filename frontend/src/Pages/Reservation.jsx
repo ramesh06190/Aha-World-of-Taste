@@ -138,11 +138,11 @@ function Reservation() {
                   value={input1 || partySize}
                   onChange={handlePartySizeChange}
                 >
-                  <option value="Guest1">Guest 1</option>
-                  <option value="Guest2">Guest 2</option>
-                  <option value="Guest3">Guest 3</option>
-                  <option value="Guest4">Guest 4</option>
-                  <option value="Guest4+">Guest 4+</option>
+           <option value="Guest1">1 Guest </option>
+              <option value="Guest2">2 Guest</option>
+              <option value="Guest3">3 Guest</option>
+              <option value="Guest4">4 Guest</option>
+              <option value="Guest4+">4+ Guest</option>
                 </Select>
                 <p className="custom-errornew">{partySizeError}</p>
               </div>
@@ -171,20 +171,20 @@ function Reservation() {
           <div className="res-card">
             <Grid templateColumns="repeat(5, 1fr)" gap={3} width={"100%"}>
               {hours.map((hour, index) => {
-                const isBooked = reservations.some(val => val.time === hour && val.status === "Approved"
-                );
-
+                const isBooked = reservations.some(val => val.time === hour && val.status === "Approved");
+                const isCancelled = reservations.some(val => val.time === hour && val.status === "Rejected");
                 return (
                   <Button
-                    key={hour}
-                    onClick={() => handleButtonClick(hour)}
-                    colorScheme={selectedButton === hour ? "yellow" : "gray"}
-                    isDisabled={isBooked}
-                    bg={isBooked ? "yellow" : undefined}
-                    color={isBooked ? "black" : undefined}
-                  >
-                    {isBooked ? "Booked" : hour}
-                  </Button>
+                  key={hour}
+                  onClick={() => handleButtonClick(hour)}
+                  colorScheme={selectedButton === hour ? "yellow" : "gray"}
+                  isDisabled={isBooked || isCancelled}
+                  bg={isBooked || isCancelled? "yellow" : undefined}
+                  color={isBooked || isCancelled ? "black" : undefined}
+                >
+                  {isCancelled ? "Not Available" : isBooked ? "Booked" : hour}
+                </Button>
+                
                 );
               })}
             </Grid>

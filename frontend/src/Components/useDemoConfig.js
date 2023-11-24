@@ -95,7 +95,7 @@ for (const date in orderCount) {
     ratingCount: reviewCount[date]
   });
 }
-
+console.log(convertedData , "convertedData")
 for (const date in reserveCount) {
   convertedReservationCountData.push({
     day: date,
@@ -223,21 +223,25 @@ function makeSeries(labels, dataType, datums, useR, convertedData) {
 
   for (let i = 0; i < length; i++) {
     const item = convertedData[i] || {};
+  
 
-    let x = item.day || `Day ${start + i + 1}`;
-    let yOrderCount = item.orderCount || 0;
-    let yReservationCount = item.reservationCount || 0;
-    let yRatingCount = item.ratingCount || 0;
-
-    if (dataType === "ordinal") {
-      x = `Day ${start + i + 1}`;
+    if (item.day !== undefined) {
+      let x = item.date || `${item.day}`;
+      let yOrderCount = item.orderCount || 0;
+      let yReservationCount = item.reservationCount || 0;
+      let yRatingCount = item.ratingCount || 0;
+  
+      if (dataType === "ordinal") {
+        x = `${item.day}`;
+      }
+  
+      data.push({
+        primary: x,
+        secondary: [yOrderCount, yReservationCount, yRatingCount],
+      });
     }
-
-    data.push({
-      primary: x,
-      secondary: [yOrderCount, yReservationCount, yRatingCount],
-    });
   }
+  
 
   return labels.map((label, i) => {
     return {

@@ -36,6 +36,10 @@ const userSchema = new mongose.Schema(
       type: [],
     },
     chatMessages: [chatMessageSchema],
+    seen: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

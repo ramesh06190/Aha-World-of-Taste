@@ -54,11 +54,16 @@ const FoodCard = ({
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Delete Food Item</ModalHeader>
-          <ModalBody>Are you sure you want to delete this food item?</ModalBody>
+          <ModalHeader>
+            {!disable ? "Delete Food Item" : "Add Food Item"}
+          </ModalHeader>
+          <ModalBody>
+            Are you sure you want to{!disable ? "delete" : "add"} this food
+            item?
+          </ModalBody>
           <ModalFooter>
             <Button colorScheme="red" onClick={handleConfirmDelete}>
-              Delete
+              {!disable ? "Delete" : "Add"}
             </Button>
             <Button variant="ghost" onClick={onClose}>
               Cancel

@@ -46,6 +46,7 @@ function AdminLanding() {
     handleJoinRoom(selectedUserId);
     GetChat(selectedUserId);
     setValue(newValue);
+    // updateSeen2(selectedUserId);
   };
 
   const GetChat = async (id) => {
@@ -55,6 +56,18 @@ function AdminLanding() {
     const result = await post("user/chat", postData);
     setUserMessages(result.data);
   };
+  const updateSeen = async () => {
+    const postData = {
+      id: roomId,
+    };
+    const result = await post("user/update/seen", postData);
+    if (result.status) {
+      getAllUser();
+    }
+  };
+  useEffect(() => {
+    updateSeen();
+  }, [roomId]);
 
   const handleAdminMessageChange = (event) => {
     setAdminMessage(event.target.value);
@@ -118,7 +131,14 @@ function AdminLanding() {
               scrollButtons="auto"
             >
               {user.map((val, index) => (
-                <Tab key={val.id} label={`${val.fullName}`} />
+                <Tab
+                  key={val.id}
+                  label={`${val.fullName}`}
+                  style={{
+                    color: val.seen ? "" : "black",
+                    fontWeight: val.seen ? "" : "800",
+                  }}
+                />
               ))}
             </Tabs>
           </AppBar>

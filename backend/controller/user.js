@@ -339,6 +339,29 @@ const resetPassword = async (req, res) => {
     });
   }
 };
+const updateSeen = async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!id) {
+      res.json({ message: "Enter Id", status: false });
+      return;
+    }
+    const updatedUser = await User.findOneAndUpdate(
+      { id: id },
+      {
+        $set: { seen: true }, // Add this line to set 'seen' to false
+      },
+      { new: true } // To return the updated user
+    );
+    if (!updatedUser) {
+      res.json({ message: "User Not found", status: false });
+      return;
+    }
+    res.json({ message: "User updated successfully", status: true });
+  } catch (error) {
+    res.json({ message: "Internal server Error", status: false });
+  }
+};
 
 async function saveMessage(userId, sender, content) {
   console.log(userId, sender, content);
@@ -349,7 +372,10 @@ async function saveMessage(userId, sender, content) {
     };
     const updatedUser = await User.findOneAndUpdate(
       { id: userId },
-      { $push: { chatMessages: newChatMessage } },
+      {
+        $push: { chatMessages: newChatMessage },
+        $set: { seen: sender === "user" ? false : true }, // Add this line to set 'seen' to false
+      },
       { new: true } // To return the updated user
     );
     if (!updatedUser) {
@@ -392,7 +418,7 @@ const getAllUser = async (req, res) => {
     const users = await User.find({
       fullName: { $exists: true, $ne: "" },
     })
-      .select("fullName id chatMessages")
+      .select("fullName id chatMessages seen")
       .sort({ updatedAt: -1 });
     if (!users) {
       return res.status(404).json({
@@ -539,7 +565,7 @@ const deleteAddress = async (req, res) => {
   }
 };
 const updateFirstName = async (req, res) => {
-  const { fullName } = req.body;
+  const { fullName, mobile } = req.body;
   const userId = req.data.id;
 
   try {
@@ -548,16 +574,16 @@ const updateFirstName = async (req, res) => {
         .status(400)
         .json({ error: "User ID is required", status: false });
     }
-    if (typeof fullName !== "string" || fullName.trim() === "") {
+    if (typeof fullName !== "string" || fullName.trim() === "" || !mobile) {
       return res.status(400).json({
-        error: "First name should be a non-empty string",
+        error: "First name and mobile should be a non-empty string",
         status: false,
       });
     }
 
     const updatedUser = await User.findOneAndUpdate(
       { id: userId },
-      { $set: { fullName: fullName } },
+      { $set: { fullName: fullName, mobile: mobile } },
       { new: true }
     );
 
@@ -566,7 +592,7 @@ const updateFirstName = async (req, res) => {
     }
 
     return res.json({
-      message: "First name updated successfully",
+      message: "Updated successfully",
       status: true,
     });
   } catch (error) {
@@ -830,4 +856,5 @@ module.exports = {
   editReservation,
   deleteReservation,
   deleteOrder,
+  updateSeen,
 };

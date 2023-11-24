@@ -72,6 +72,10 @@ function Navbar() {
     window.location.reload();
   };
 
+  const navHome = ()=>{
+    navigate("/");
+  }
+
   const handleSearchInputChange = (event) => {
     const { value } = event.target;
     setSearchValue(value);
@@ -92,7 +96,7 @@ function Navbar() {
     <WholeContext.Provider value={{ isOpen, setIsOpen }}>
       <div className="landing-container">
         <div className="nav-container">
-          <div className="logo">
+          <div className="logo" onClick={navHome} style={{cursor:"pointer"}}>
             <img src={Logo} alt=""></img>
           </div>
           <div className="search">
