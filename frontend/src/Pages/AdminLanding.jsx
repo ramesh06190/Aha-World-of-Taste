@@ -124,23 +124,37 @@ function AdminLanding() {
       <ThemeProvider theme={themeMUI}>
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              variant="scrollable"
-              scrollButtons="auto"
-            >
-              {user.map((val, index) => (
-                <Tab
-                  key={val.id}
-                  label={`${val.fullName}`}
-                  style={{
-                    color: val.seen ? "" : "black",
-                    fontWeight: val.seen ? "" : "800",
-                  }}
-                />
-              ))}
-            </Tabs>
+          <Tabs
+  value={value}
+  onChange={handleChange}
+  variant="scrollable"
+  scrollButtons="auto"
+>
+  {user.map((val, index) => (
+    <Tab
+      key={val.id}
+      label={
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span
+            style={{
+              marginRight: "5px",
+              display: val.seen ? "none" : "block", // hide/show based on seen status
+              width: "10px",
+              height: "10px",
+              backgroundColor: "green", // or any color you prefer
+              borderRadius: "50%",
+            }}
+          ></span>
+          {val.fullName}
+        </div>
+      }
+      style={{
+        color: val.seen ? "" : "black",
+        fontWeight: val.seen ? "" : "800",
+      }}
+    />
+  ))}
+</Tabs>
           </AppBar>
           <div className="chat-admin-area" ref={chatMessageParentRef}>
             {userMessages.map((message, index) => (
