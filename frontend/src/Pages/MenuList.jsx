@@ -30,6 +30,11 @@ function MenuList() {
   const { isOpen, setIsOpen } = useContext(WholeContext);
   const { cart, addToCart, incrementCartItem, decrementCartItem } = useCart();
   const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   const handleTabClick = (index) => {
     setSelectedTab(index);
@@ -53,7 +58,11 @@ function MenuList() {
       : selectedTab !== "Best Seller"
       ? dish?.filter((item) => item.category === selectedTab)
       : sortDish();
-
+  const filteredDataWithSearchTerm = filteredData.filter(
+    (item) =>
+      item.foodName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   function sortDish() {
     let data = dish;
     data.forEach((item) => {
@@ -67,9 +76,8 @@ function MenuList() {
     data.sort((a, b) => b.averageRating - a.averageRating);
     const filteredData = data.filter((item) => item.averageRating > 0);
     return filteredData;
-   
   }
-  console.log(filteredData , "filteredData")
+  console.log(filteredData, "filteredData");
   const headers = {
     token: getuserToken,
   };
@@ -141,6 +149,14 @@ function MenuList() {
 
   return (
     <div className="mybackground-container">
+      <input
+        type="text"
+        placeholder="Search for food"
+        value={searchTerm}
+        onChange={handleSearchTermChange}
+        className="search-input"
+      />
+
       <Box display="flex">
         <VStack w="20%" p={4} spacing={4} align="stretch">
           {updatedCatogery?.map((tab, index) => (
@@ -175,7 +191,7 @@ function MenuList() {
               </Center>
             ) : (
               <SimpleGrid columns={2} spacing={4}>
-                {filteredData?.map((tab, index) => (
+                {filteredDataWithSearchTerm?.map((tab, index) => (
                   <Box
                     key={index}
                     borderWidth="1px"

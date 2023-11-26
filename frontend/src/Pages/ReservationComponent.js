@@ -47,7 +47,6 @@ function ReservationComponent() {
     if (isPartySizeValid && isDateValid) {
       //   navigate("/reservation");
       navigate(`/reservation?input1=${partySize}&input2=${date}`);
-
     }
   };
   ReservationComponent.propTypes = {
@@ -61,7 +60,6 @@ function ReservationComponent() {
     const day = today.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
-  
 
   return (
     <div>
@@ -81,12 +79,11 @@ function ReservationComponent() {
               value={partySize}
               onChange={handlePartySizeChange}
             >
-               <option value="Guest1">1 Guest </option>
-              <option value="Guest2">2 Guest</option>
-              <option value="Guest3">3 Guest</option>
-              <option value="Guest4">4 Guest</option>
-              <option value="Guest4+">4+ Guest</option>
-       
+              <option value="Guest1">1 Guest </option>
+              <option value="Guest2">2 Guests</option>
+              <option value="Guest3">3 Guests</option>
+              <option value="Guest4">4 Guests</option>
+              <option value="Guest4+">4+ Guests</option>
             </Select>
             <p className="custom-errornew">{partySizeError}</p>
           </div>

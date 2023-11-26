@@ -1,10 +1,10 @@
 import React, { useEffect, useState, createContext } from "react";
 import "./Navbar.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./Footer";
 import LoginSignUp from "./LoginSignUp";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import Logo from "../assets/logo.png"
+import Logo from "../assets/logo.png";
 // import { CartContext } from '../Pages/MenuList'
 import { useCart } from "../Pages/CartContext"; // Import the useCart hook
 
@@ -38,6 +38,7 @@ function Navbar() {
   const totalItemsInCart = cart.reduce((total, item) => total + item.count, 0);
   const [searchValue, setSearchValue] = useState("");
   const [filteredNavDish, setFilteredNavDish] = useState([]);
+  const location = useLocation();
 
   // const  cart  = useContext(CartContext);
   const handleOpenModal = () => {
@@ -72,9 +73,9 @@ function Navbar() {
     window.location.reload();
   };
 
-  const navHome = ()=>{
+  const navHome = () => {
     navigate("/");
-  }
+  };
 
   const handleSearchInputChange = (event) => {
     const { value } = event.target;
@@ -96,18 +97,20 @@ function Navbar() {
     <WholeContext.Provider value={{ isOpen, setIsOpen }}>
       <div className="landing-container">
         <div className="nav-container">
-          <div className="logo" onClick={navHome} style={{cursor:"pointer"}}>
+          <div className="logo" onClick={navHome} style={{ cursor: "pointer" }}>
             <img src={Logo} alt=""></img>
           </div>
-          <div className="search">
-            <input
-              type="text"
-              name="search"
-              placeholder="Search for foods"
-              value={searchValue}
-              onChange={handleSearchInputChange}
-            />
-          </div>
+          {location.pathname !== "/menuList" && (
+            <div className="search">
+              <input
+                type="text"
+                name="search"
+                placeholder="Search for foods"
+                value={searchValue}
+                onChange={handleSearchInputChange}
+              />
+            </div>
+          )}
           <div className="nav-list">
             <li>
               <Link to="/">Home</Link>
@@ -147,16 +150,17 @@ function Navbar() {
             ) : (
               <li onClick={handleOpenModal}>Login</li>
             )}
-            {
-              isUserToken !== null ? <Button
+            {isUserToken !== null ? (
+              <Button
                 onClick={() => {
                   navigate("/cart");
                 }}
               >
                 Cart {totalItemsInCart === 0 ? "" : <p>{totalItemsInCart}</p>}{" "}
-              </Button> : ""
-            }
-
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         {searchValue !== "" ? (

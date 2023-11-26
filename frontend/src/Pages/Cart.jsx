@@ -292,8 +292,8 @@ function CartPage() {
               ) : (
                 <>
                   {address.houseFloor &&
-                    address.buildingBlock &&
-                    address.landmarkArea ? (
+                  address.buildingBlock &&
+                  address.landmarkArea ? (
                     <>
                       <Text
                         color="green"
@@ -311,7 +311,6 @@ function CartPage() {
                         <>
                           <div className="changeaddresscon">
                             <button
-                            
                               className="changeAddressbtn"
                               onClick={openChangeAddressPopup}
                             >
@@ -321,18 +320,23 @@ function CartPage() {
                         </>
                       )}
 
-                      <Button backgroundColor="#EFD36D" onClick={handleCheckout}>
+                      <Button
+                        backgroundColor="#EFD36D"
+                        onClick={handleCheckout}
+                      >
                         Submit Order
                       </Button>
                     </>
                   ) : (
-                    <Button backgroundColor="#EFD36D" onClick={openAddressModal}>
+                    <Button
+                      backgroundColor="#EFD36D"
+                      onClick={openAddressModal}
+                    >
                       Add Address
                     </Button>
                   )}
                 </>
               )}
-
             </VStack>
           </Box>
         </div>
@@ -367,6 +371,9 @@ function CartPage() {
               placeholder="Enter Pincode"
               value={address.landmarkArea}
               onChange={handleInputChange}
+              type="number"
+              min="5"
+              max="5"
             />
             <Select
               name="addressType"
@@ -378,7 +385,11 @@ function CartPage() {
               <option value="office">Office</option>
               <option value="other">Other</option>
             </Select>
-            <Button backgroundColor="#EFD36D" margin={"8px 0px"} onClick={saveaddressandclose}>
+            <Button
+              backgroundColor="#EFD36D"
+              margin={"8px 0px"}
+              onClick={saveaddressandclose}
+            >
               Save & Confirm
             </Button>
 
