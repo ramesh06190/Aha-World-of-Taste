@@ -198,6 +198,32 @@ const deleteDish = async (req, res) => {
     res.status(400).json({ error: error.message, status: false });
   }
 };
+const permanentDelete = async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!id) {
+      return res.status(400).json({
+        message: "Dish ID is mandatory for deletion.",
+        status: false,
+      });
+    }
+
+    const deletedDish = await Dish.findOneAndDelete({ id: id });
+    if (!deletedDish) {
+      return res.status(404).json({
+        message: "Dish not found",
+        status: false,
+      });
+    }
+    res.json({
+      message: "Dish updated successfully",
+      data: deletedDish,
+      status: true,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message, status: false });
+  }
+};
 
 const addOrUpdateRating = async (req, res) => {
   try {
@@ -253,4 +279,5 @@ module.exports = {
   editDish,
   deleteDish,
   addOrUpdateRating,
+  permanentDelete,
 };

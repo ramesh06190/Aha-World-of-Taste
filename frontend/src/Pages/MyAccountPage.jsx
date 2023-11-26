@@ -443,15 +443,8 @@ const MyAccountPage = () => {
   const [editingAddress, setEditingAddress] = useState([]);
   console.log(editingAddress, "editingAddress");
 
-  const createdAtDate = new Date(orders.orderedTime);
-  const formattedCreatedAt = createdAtDate.toLocaleString("en-US", {
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+
+
 
   return (
     <Box bg="gray.200" p={4} minHeight="85vh">
@@ -542,7 +535,7 @@ const MyAccountPage = () => {
                         alignItems="center"
                       >
                         <Text fontSize="md" mt="2">
-                          Ordered Time:{" "}
+                          Ordered Date:{" "}
                           {convertUTCtoCustomFormat(order.orderedTime)}
                         </Text>
                         {!order.reviewStatus && order.status == "Delivered" ? (
@@ -564,10 +557,12 @@ const MyAccountPage = () => {
                         ) : (
                           ""
                         )}
-
-                        <Button onClick={() => cancelOrder(order.id)}>
-                          Cancel Order
-                        </Button>
+{
+  !order.status == "Delivered" || "Rejected" ? <Button onClick={() => cancelOrder(order.id)}>
+  Cancel Order
+</Button> : ""
+}
+                     
                       </Box>
                     </Box>
                   ))
@@ -653,20 +648,26 @@ const MyAccountPage = () => {
                         <Text fontSize="md" mt="2"></Text>
 
                         <Box>
-                          <Button
+                      
+                          {
+                            order.status === "Pending" ?
+                        <>
+                            <Button
                             m={"0px 7px"}
                             isDisabled={!order.status === "Pending"}
                             onClick={() => myEditFun(order)}
                           >
                             Edit
                           </Button>
+                            <Button
+                              onClick={() => DeleteRes(order.id)}
+                              m={"0px 7px"}
+                            >
+                              Cancel Reservation
+                            </Button> 
+                        </>: ""
+                          }
 
-                          <Button
-                            onClick={() => DeleteRes(order.id)}
-                            m={"0px 7px"}
-                          >
-                            Delete
-                          </Button>
                         </Box>
                       </Box>
                     </Box>

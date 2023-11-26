@@ -81,11 +81,11 @@ function ReservationComponent() {
               value={partySize}
               onChange={handlePartySizeChange}
             >
-              <option value="Guest1">Guest 1</option>
-              <option value="Guest2">Guest 2</option>
-              <option value="Guest3">Guest 3</option>
-              <option value="Guest4">Guest 4</option>
-              <option value="Guest4+">Guest 4+</option>
+               <option value="Guest1">1 Guest </option>
+              <option value="Guest2">2 Guest</option>
+              <option value="Guest3">3 Guest</option>
+              <option value="Guest4">4 Guest</option>
+              <option value="Guest4+">4+ Guest</option>
        
             </Select>
             <p className="custom-errornew">{partySizeError}</p>

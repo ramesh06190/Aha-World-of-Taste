@@ -225,6 +225,12 @@ function makeSeries(labels, dataType, datums, useR, convertedData) {
     const item = convertedData[i] || {};
   
 
+    let x = item.day || `Day ${start + i + 1}`;
+    let yOrderCount = item.orderCount || 0;
+    let yReservationCount = item.reservationCount || 0;
+    let yRatingCount = item.ratingCount || 0;
+    if (dataType === "ordinal") {
+      // x = `Day ${start + i + 1}`;
     if (item.day !== undefined) {
       let x = item.date || `${item.day}`;
       let yOrderCount = item.orderCount || 0;
@@ -240,7 +246,12 @@ function makeSeries(labels, dataType, datums, useR, convertedData) {
         secondary: [yOrderCount, yReservationCount, yRatingCount],
       });
     }
-  }
+
+    data.push({
+      primary: x,
+      secondary: [yOrderCount, yReservationCount, yRatingCount],
+    });
+  }}
   
 
   return labels.map((label, i) => {

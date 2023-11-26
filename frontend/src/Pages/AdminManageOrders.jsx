@@ -23,7 +23,7 @@ const OrderTable = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [order, setOrder] = useState([]);
   const [sortOrder, setSortOrder] = useState("latest");
-  const [statusFilter, setStatusFilter] = useState("Pending");
+  const [statusFilter, setStatusFilter] = useState("All");
 console.log(statusFilter , "statusFilter")
   const navigate = useNavigate();
 
@@ -96,6 +96,7 @@ console.log(statusFilter , "statusFilter")
             <Th>Order Quantity</Th>
             <Th>
               <Select value={statusFilter} onChange={(e) => handleStatusFilter(e.target.value)}>
+              <option value="All">All</option>
                 <option value="Pending">Pending</option>
                 <option value="Delivered">Delivered</option>
                 <option value="Order Canceled">Rejected</option>
@@ -150,7 +151,16 @@ console.log(statusFilter , "statusFilter")
                       <ChevronRightIcon />
                       View Status
                     </Link>
-                  ) : null}
+                  ) :      <Link
+                  as={Button}
+                  size="sm"
+                  padding="0px 10px"
+                  height="25px"
+                  onClick={() => handleViewStatus(data)}
+                >
+                  <ChevronRightIcon />
+                  View Status
+                </Link>}
                 </Td>
               </Tr>
             );

@@ -11,6 +11,7 @@ import {
   IconButton,
   useDisclosure,
   useToast,
+  Box
 } from "@chakra-ui/react";
 import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
 import "./AdminViewMenu.css";
@@ -20,18 +21,32 @@ const FoodCard = ({
   description,
   price,
   onDelete,
-  updateRenderData,
   disable,
+  onFullDelete,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isFullDeleteOpen, setFullDeleteOpen] = useState(false);
 
   const handleDeleteClick = () => {
     onOpen();
   };
 
+  const handleFullDeleteClick = () => {
+    setFullDeleteOpen(true);
+  };
+
   const handleConfirmDelete = () => {
     onDelete();
     onClose();
+  };
+
+  const handleConfirmFullDelete = () => {
+    onFullDelete();
+    setFullDeleteOpen(false);
+  };
+
+  const handleCloseFullDelete = () => {
+    setFullDeleteOpen(false);
   };
 
   return (
@@ -42,23 +57,29 @@ const FoodCard = ({
       </div>
       <div className="rate-wrap">
         <p className="food-rate">{price}</p>
-        <IconButton
-          icon={!disable ? <DeleteIcon /> : <AddIcon />}
-          aria-label="Delete"
-          variant="outline"
-          colorScheme="red"
-          onClick={handleDeleteClick}
-        />
+        <Box>
+          <IconButton
+            icon={!disable ? <DeleteIcon /> : <AddIcon />}
+            aria-label="Delete"
+            variant="outline"
+            colorScheme="red"
+            onClick={handleDeleteClick}
+          />
+          <Button m={"0px 0px 0px 6px"} onClick={handleFullDeleteClick}>
+            Delete
+          </Button>
+        </Box>
       </div>
 
+      {/* First Modal for handleDeleteClick */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {!disable ? "Delete Food Item" : "Add Food Item"}
+            {!disable ? "Disable Food Item" : "Add Food Item"}
           </ModalHeader>
           <ModalBody>
-            Are you sure you want to{!disable ? "delete" : "add"} this food
+            Are you sure you want to {!disable ? "disable" : "add"} this food
             item?
           </ModalBody>
           <ModalFooter>
@@ -66,6 +87,25 @@ const FoodCard = ({
               {!disable ? "Delete" : "Add"}
             </Button>
             <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Second Modal for handleFullDeleteClick */}
+      <Modal isOpen={isFullDeleteOpen} onClose={handleCloseFullDelete} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Delete Food Item</ModalHeader>
+          <ModalBody>
+            Are you sure you want to delete this food item?
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="red" onClick={handleConfirmFullDelete}>
+              Delete
+            </Button>
+            <Button variant="ghost" onClick={handleCloseFullDelete}>
               Cancel
             </Button>
           </ModalFooter>
@@ -98,6 +138,35 @@ const FoodList = ({ searchData, updateRenderData }) => {
     const result = await get("api/all/dish");
     setAdminDish(result.data);
   };
+
+  const handleFullDelete = async (index) => {
+    try {
+      const result = await post(
+        "api/permanent-delete/dish",
+        {
+          id: index,
+        },
+        headers
+      );
+      if (result.status) {
+        toast({
+          title: "Dish deleted Successfully",
+          description: "You have successfully deleted.",
+          status: "success",
+          ...defaultToastConfig,
+        });
+        updateRenderData();
+      }
+    } catch (error) {
+      toast({
+        title: "Dish not deleted Successfully",
+        description: error?.response?.data?.message,
+        status: "error",
+        ...defaultToastConfig,
+      });
+    }
+  };
+
   const handleDelete = async (index) => {
     try {
       const result = await post(
@@ -137,6 +206,7 @@ const FoodList = ({ searchData, updateRenderData }) => {
           key={index}
           {...food}
           onDelete={() => handleDelete(food.id)}
+          onFullDelete= {()=> handleFullDelete(food.id)}
           updateRenderData={updateRenderData}
         />
       ))}

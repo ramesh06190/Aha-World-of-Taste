@@ -228,3 +228,13 @@ margin-top: -30px;
 margin-right: 50px;
 padding-bottom: 30px;
 }
+
+.aboutuse-card{
+  padding: 20px 40px;
+  line-height: 40px;
+}
+.aboutuse-card h1{
+  font-size: 30px;
+  font-weight: bold;
+  margin: 20px 0px;
+}

@@ -20,7 +20,7 @@ const AdminManageReservation = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [order, setOrder] = useState([]);
   const [sortOrder, setSortOrder] = useState("latest");
-  const [statusFilter, setStatusFilter] = useState("Pending");
+  const [statusFilter, setStatusFilter] = useState("All");
   useEffect(() => {
     getDetails();
   }, []);
@@ -59,21 +59,20 @@ const AdminManageReservation = () => {
   };
 
 
-  const filteredOrders = order
-    .slice()
-    .sort((a, b) => {
-      const multiplier = sortOrder === "least" ? -1 : 1;
-      return multiplier * (new Date(b.date) - new Date(a.date));
-    })
-    .filter((currentOrder) => {
-      if (statusFilter === "All") {
-        return true;
-      } else {
-        return currentOrder.status === statusFilter;
-      }
-    })
+  const sortedOrder = [...order].sort((a, b) => {
+    const multiplier = sortOrder === "least" ? -1 : 1;
+    return multiplier * (new Date(b.createdAt) - new Date(a.createdAt));
+  });
 
-    const paginateData = filteredOrders.slice(startIndex, endIndex);
+  const filteredOrder = sortedOrder.filter((item) => {
+    if (statusFilter === "All") {
+      return true;
+    } else {
+      return item.status === statusFilter;
+    }
+  });
+
+    const paginateData = filteredOrder.slice(startIndex, endIndex);
   return (
     <div className="manage-order-container">
       <Heading p={"18px 20px "}>Manage Reservation</Heading>
@@ -90,6 +89,7 @@ const AdminManageReservation = () => {
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
+                  <option value="All">All</option>
                 <option value="Pending">Pending</option>
                 <option value="Approved">Approved</option>
                 <option value="Rejected">Rejected</option>
@@ -181,10 +181,10 @@ const AdminManageReservation = () => {
         <button
           onClick={() =>
             setCurrentPage((prevPage) =>
-              endIndex < filteredOrders.length ? prevPage + 1 : prevPage
+              endIndex < filteredOrder.length ? prevPage + 1 : prevPage
             )
           }
-          disabled={endIndex >= filteredOrders.length}
+          disabled={endIndex >= filteredOrder.length}
         >
           Next
         </button>
