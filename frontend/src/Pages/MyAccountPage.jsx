@@ -544,7 +544,8 @@ const MyAccountPage = () => {
                               Track
                             </Button>
                           </>
-                        ) : order.status === "Delivered" ? (
+                        ) : !order.reviewStatus &&
+                          order.status === "Delivered" ? (
                           <Button
                             onClick={() =>
                               openReviewDrawer(order.review, order)
@@ -552,7 +553,8 @@ const MyAccountPage = () => {
                           >
                             Review
                           </Button>
-                        ) : order.status !== "Order Canceled" ? (
+                        ) : order.status !== "Order Canceled" &&
+                          order.status !== "Delivered" ? (
                           <Button onClick={() => cancelOrder(order.id)}>
                             Cancel Order
                           </Button>
