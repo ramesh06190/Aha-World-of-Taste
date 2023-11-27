@@ -535,24 +535,16 @@ const MyAccountPage = () => {
                           Ordered Date:{" "}
                           {convertUTCtoCustomFormat(order.orderedTime)}
                         </Text>
-                        {order.status == "Out for Delivery" ? (
-                          <Button onClick={() => navigate("/track")}>
-                            track
-                          </Button>
-                        ) : (
-                          ""
-                        )}
-                        {order.status == "Pending" ||
-                        "Accept Order" ||
-                        "Out for Delivery" ||
-                        "Order Prepared" ? (
-                          <Button onClick={() => cancelOrder(order.id)}>
-                            Cancel Order
-                          </Button>
-                        ) : (
-                          ""
-                        )}
-                        {order.reviewStatus && order.status == "Delivered" ? (
+                        {order.status === "Out for Delivery" ? (
+                          <>
+                            <Button onClick={() => cancelOrder(order.id)}>
+                              Cancel Order
+                            </Button>
+                            <Button onClick={() => navigate("/track")}>
+                              Track
+                            </Button>
+                          </>
+                        ) : order.status === "Delivered" ? (
                           <Button
                             onClick={() =>
                               openReviewDrawer(order.review, order)
@@ -560,9 +552,11 @@ const MyAccountPage = () => {
                           >
                             Review
                           </Button>
-                        ) : (
-                          ""
-                        )}
+                        ) : order.status !== "Order Canceled" ? (
+                          <Button onClick={() => cancelOrder(order.id)}>
+                            Cancel Order
+                          </Button>
+                        ) : null}
                       </Box>
                     </Box>
                   ))
