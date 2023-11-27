@@ -11,7 +11,7 @@ import {
   IconButton,
   useDisclosure,
   useToast,
-  Box
+  Box,
 } from "@chakra-ui/react";
 import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
 import "./AdminViewMenu.css";
@@ -94,13 +94,15 @@ const FoodCard = ({
       </Modal>
 
       {/* Second Modal for handleFullDeleteClick */}
-      <Modal isOpen={isFullDeleteOpen} onClose={handleCloseFullDelete} isCentered>
+      <Modal
+        isOpen={isFullDeleteOpen}
+        onClose={handleCloseFullDelete}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Delete Food Item</ModalHeader>
-          <ModalBody>
-            Are you sure you want to delete this food item?
-          </ModalBody>
+          <ModalBody>Are you sure you want to delete this food item?</ModalBody>
           <ModalFooter>
             <Button colorScheme="red" onClick={handleConfirmFullDelete}>
               Delete
@@ -150,8 +152,8 @@ const FoodList = ({ searchData, updateRenderData }) => {
       );
       if (result.status) {
         toast({
-          title: "Dish deleted Successfully",
-          description: "You have successfully deleted.",
+          title: "Dish Disabled Successfully",
+          description: "You have successfully Disabled.",
           status: "success",
           ...defaultToastConfig,
         });
@@ -159,7 +161,7 @@ const FoodList = ({ searchData, updateRenderData }) => {
       }
     } catch (error) {
       toast({
-        title: "Dish not deleted Successfully",
+        title: "Dish not Disabled Successfully",
         description: error?.response?.data?.message,
         status: "error",
         ...defaultToastConfig,
@@ -206,7 +208,7 @@ const FoodList = ({ searchData, updateRenderData }) => {
           key={index}
           {...food}
           onDelete={() => handleDelete(food.id)}
-          onFullDelete= {()=> handleFullDelete(food.id)}
+          onFullDelete={() => handleFullDelete(food.id)}
           updateRenderData={updateRenderData}
         />
       ))}
