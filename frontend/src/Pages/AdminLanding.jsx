@@ -1,5 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import AppBar from "@mui/material/AppBar";
@@ -18,27 +23,37 @@ function AdminLanding() {
   const [roomId, setRoomId] = useState("");
   const [user, setUser] = useState([]);
   const admin = true;
-  const socket = io(baseURL);
+  const socket = useRef(io(baseURL));
 
-  const handleJoinRoom = (roomId) => {
-    socket.emit("join room", roomId);
-  };
+  const handleJoinRoom = useCallback((roomId) => {
+    socket.current.emit("join room", roomId);
+  }, []);
 
-  const handleSendMessage = (message) => {
-    socket.emit("send message", roomId, message, admin ? "admin" : "user");
-  };
+  const handleSendMessage = useCallback(
+    (message) => {
+      socket.current.emit(
+        "send message",
+        roomId,
+        message,
+        admin ? "admin" : "user"
+      );
+    },
+    [admin, roomId]
+  );
 
-  socket.on("new message", (message) => {
+  const handleNewMessage = useCallback((message) => {
     if (message) {
       setUserMessages((prev) => [...prev, message]);
     }
-  });
-  useEffect(() => {
-    socket.on("disconnect", () => {});
   }, []);
+
   useEffect(() => {
-    socket.on("reconnect", (attemptNumber) => {});
-  }, []);
+    socket.current.on("new message", handleNewMessage);
+
+    return () => {
+      socket.current.off("new message", handleNewMessage);
+    };
+  }, [handleNewMessage]);
 
   const handleChange = (event, newValue) => {
     const selectedUserId = user[newValue].id;
@@ -46,7 +61,6 @@ function AdminLanding() {
     handleJoinRoom(selectedUserId);
     GetChat(selectedUserId);
     setValue(newValue);
-    // updateSeen2(selectedUserId);
   };
 
   const GetChat = async (id) => {
@@ -56,7 +70,8 @@ function AdminLanding() {
     const result = await post("user/chat", postData);
     setUserMessages(result.data);
   };
-  const updateSeen = async () => {
+
+  const updateSeen = useCallback(async () => {
     const postData = {
       id: roomId,
     };
@@ -64,53 +79,62 @@ function AdminLanding() {
     if (result.status) {
       getAllUser();
     }
-  };
-  useEffect(() => {
-    updateSeen();
   }, [roomId]);
 
-  const handleAdminMessageChange = (event) => {
-    setAdminMessage(event.target.value);
-  };
+  useEffect(() => {
+    updateSeen();
+  }, [roomId, updateSeen]);
 
-  const handleSendClick = () => {
+  const handleAdminMessageChange = useCallback((event) => {
+    setAdminMessage(event.target.value);
+  }, []);
+
+  const handleSendClick = useCallback(() => {
     handleSendMessage(adminMessage);
     setAdminMessage("");
-  };
+  }, [adminMessage, handleSendMessage]);
 
   const theme = useTheme();
   const themeMUI = createTheme();
-  const count = Array.from({ length: 23 }, (_, index) => index + 1); // Generate an array from 1 to 23
+  const count = useMemo(
+    () => Array.from({ length: 23 }, (_, index) => index + 1),
+    []
+  );
 
-  // Create a ref for the chat message area
   const chatMessageParentRef = useRef(null);
 
-  // Scroll to the bottom of the chat message area when messages change
   useEffect(() => {
     if (chatMessageParentRef.current) {
       chatMessageParentRef.current.scrollTop =
         chatMessageParentRef.current.scrollHeight;
     }
   }, [userMessages]);
+
   useEffect(() => {
     getAllUser();
   }, []);
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      handleSendClick();
-    }
-  };
 
-  const getAllUser = async () => {
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.key === "Enter") {
+        if (adminMessage.length !== 0) {
+          handleSendClick();
+        }
+      }
+    },
+    [handleSendClick]
+  );
+
+  const getAllUser = useCallback(async () => {
     const result = await get("user/all-user");
     let data = result.data;
     let filteredArray = data.filter((ele) => ele.chatMessages.length !== 0);
     GetChat(filteredArray[0].id);
     handleJoinRoom(filteredArray[0].id);
     setRoomId(filteredArray[0].id);
-
     setUser(filteredArray);
-  };
+  }, [GetChat, handleJoinRoom]);
+
   function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
     return `${date.toLocaleTimeString([], {
@@ -118,7 +142,6 @@ function AdminLanding() {
       minute: "2-digit",
     })}`;
   }
-
   return (
     <div className="admin-chat-con">
       <ThemeProvider theme={themeMUI}>
@@ -179,7 +202,6 @@ function AdminLanding() {
           <div className="admin-input-area">
             <TextField
               label="Admin Message"
-              // variant="outlined"
               fullWidth
               value={adminMessage}
               onKeyDown={handleKeyDown}
@@ -194,7 +216,7 @@ function AdminLanding() {
               variant="contained"
               onClick={handleSendClick}
               fullWidth
-              disabled={adminMessage.length === 0}
+              disabled={adminMessage.length == 0}
             >
               Send
             </Button>
