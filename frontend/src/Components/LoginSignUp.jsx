@@ -183,9 +183,8 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
           });
           setShowPinInput(true);
           setResponse(result);
-        setConfrimSignUpBtn(true);
-        }
-        else if(result.message == "User already exists" ){
+          setConfrimSignUpBtn(true);
+        } else if (result.message == "User already exists") {
           toast({
             title: "User already exists",
             description: "Please add new Email to complete Sign up",
@@ -193,8 +192,6 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
             ...defaultToastConfig,
           });
         }
-        
-        
       } catch (error) {
         toast({
           title: "Error in sending Email Verification OTP",
@@ -339,21 +336,24 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                   </InputGroup>
                   <p className="custom-error">{passwordError}</p>
                   <>
-                  {adminLogin === true ? "" :<p
-                      className="forgetPasstext"
-                      onClick={openResetPasswordModal}
-                    >
-                      forget password
-                    </p> }
-                    
+                    {adminLogin === true ? (
+                      ""
+                    ) : (
+                      <p
+                        className="forgetPasstext"
+                        onClick={openResetPasswordModal}
+                      >
+                        change/forget password
+                      </p>
+                    )}
+
                     <div className="btn-wrap-pop-login">
                       {adminLogin === true ? (
                         <Button
                           className="Login_as_Admin"
                           onClick={handleAdminLOginSubmit}
-                  
                         >
-                        admin Login
+                          admin Login
                         </Button>
                       ) : (
                         <>
@@ -376,20 +376,19 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                 </div>
 
                 <div className="admin-login">
-                <Button
+                  <Button
                     className="admin-login-btn"
                     onClick={() => setAdminLogin(true)}
                     m={"0px 10px 0px 0px"}
                   >
-                  login as admin
+                    login as admin
                   </Button>
                   <Button
                     className="admin-login-btn"
                     onClick={() => setAdminLogin(false)}
                   >
-                  login as User
+                    login as User
                   </Button>
-               
                 </div>
               </div>
             ) : (
@@ -446,7 +445,6 @@ function LoginSignUp({ IsOpen, onClick, sendDataToParent }) {
                   />
                 </InputGroup>
                 <p className="custom-error">{phoneNumberError}</p>
-                
 
                 {showPinInput ? (
                   <div className="verifyEmail-warp">
