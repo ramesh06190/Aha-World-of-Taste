@@ -19,10 +19,11 @@ These are the people who are currently working on this project.
 1.To run backend first we need to install necessary packages using first command below and then run second command
 
    ```npm install```
-   ```npm start```
+   ```npm run dev```
 2. To run frontend we have to install packages using below command.
    
-   ``` npm install ```
+   ``` npm install --force```
+   ``` npm start```
    
 3. To launch the react app we need to use following command, so that it automatically launches the application in the browser.
    
