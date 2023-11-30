@@ -137,10 +137,7 @@ const menuNav = ()=>{
 
             <div className='abt-text'>
               <h1>About US</h1>
-              <h3>Aha Restaurant is passionately committed to pr
-                oviding genuine care, authentic cuisine, and impeccable se
-                rvice, creating a warm and refined ambiance that fulfils our
-                customers' desires and exceeds their expectations.</h3>
+              <h3>Aha Restaurant is passionately committed to providing genuine care, authentic cuisine, and impeccable service, creating a warm and refined ambiance that fulfils our customers' desires and exceeds their expectations.</h3>
             </div>
           </div>
         </div>
